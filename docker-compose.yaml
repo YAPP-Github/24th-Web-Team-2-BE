@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  auth:
+    image: 'hedwig/auth'
+    build:
+      context: .
+      dockerfile: ./apps/Dockerfile.app
+      args:
+        - PKG_NAME=@apps/auth
+        - PORT=3000
+    container_name: auth
+    ports:
+      - '3000:3000'
+    restart: 'no'
