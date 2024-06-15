@@ -1,0 +1,12 @@
+{
+  "name": "@apps/auth",
+  "version": "1.0.0",
+  "dependencies": {
+    "@libs/common": "workspace:*"
+  },
+  "scripts": {
+    "start": "nest start",
+    "build": "nest build",
+    "test": "jest"
+  }
+}

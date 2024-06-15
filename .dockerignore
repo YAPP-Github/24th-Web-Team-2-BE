@@ -1,0 +1,45 @@
+# node_modules
+node_modules
+app/**/node_modules
+libs/**/node_modules
+
+# build output
+dist
+app/**/dist
+# libs/**/dist
+
+# dependency manager
+.pnpm
+.pnp
+.pnp.js
+
+# git
+.git
+.gitignore
+*.md
+
+# local dev configs
+.vscode
+.DS_Store
+*.swp
+
+# logs
+Thumbs.db
+*.tmp
+*.log
+
+# docker 
+Dockerfile
+docker-compose.yml
+
+# test & coverage reports
+coverage
+*.test.js
+*.spec.js
+*.test.ts
+*.spec.ts
+
+# env files
+.env
+.env.local
+.env.*.local
