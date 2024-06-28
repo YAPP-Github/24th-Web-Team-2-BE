@@ -1,0 +1,14 @@
+{
+  "name": "@apps/api-gateway",
+  "version": "1.0.0",
+  "dependencies": {
+    "@libs/common": "workspace:*",
+    "@nestjs/config": "^3.2.2",
+    "@nestjs/microservices": "^10.3.9"
+  },
+  "scripts": {
+    "start": "nest start",
+    "build": "nest build",
+    "test": "jest"
+  }
+}
