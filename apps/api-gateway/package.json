@@ -4,7 +4,8 @@
   "dependencies": {
     "@libs/common": "workspace:*",
     "@nestjs/config": "^3.2.2",
-    "@nestjs/microservices": "^10.3.9"
+    "@nestjs/microservices": "^10.3.9",
+    "rxjs": "^7.8.1"
   },
   "scripts": {
     "start": "nest start",

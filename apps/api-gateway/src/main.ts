@@ -6,6 +6,7 @@ async function bootstrap() {
   const app = await NestFactory.create(ApiGatewayModule);
 
   app.connectMicroservice({
+    name: 'AUTH_SERVICE',
     transport: Transport.TCP,
     options: {
       host: '0.0.0.0',
