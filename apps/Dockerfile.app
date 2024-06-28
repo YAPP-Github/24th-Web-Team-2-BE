@@ -20,7 +20,7 @@ COPY . .
 # Install dependencies: with dependency cache
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 
-# Build shared libraries & Auth application
+# Build shared libraries & Standalone application
 RUN pnpm --filter "libs/*" build
 RUN pnpm --filter=$PKG_NAME build
 

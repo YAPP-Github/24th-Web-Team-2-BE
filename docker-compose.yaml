@@ -13,3 +13,17 @@ services:
     ports:
       - '3000:3000'
     restart: 'no'
+
+  mail-integrator:
+    image: 'hedwig/mail-integrator'
+    build:
+      context: .
+      dockerfile: ./apps/Dockerfile.app
+      args:
+        - PKG_NAME=@apps/mail-integrator
+        - PORT=3000
+        - HOST=127.0.0.1
+    container_name: mail-integrator
+    ports:
+      - '3001:3000'
+    restart: 'no'
