@@ -9,6 +9,7 @@
     "start": "pnpm --recursive run start",
     "build": "pnpm --recursive run build",
     "auth": "pnpm -F @apps/auth",
+    "mail": "pnpm -F @apps/mail-integrator",
     "common": "pnpm -F @libs/common",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
