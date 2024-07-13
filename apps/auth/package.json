@@ -2,10 +2,17 @@
   "name": "@apps/auth",
   "version": "1.0.0",
   "dependencies": {
-    "@libs/common": "workspace:*"
+    "@libs/common": "workspace:*",
+    "@nestjs/axios": "^3.0.2",
+    "@nestjs/microservices": "^10.3.9",
+    "@nestjs/typeorm": "^10.0.2",
+    "axios": "^1.7.2",
+    "mysql2": "^3.10.2",
+    "typeorm": "^0.3.20"
   },
   "scripts": {
     "start": "nest start",
+    "start:dev": "nest start --watch",
     "build": "nest build",
     "test": "jest"
   }
