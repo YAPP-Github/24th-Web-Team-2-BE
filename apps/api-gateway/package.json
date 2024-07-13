@@ -9,6 +9,7 @@
   },
   "scripts": {
     "start": "nest start",
+    "start:dev": "nest start --watch",
     "build": "nest build",
     "test": "jest"
   }

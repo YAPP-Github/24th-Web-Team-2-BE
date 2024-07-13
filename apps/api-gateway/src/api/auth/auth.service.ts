@@ -1,15 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { Observable } from 'rxjs';
+import { lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class AuthService {
-  constructor(
-    @Inject('AUTH_SERVICE')
-    private readonly authClient: ClientProxy,
-  ) {}
+  constructor(@Inject('AUTH_SERVICE') private readonly client: ClientProxy) {}
 
-  async getHello(): Promise<Observable<string>> {
-    return this.authClient.send({ cmd: 'getAuthHello' }, {});
+  async googleLoginCallback(data) {
+    return lastValueFrom(this.client.send({ cmd: 'google_login_callback' }, data));
   }
 }

@@ -4,7 +4,7 @@
   "sourceRoot": "apps",
   "compilerOptions": {
     "webpack": true,
-    "tsConfigPath": "tsconfig.base.json"
+    "tsConfigPath": "tsconfig.json"
   },
   "monorepo": true,
   "root": "apps/auth",

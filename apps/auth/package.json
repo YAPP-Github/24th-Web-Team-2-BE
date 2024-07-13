@@ -2,7 +2,14 @@
   "name": "@apps/auth",
   "version": "1.0.0",
   "dependencies": {
-    "@libs/common": "workspace:*"
+    "@libs/common": "workspace:*",
+    "@nestjs/axios": "^3.0.2",
+    "@nestjs/config": "^3.2.2",
+    "@nestjs/microservices": "^10.3.9",
+    "@nestjs/passport": "^10.0.3",
+    "axios": "^1.7.2",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0"
   },
   "scripts": {
     "start": "nest start",
