@@ -1,27 +1,19 @@
-import { Controller, Get, Query, Req, Res } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { ConfigService } from '@nestjs/config';
-import { Response } from 'express';
+import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth')
 export class AuthController {
-  constructor(
-    private readonly authService: AuthService,
-    private readonly configService: ConfigService,
-  ) {}
+  constructor() {}
 
   @Get('google')
-  googleAuth(@Res() res: Response) {
-    const googleClientId = this.configService.get<string>('GOOGLE_CLIENT_ID');
-    const redirectUri = this.configService.get<string>('GOOGLE_CALLBACK_URL');
-    const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${googleClientId}&redirect_uri=${redirectUri}&scope=openid%20email%20profile&access_type=offline`;
-
-    res.redirect(authUrl);
-  }
+  @UseGuards(AuthGuard('google'))
+  googleAuth(@Res() res) {}
 
   @Get('google/callback')
-  async googleAuthRedirect(@Query('code') code: string, @Res() res: Response) {
-    const user = await this.authService.googleLoginCallback({ code });
-    res.json(user);
+  @UseGuards(AuthGuard('google'))
+  async googleAuthRedirect(@Req() req, @Res() res) {
+    res.json({
+      user: req.user,
+    });
   }
 }

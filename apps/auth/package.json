@@ -4,15 +4,15 @@
   "dependencies": {
     "@libs/common": "workspace:*",
     "@nestjs/axios": "^3.0.2",
-    "@nestjs/config": "^3.2.2",
     "@nestjs/microservices": "^10.3.9",
-    "@nestjs/passport": "^10.0.3",
+    "@nestjs/typeorm": "^10.0.2",
     "axios": "^1.7.2",
-    "passport": "^0.7.0",
-    "passport-google-oauth20": "^2.0.0"
+    "mysql2": "^3.10.2",
+    "typeorm": "^0.3.20"
   },
   "scripts": {
     "start": "nest start",
+    "start:dev": "nest start --watch",
     "build": "nest build",
     "test": "jest"
   }

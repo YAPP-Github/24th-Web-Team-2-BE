@@ -23,9 +23,14 @@ export class AuthService {
       grant_type: 'authorization_code',
     });
 
-    const data = (await firstValueFrom(tokenResponse)).data;
-    console.log(data);
-    const { access_token, refresh_token } = data;
+    const { access_token, refresh_token } = (await firstValueFrom(tokenResponse)).data;
+
+    // sub = 유저 식별값
+    // sub와 provider를 같이 사용해서 유저 식별
+    // 만약 존재하지 않으면, 새로운 유저를 생성하고
+    // 존재하는 유저라면, refreshToken 업데이트?
+    const profile = await this.getGoogleProfile(access_token);
+
     return {
       accessToken: access_token,
       refreshToken: refresh_token,
