@@ -37,6 +37,9 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 
+# Env file
+.env
+
 ### Terraform ###
 # Local .terraform directories
 **/.terraform/*
@@ -72,3 +75,4 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
+

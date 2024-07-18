@@ -1,13 +1,19 @@
-import { Controller, Get } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { Observable } from 'rxjs';
+import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor() {}
 
-  @Get()
-  getHello(): Promise<Observable<string>> {
-    return this.authService.getHello();
+  @Get('google')
+  @UseGuards(AuthGuard('google'))
+  googleAuth(@Res() res) {}
+
+  @Get('google/callback')
+  @UseGuards(AuthGuard('google'))
+  async googleAuthRedirect(@Req() req, @Res() res) {
+    res.json({
+      user: req.user,
+    });
   }
 }
