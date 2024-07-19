@@ -8,44 +8,43 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly httpService: HttpService,
     @InjectRepository(Auths)
     private readonly authRepository: Repository<Auths>,
+    private readonly httpService: HttpService,
   ) {}
 
-  async googleLoginCallback(data) {
+  async authInfoCheck(data, provider) {
+    const { accessToken } = data;
+
+    if (provider === 'google') {
+      const { sub } = await this.getGoogleProfile(accessToken);
+
+      const existAuthInfo = this.authRepository.findOne({
+        where: {
+          providerType: 'google',
+          providerId: sub,
+        },
+      });
+
+      return existAuthInfo;
+    }
+  }
+
+  async registerAuthInfo(data, provider) {
     const { accessToken, refreshToken } = data;
 
-    // sub = 유저 식별값
-    // sub와 provider를 같이 사용해서 유저 식별
-    // 만약 존재하지 않으면, 새로운 유저를 생성하고
-    // 존재하는 유저라면, refreshToken 업데이트?
-    const profile = await this.getGoogleProfile(accessToken);
+    if (provider === 'google') {
+      const { sub } = await this.getGoogleProfile(accessToken);
 
-    const existAuthInfo = await this.authRepository.find({
-      where: {
+      const authInfo: Auths = this.authRepository.create({
+        role: 'guest',
         providerType: 'google',
-        providerId: profile.providerId,
-      },
-    });
+        providerId: sub,
+        refreshToken: refreshToken,
+      });
 
-    if (existAuthInfo) {
-      throw new HttpException('이미 존재하는 정보', HttpStatus.CONFLICT);
+      return await this.authRepository.save(authInfo);
     }
-
-    const testAuthInfo: Auths = this.authRepository.create({
-      role: 'guest',
-      providerType: 'google',
-      providerId: profile.sub,
-      refreshToken: refreshToken,
-    });
-
-    await this.authRepository.save(testAuthInfo);
-
-    return {
-      accessToken: accessToken,
-      refreshToken: refreshToken,
-    };
   }
 
   private async getGoogleProfile(accessToken: string): Promise<any> {
@@ -62,3 +61,35 @@ export class AuthService {
     return profile;
   }
 }
+
+// const { accessToken, refreshToken } = data;
+
+// // sub = 유저 식별값
+// // sub와 provider를 같이 사용해서 유저 식별
+// // 만약 존재하지 않으면, 새로운 유저를 생성하고
+// // 존재하는 유저라면, refreshToken 업데이트?
+// const profile = await this.getGoogleProfile(accessToken);
+
+// const existAuthInfo = await this.authRepository.find({
+//   where: {
+//     providerType: 'google',
+//     providerId: profile.providerId,
+//   },
+// });
+
+// if (existAuthInfo) {
+//   throw new HttpException('이미 존재하는 정보', HttpStatus.CONFLICT);
+// }
+
+// const testAuthInfo: Auths = this.authRepository.create({
+//   role: 'guest',
+//   providerType: 'google',
+//   providerId: profile.sub,
+//   refreshToken: refreshToken,
+// });
+
+// await this.authRepository.save(testAuthInfo);
+
+// return {
+//   accessToken: accessToken,
+// };

@@ -6,9 +6,13 @@ import { AuthService } from './auth.service';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @MessagePattern({ cmd: 'google_login_callback' })
-  async googleAuthRedirect(data) {
-    console.log(data);
-    return this.authService.googleLoginCallback(data);
+  @MessagePattern({ cmd: 'check-auth-info' })
+  async authInfoCheck({ data, provider }) {
+    return await this.authService.authInfoCheck(data, provider);
+  }
+
+  @MessagePattern({ cmd: 'register-auth-info' })
+  async registerAuthInfo({ data, provider }) {
+    return await this.authService.registerAuthInfo(data, provider);
   }
 }

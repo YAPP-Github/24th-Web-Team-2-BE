@@ -6,7 +6,11 @@ import { lastValueFrom } from 'rxjs';
 export class AuthService {
   constructor(@Inject('AUTH_SERVICE') private readonly client: ClientProxy) {}
 
-  async googleLoginCallback(data) {
-    return lastValueFrom(this.client.send({ cmd: 'google_login_callback' }, data));
+  async checkAuthInfo(data) {
+    return lastValueFrom(this.client.send({ cmd: 'check-auth-info' }, { data, provider: 'google' }));
+  }
+
+  async registerAuthInfo(data) {
+    return lastValueFrom(this.client.send({ cmd: 'register-auth-info' }, { data, provider: 'google' }));
   }
 }

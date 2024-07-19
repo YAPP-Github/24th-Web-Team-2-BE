@@ -8,14 +8,21 @@ export class AuthController {
 
   @Get('google')
   @UseGuards(AuthGuard('google'))
-  googleAuth(@Res() res) {}
+  googleAuth() {}
 
   @Get('google/callback')
   @UseGuards(AuthGuard('google'))
   async googleAuthRedirect(@Req() req, @Res() res) {
-    await this.authService.googleLoginCallback(req.user);
-    res.json({
-      user: req.user,
+    const existAuthInfo = await this.authService.checkAuthInfo(req.user);
+
+    if (existAuthInfo) {
+      return res.redirect('/content');
+    }
+
+    await this.authService.registerAuthInfo(req.user);
+
+    return res.json({
+      message: 'success',
     });
   }
 }
