@@ -1,7 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { firstValueFrom, lastValueFrom, map } from 'rxjs';
 import { HttpService } from '@nestjs/axios';
-import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Auths } from './entity/auth.entity';
 import { Repository } from 'typeorm';
@@ -10,7 +9,6 @@ import { Repository } from 'typeorm';
 export class AuthService {
   constructor(
     private readonly httpService: HttpService,
-    private readonly configService: ConfigService,
     @InjectRepository(Auths)
     private readonly authRepository: Repository<Auths>,
   ) {}
