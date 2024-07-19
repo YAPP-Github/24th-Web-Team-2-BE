@@ -33,6 +33,7 @@ export class AuthService {
   async registerAuthInfo(data, provider) {
     const { accessToken, refreshToken } = data;
 
+    // 여기에 User Server를 호출해서 회원 생성 진행해야 함
     if (provider === 'google') {
       const { sub } = await this.getGoogleProfile(accessToken);
 
@@ -61,35 +62,3 @@ export class AuthService {
     return profile;
   }
 }
-
-// const { accessToken, refreshToken } = data;
-
-// // sub = 유저 식별값
-// // sub와 provider를 같이 사용해서 유저 식별
-// // 만약 존재하지 않으면, 새로운 유저를 생성하고
-// // 존재하는 유저라면, refreshToken 업데이트?
-// const profile = await this.getGoogleProfile(accessToken);
-
-// const existAuthInfo = await this.authRepository.find({
-//   where: {
-//     providerType: 'google',
-//     providerId: profile.providerId,
-//   },
-// });
-
-// if (existAuthInfo) {
-//   throw new HttpException('이미 존재하는 정보', HttpStatus.CONFLICT);
-// }
-
-// const testAuthInfo: Auths = this.authRepository.create({
-//   role: 'guest',
-//   providerType: 'google',
-//   providerId: profile.sub,
-//   refreshToken: refreshToken,
-// });
-
-// await this.authRepository.save(testAuthInfo);
-
-// return {
-//   accessToken: accessToken,
-// };
