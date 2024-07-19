@@ -3,9 +3,7 @@ import { MessagePattern } from '@nestjs/microservices';
 import { AuthService } from './auth.service';
 
 @Controller()
-@Controller()
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
   constructor(private readonly authService: AuthService) {}
 
   @MessagePattern({ cmd: 'google_login_callback' })

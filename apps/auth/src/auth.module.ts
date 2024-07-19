@@ -5,6 +5,7 @@ import { AuthController } from './auth.controller';
 import { HttpModule } from '@nestjs/axios';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmConfig } from './config/typeorm.config';
+import { Auths } from './entity/auth.entity';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -12,10 +13,18 @@ import { TypeOrmConfig } from './config/typeorm.config';
       isGlobal: true,
     }),
     HttpModule,
-    // TypeOrmModule.forRootAsync(TypeOrmConfig),
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: '127.0.0.1',
+      port: 3306,
+      username: 'root',
+      password: 'qwer1234',
+      database: 'hdwg_dev_auth',
+      synchronize: true,
+      entities: [Auths],
+    }),
   ],
   providers: [AuthService],
   controllers: [AuthController],
-  providers: [AuthService],
 })
 export class AuthModule {}
