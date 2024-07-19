@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, Index } from 'typeorm';
 
 @Entity()
-@Index(['userId', 'providerType', 'providerId'], { unique: true })
+@Index(['providerType', 'providerId'], { unique: true })
 export class Auths {
   @PrimaryGeneratedColumn()
   id: number;

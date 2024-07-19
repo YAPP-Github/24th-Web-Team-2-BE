@@ -4,9 +4,23 @@ import { AuthController } from './auth.controller';
 import { HttpModule } from '@nestjs/axios';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Auths } from './entity/auth.entity';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
-  imports: [HttpModule, TypeOrmModule.forFeature([Auths])],
+  imports: [
+    HttpModule,
+    ClientsModule.register([
+      {
+        name: 'USER_SERVICE',
+        transport: Transport.TCP,
+        options: {
+          host: '127.0.0.1',
+          port: 3002,
+        },
+      },
+    ]),
+    TypeOrmModule.forFeature([Auths]),
+  ],
   providers: [AuthService],
   controllers: [AuthController],
 })

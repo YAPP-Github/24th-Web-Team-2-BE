@@ -4,13 +4,16 @@ import { lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class AuthService {
-  constructor(@Inject('AUTH_SERVICE') private readonly client: ClientProxy) {}
+  constructor(
+    @Inject('AUTH_SERVICE')
+    private readonly authClient: ClientProxy,
+  ) {}
 
   async checkAuthInfo(data) {
-    return lastValueFrom(this.client.send({ cmd: 'check-auth-info' }, { data, provider: 'google' }));
+    return lastValueFrom(this.authClient.send({ cmd: 'check-auth-info' }, { data, provider: 'google' }));
   }
 
   async registerAuthInfo(data) {
-    return lastValueFrom(this.client.send({ cmd: 'register-auth-info' }, { data, provider: 'google' }));
+    return lastValueFrom(this.authClient.send({ cmd: 'register-auth-info' }, { data, provider: 'google' }));
   }
 }

@@ -11,7 +11,7 @@ import { GoogleStrategy } from './strategy/google.strategy';
         name: 'AUTH_SERVICE',
         transport: Transport.TCP,
         options: {
-          host: '0.0.0.0',
+          host: '127.0.0.1',
           port: 3001,
         },
       },

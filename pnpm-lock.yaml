@@ -73,8 +73,8 @@ importers:
         specifier: ^5.0.0
         version: 5.1.3(@types/eslint@8.56.10)(eslint-config-prettier@9.1.0(eslint@8.57.0))(eslint@8.57.0)(prettier@3.3.1)
       husky:
-        specifier: ^9.0.11
-        version: 9.1.1
+        specifier: ^8.0.0
+        version: 8.0.3
       jest:
         specifier: ^29.5.0
         version: 29.7.0(@types/node@20.14.2)(ts-node@10.9.2(@types/node@20.14.2)(typescript@5.4.5))
@@ -128,6 +128,21 @@ importers:
         version: 7.8.1
 
   apps/auth:
+    dependencies:
+      '@libs/common':
+        specifier: workspace:*
+        version: link:../../libs/common
+      '@nestjs/axios':
+        specifier: ^3.0.2
+        version: 3.0.2(@nestjs/common@10.3.9(reflect-metadata@0.2.2)(rxjs@7.8.1))(axios@1.7.2)(rxjs@7.8.1)
+      '@nestjs/microservices':
+        specifier: ^10.3.9
+        version: 10.3.9(@nestjs/common@10.3.9(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.9)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      axios:
+        specifier: ^1.7.2
+        version: 1.7.2
+
+  apps/user:
     dependencies:
       '@libs/common':
         specifier: workspace:*
@@ -1790,9 +1805,9 @@ packages:
     resolution: {integrity: sha512-AXcZb6vzzrFAUE61HnN4mpLqd/cSIwNQjtNWR0euPm6y0iqx3G4gOXaIDdtdDwZmhwe82LA6+zinmW4UBWVePQ==}
     engines: {node: '>=16.17.0'}
 
-  husky@9.1.1:
-    resolution: {integrity: sha512-fCqlqLXcBnXa/TJXmT93/A36tJsjdJkibQ1MuIiFyCCYUlpYpIaj2mv1w+3KR6Rzu1IC3slFTje5f6DUp2A2rg==}
-    engines: {node: '>=18'}
+  husky@8.0.3:
+    resolution: {integrity: sha512-+dQSyqPh4x1hlO1swXBiNb2HzTDN1I2IGLQx1GrBuiqFJfoMrnZWwVmatvSiO+Iz8fBUnf+lekwNo4c2LlXItg==}
+    engines: {node: '>=14'}
     hasBin: true
 
   iconv-lite@0.4.24:
@@ -5269,7 +5284,7 @@ snapshots:
 
   human-signals@5.0.0: {}
 
-  husky@9.1.1: {}
+  husky@8.0.3: {}
 
   iconv-lite@0.4.24:
     dependencies:
