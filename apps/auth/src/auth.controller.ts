@@ -8,6 +8,7 @@ export class AuthController {
 
   @MessagePattern({ cmd: 'google_login_callback' })
   async googleAuthRedirect(data) {
+    console.log(data);
     return this.authService.googleLoginCallback(data);
   }
 }

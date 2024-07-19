@@ -1,39 +1,52 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { firstValueFrom, lastValueFrom, map } from 'rxjs';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Auths } from './entity/auth.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly httpService: HttpService,
     private readonly configService: ConfigService,
+    @InjectRepository(Auths)
+    private readonly authRepository: Repository<Auths>,
   ) {}
 
-  async googleLoginCallback({ code }: { code: string }) {
-    const googleClientId = this.configService.get<string>('GOOGLE_CLIENT_ID');
-    const googleClientSecret = this.configService.get<string>('GOOGLE_CLIENT_SECRET');
-    const redirectUri = this.configService.get<string>('GOOGLE_CALLBACK_URL');
-
-    const tokenResponse = this.httpService.post('https://oauth2.googleapis.com/token', {
-      code,
-      client_id: googleClientId,
-      client_secret: googleClientSecret,
-      redirect_uri: redirectUri,
-      grant_type: 'authorization_code',
-    });
-
-    const { access_token, refresh_token } = (await firstValueFrom(tokenResponse)).data;
+  async googleLoginCallback(data) {
+    const { accessToken, refreshToken } = data;
 
     // sub = 유저 식별값
     // sub와 provider를 같이 사용해서 유저 식별
     // 만약 존재하지 않으면, 새로운 유저를 생성하고
     // 존재하는 유저라면, refreshToken 업데이트?
-    const profile = await this.getGoogleProfile(access_token);
+    const profile = await this.getGoogleProfile(accessToken);
+
+    const existAuthInfo = await this.authRepository.find({
+      where: {
+        providerType: 'google',
+        providerId: profile.providerId,
+      },
+    });
+
+    if (existAuthInfo) {
+      throw new HttpException('이미 존재하는 정보', HttpStatus.CONFLICT);
+    }
+
+    const testAuthInfo: Auths = this.authRepository.create({
+      role: 'guest',
+      providerType: 'google',
+      providerId: profile.sub,
+      refreshToken: refreshToken,
+    });
+
+    await this.authRepository.save(testAuthInfo);
 
     return {
-      accessToken: access_token,
-      refreshToken: refresh_token,
+      accessToken: accessToken,
+      refreshToken: refreshToken,
     };
   }
 
@@ -45,7 +58,7 @@ export class AuthService {
             Authorization: `Bearer ${accessToken}`,
           },
         })
-        .pipe(map(async (response) => response.data)),
+        .pipe(map((response) => response.data)),
     );
 
     return profile;
