@@ -4,7 +4,7 @@ import { AuthService } from './auth.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { GoogleStrategy } from './strategy/google.strategy';
 import { PassportModule } from '@nestjs/passport';
-import { SessionSerializer } from './utils/serializer';
+import { SessionSerializer } from './utils/session.serializer';
 
 @Module({
   imports: [

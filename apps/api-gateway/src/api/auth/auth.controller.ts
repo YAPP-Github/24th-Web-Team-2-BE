@@ -23,7 +23,7 @@ export class AuthController {
     await this.authService.registerAuthInfo(req.user);
 
     return res.json({
-      message: 'success',
+      message: res.user,
     });
   }
 }

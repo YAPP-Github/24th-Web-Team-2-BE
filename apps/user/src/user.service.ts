@@ -9,7 +9,7 @@ export class UserService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
   ) {}
-  async createGuestUser(username) {
+  async createGuestUser(username: string) {
     const guestUserInfo: User = this.userRepository.create({
       username: username,
       onboardingStep: 'create-guest-id',
