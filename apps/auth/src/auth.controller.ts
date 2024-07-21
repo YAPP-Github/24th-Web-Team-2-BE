@@ -7,12 +7,12 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @MessagePattern({ cmd: 'check-auth-info' })
-  async authInfoCheck({ data, provider }) {
-    return await this.authService.authInfoCheck(data, provider);
+  async authInfoCheck({ data }) {
+    return await this.authService.authInfoCheck(data);
   }
 
   @MessagePattern({ cmd: 'register-auth-info' })
-  async registerAuthInfo({ data, provider }) {
-    return await this.authService.registerAuthInfo(data, provider);
+  async registerAuthInfo({ data }) {
+    return await this.authService.registerAuthInfo(data);
   }
 }

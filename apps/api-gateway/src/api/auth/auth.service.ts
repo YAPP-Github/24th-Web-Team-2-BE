@@ -10,10 +10,10 @@ export class AuthService {
   ) {}
 
   async checkAuthInfo(data) {
-    return lastValueFrom(this.authClient.send({ cmd: 'check-auth-info' }, { data, provider: 'google' }));
+    return lastValueFrom(this.authClient.send({ cmd: 'check-auth-info' }, { data }));
   }
 
   async registerAuthInfo(data) {
-    return lastValueFrom(this.authClient.send({ cmd: 'register-auth-info' }, { data, provider: 'google' }));
+    return lastValueFrom(this.authClient.send({ cmd: 'register-auth-info' }, { data }));
   }
 }

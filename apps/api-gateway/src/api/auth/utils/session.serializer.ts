@@ -7,13 +7,12 @@ export class SessionSerializer extends PassportSerializer {
     super();
   }
 
-  async serializeUser(user, done: (err: any, user?: any) => void): Promise<any> {
-    console.log(user, 'serializeUser');
-    done(null, user);
+  async serializeUser(payload, done: (err: any, user?: any) => void): Promise<any> {
+    const { id, username, email, provider, accessToken } = payload;
+    done(null, { id, username, email, provider, accessToken });
   }
 
   async deserializeUser(payload: any, done: (err: any, user?: any) => void): Promise<any> {
-    console.log(payload, 'deserializeUser');
     return payload ? done(null, payload) : done(null, null);
   }
 }
