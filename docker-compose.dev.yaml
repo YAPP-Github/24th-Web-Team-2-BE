@@ -3,6 +3,8 @@ version: '3.8'
 services:
   api-gateway:
     image: 'leobang/api-gateway'
+    env_file:
+      - .env.dev
     container_name: api-gateway
     ports:
       - '3000:3000'
@@ -10,6 +12,8 @@ services:
 
   auth:
     image: 'leobang/auth'
+    env_file:
+      - .env.dev
     container_name: auth
     ports:
       - '3001:3000'

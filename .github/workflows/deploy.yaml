@@ -1,10 +1,13 @@
 name: server-deploy
 
 on:
-  pull_request:
-    types: [closed]
+  # pull_request:
+  #   types: [closed]
+  #   branches:
+  #     - development
+  push:
     branches:
-      - development
+      - HDWG-75/env-configs
 
 jobs:
   docker-image-push:
@@ -49,11 +52,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: move .env file to remote
+        run: echo ${{ secrets.BACKEND_DEV_ENV }} > ./apps/env.dev
+
       - name: Copy docker-compose file
         uses: garygrossgarten/github-action-scp@release
         with:
-          local: ./docker-compose-server.yaml
-          remote: apps/docker-compose-server.yaml
+          local: ./docker-compose.dev.yaml
+          remote: apps/docker-compose.dev.yaml
           host: ${{ secrets.NCP_SERVER_HOST }}
           username: ${{ secrets.NCP_SERVER_USERNAME }}
           password: ${{ secrets.NCP_SERVER_PASSWORD }}
@@ -67,6 +73,6 @@ jobs:
           password: ${{ secrets.NCP_SERVER_PASSWORD }}
           port: 22
           script: |
-            docker-compose -f apps/docker-compose-server.yaml down
-            docker-compose -f apps/docker-compose-server.yaml pull
-            docker-compose -f apps/docker-compose-server.yaml up -d
+            docker-compose -f apps/docker-compose.dev.yaml down
+            docker-compose -f apps/docker-compose.dev.yaml pull
+            docker-compose -f apps/docker-compose.dev.yaml up -d
