@@ -6,13 +6,8 @@ import { AuthService } from './auth.service';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @MessagePattern({ cmd: 'check-auth-info' })
-  async authInfoCheck({ data }) {
-    return await this.authService.authInfoCheck(data);
-  }
-
-  @MessagePattern({ cmd: 'register-auth-info' })
-  async registerAuthInfo({ data }) {
-    return await this.authService.registerAuthInfo(data);
+  @MessagePattern({ cmd: 'google_login' })
+  async googleLogin(data) {
+    return this.authService.googleLogin(data);
   }
 }

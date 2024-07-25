@@ -1,34 +1,34 @@
-import { Controller, Get, Redirect, Req, Res, Session, UseGuards } from '@nestjs/common';
+import { Controller, Get, Query, Redirect, Req, Res, Session } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { GoogleAuthGuard } from './guard/google.guard';
+import { ConfigService } from '@nestjs/config';
+import { Request, Response } from 'express';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly configService: ConfigService,
+  ) {}
+  // 클라이언트에게 Google Auth Code를 넘겨받는다.
+  // Google Auth Code를 통해 Access Token을 발급한다.
+  // Access Token을 통해 Profile 정보를 얻어온다.
 
   @Get('google')
-  @UseGuards(GoogleAuthGuard)
-  googleAuth() {}
+  googleAuth(@Res() res: Response) {
+    const googleClientId = this.configService.get<string>('GOOGLE_CLIENT_ID');
+    const redirectUri = this.configService.get<string>('GOOGLE_CALLBACK_URL');
+    const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${googleClientId}&redirect_uri=${redirectUri}&scope=openid%20email%20profile&access_type=offline`;
+    res.redirect(authUrl);
+  }
 
-  //@TODO: redirect로 변경
   @Get('google/callback')
-  @UseGuards(GoogleAuthGuard)
-  // @Redirect()
-  async googleAuthRedirect(@Req() req, @Res() res) {
-    const existAuthInfo = await this.authService.checkAuthInfo(req.user);
+  async googleAuthRedirect(@Query('code') code: string, @Session() session: Record<string, any>, @Res() res: Response) {
+    const user = await this.authService.googleLogin(code);
 
-    if (existAuthInfo) {
-      // return { url: '/content' };
-      return res.json({
-        message: 'already exist user',
-      });
+    if (user) {
+      session.user = user;
     }
 
-    await this.authService.registerAuthInfo(req.user);
-
-    return res.json({
-      message: 'success create guest user',
-    });
-    // return { url: '/on-boarding' };
+    res.redirect('/');
   }
 }

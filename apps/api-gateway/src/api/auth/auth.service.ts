@@ -16,4 +16,12 @@ export class AuthService {
   async registerAuthInfo(data) {
     return lastValueFrom(this.authClient.send({ cmd: 'register-auth-info' }, { data }));
   }
+
+  async authRedirect(data) {
+    return lastValueFrom(this.authClient.send({ cmd: 'auth-redirect' }, { data }));
+  }
+
+  async googleLogin(data) {
+    return lastValueFrom(this.authClient.send({ cmd: 'google_login' }, data));
+  }
 }
