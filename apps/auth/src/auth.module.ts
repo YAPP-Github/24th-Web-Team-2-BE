@@ -16,6 +16,5 @@ import { TypeOrmConfig } from './config/typeorm.config';
   ],
   providers: [AuthService],
   controllers: [AuthController],
-  providers: [AuthService],
 })
 export class AuthModule {}
