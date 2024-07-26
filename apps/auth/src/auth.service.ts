@@ -22,9 +22,9 @@ export class AuthService {
     const tokenData = await this.getGoogleOAuthToken(code);
     const userInfo = await this.getGoogleUserInfo(tokenData.access_token);
 
-    let user = await this.authRepository.findOne({ where: { providerId: userInfo.sub } });
+    let authInfo = await this.authRepository.findOne({ where: { providerId: userInfo.sub } });
 
-    if (!user) {
+    if (!authInfo) {
       const guestUserData = this.authRepository.create({
         //user 생성 후 들어가야 함
         userId: 'asdfasd222',
@@ -33,10 +33,18 @@ export class AuthService {
         providerId: userInfo.sub,
         refreshToken: tokenData.refresh_token,
       });
-      user = await this.authRepository.save(guestUserData);
+      authInfo = await this.authRepository.save(guestUserData);
     }
 
-    return user;
+    const auth = {
+      authId: authInfo.id,
+      userId: authInfo.userId,
+      role: authInfo.role,
+      providerType: authInfo.providerType,
+      accessToken: tokenData.access_token,
+    };
+
+    return auth;
   }
 
   async getGoogleOAuthToken(code: string) {

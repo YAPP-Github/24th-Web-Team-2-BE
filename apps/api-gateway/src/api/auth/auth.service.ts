@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
+import { json } from 'stream/consumers';
 
 @Injectable()
 export class AuthService {
@@ -9,19 +10,7 @@ export class AuthService {
     private readonly authClient: ClientProxy,
   ) {}
 
-  async checkAuthInfo(data) {
-    return lastValueFrom(this.authClient.send({ cmd: 'check-auth-info' }, { data }));
-  }
-
-  async registerAuthInfo(data) {
-    return lastValueFrom(this.authClient.send({ cmd: 'register-auth-info' }, { data }));
-  }
-
-  async authRedirect(data) {
-    return lastValueFrom(this.authClient.send({ cmd: 'auth-redirect' }, { data }));
-  }
-
-  async googleLogin(data) {
+  async googleLogin(data: string) {
     return lastValueFrom(this.authClient.send({ cmd: 'google_login' }, data));
   }
 }

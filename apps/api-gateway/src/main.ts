@@ -9,8 +9,9 @@ import * as passport from 'passport';
 async function bootstrap() {
   const app = await NestFactory.create(ApiGatewayModule);
   // const redisClient = new Redis({
-  //   host: '127.0.0.1',
-  //   port: 6379,
+  //   host: process.env.REDIS_HOST,
+  //   port: parseInt(process.env.REDIS_PORT),
+  //   password: process.env.REDIS_PASSWORD,
   // });
 
   // const redisStore = new RedisStore({
