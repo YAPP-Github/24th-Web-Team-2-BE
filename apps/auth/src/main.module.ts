@@ -7,16 +7,16 @@ import { AuthModule } from './auth.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      // envFilePath: ['.env', 'apps/auth/.env'],
+      envFilePath: ['.env', 'apps/auth/.env'],
       isGlobal: true,
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: process.env.DB_HOST,
-      port: parseInt(process.env.DB_PORT),
-      username: process.env.DB_USER,
-      password: process.env.DB_PASSWORD,
-      database: process.env.AUTH_DB_NAME,
+      host: '127.0.0.1',
+      port: 3306,
+      username: 'root',
+      password: 'qwer1234',
+      database: 'hdwg_dev_auth',
       logging: true,
       synchronize: true,
       entities: [Auths],
