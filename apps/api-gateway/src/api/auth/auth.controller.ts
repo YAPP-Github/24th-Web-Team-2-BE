@@ -14,7 +14,8 @@ export class AuthController {
   // Google Auth Code를 통해 Access Token을 발급한다.
   // Access Token을 통해 Profile 정보를 얻어온다.
 
-  @Get('google')
+  // 해당 엔드포인트는 백엔드 테스트 code 발급용입니다.
+  @Get('dev/google')
   googleAuth(@Res() res: Response) {
     const googleClientId = this.configService.get<string>('GOOGLE_CLIENT_ID');
     const redirectUri = this.configService.get<string>('GOOGLE_CALLBACK_URL');
@@ -22,7 +23,7 @@ export class AuthController {
     res.redirect(authUrl);
   }
 
-  @Get('google/callback')
+  @Get('google')
   async googleAuthRedirect(@Query('code') code: string, @Session() session: Record<string, any>, @Res() res: Response) {
     const user = await this.authService.googleLogin(code);
 
