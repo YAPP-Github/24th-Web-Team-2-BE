@@ -1,4 +1,5 @@
 import { NestFactory } from '@nestjs/core';
+import { UserModule } from './user.module';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { MainModule } from './main.module';
 
@@ -7,7 +8,7 @@ async function bootstrap() {
     transport: Transport.TCP,
     options: {
       host: '127.0.0.1',
-      port: 3001,
+      port: 3002,
     },
   });
   await app.listen();

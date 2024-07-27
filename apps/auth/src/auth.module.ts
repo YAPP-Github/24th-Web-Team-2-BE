@@ -1,18 +1,25 @@
 import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { ConfigModule } from '@nestjs/config';
 import { AuthController } from './auth.controller';
 import { HttpModule } from '@nestjs/axios';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TypeOrmConfig } from './config/typeorm.config';
+import { Auths } from './entity/auth.entity';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      envFilePath: ['.env', 'apps/auth/.env'],
-      isGlobal: true,
-    }),
     HttpModule,
-    // TypeOrmModule.forRootAsync(TypeOrmConfig),
+    ClientsModule.register([
+      {
+        name: 'USER_SERVICE',
+        transport: Transport.TCP,
+        options: {
+          host: '127.0.0.1',
+          port: 3002,
+        },
+      },
+    ]),
+    TypeOrmModule.forFeature([Auths]),
   ],
   providers: [AuthService],
   controllers: [AuthController],

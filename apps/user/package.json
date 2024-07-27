@@ -1,5 +1,5 @@
 {
-  "name": "@apps/auth",
+  "name": "@apps/user",
   "version": "1.0.0",
   "dependencies": {
     "@libs/common": "workspace:*",

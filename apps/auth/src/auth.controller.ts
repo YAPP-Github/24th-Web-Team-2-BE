@@ -6,8 +6,8 @@ import { AuthService } from './auth.service';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @MessagePattern({ cmd: 'google_login_callback' })
-  async googleAuthRedirect(data) {
-    return this.authService.googleLoginCallback(data);
+  @MessagePattern({ cmd: 'google_login' })
+  async googleLogin(data: string) {
+    return this.authService.googleLogin(data);
   }
 }

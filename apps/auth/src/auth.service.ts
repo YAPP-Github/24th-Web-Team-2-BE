@@ -1,53 +1,73 @@
-import { Injectable } from '@nestjs/common';
-import { firstValueFrom, lastValueFrom, map } from 'rxjs';
+import { Inject, Injectable } from '@nestjs/common';
+import { firstValueFrom, lastValueFrom } from 'rxjs';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Auths } from './entity/auth.entity';
+import { Repository } from 'typeorm';
+import { ClientProxy } from '@nestjs/microservices';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
   constructor(
+    @InjectRepository(Auths)
+    private readonly authRepository: Repository<Auths>,
+    @Inject('USER_SERVICE')
+    private readonly userClient: ClientProxy,
     private readonly httpService: HttpService,
     private readonly configService: ConfigService,
   ) {}
 
-  async googleLoginCallback({ code }: { code: string }) {
-    const googleClientId = this.configService.get<string>('GOOGLE_CLIENT_ID');
-    const googleClientSecret = this.configService.get<string>('GOOGLE_CLIENT_SECRET');
-    const redirectUri = this.configService.get<string>('GOOGLE_CALLBACK_URL');
+  async googleLogin(code: string) {
+    const tokenData = await this.getGoogleOAuthToken(code);
+    const userInfo = await this.getGoogleUserInfo(tokenData.access_token);
 
-    const tokenResponse = this.httpService.post('https://oauth2.googleapis.com/token', {
-      code,
-      client_id: googleClientId,
-      client_secret: googleClientSecret,
-      redirect_uri: redirectUri,
-      grant_type: 'authorization_code',
-    });
+    let authInfo = await this.authRepository.findOne({ where: { providerId: userInfo.sub } });
 
-    const { access_token, refresh_token } = (await firstValueFrom(tokenResponse)).data;
+    if (!authInfo) {
+      const guestUserData = this.authRepository.create({
+        //user 생성 후 들어가야 함
+        userId: 'asdfasd222',
+        role: 'guest',
+        providerType: 'google',
+        providerId: userInfo.sub,
+        refreshToken: tokenData.refresh_token,
+      });
+      authInfo = await this.authRepository.save(guestUserData);
+    }
 
-    // sub = 유저 식별값
-    // sub와 provider를 같이 사용해서 유저 식별
-    // 만약 존재하지 않으면, 새로운 유저를 생성하고
-    // 존재하는 유저라면, refreshToken 업데이트?
-    const profile = await this.getGoogleProfile(access_token);
-
-    return {
-      accessToken: access_token,
-      refreshToken: refresh_token,
+    const auth = {
+      authId: authInfo.id,
+      userId: authInfo.userId,
+      role: authInfo.role,
+      providerType: authInfo.providerType,
+      accessToken: tokenData.access_token,
     };
+
+    return auth;
   }
 
-  private async getGoogleProfile(accessToken: string): Promise<any> {
-    const profile = await firstValueFrom(
-      this.httpService
-        .get('https://www.googleapis.com/oauth2/v3/userinfo', {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        })
-        .pipe(map(async (response) => response.data)),
+  async getGoogleOAuthToken(code: string) {
+    const { data } = await lastValueFrom(
+      this.httpService.post('https://oauth2.googleapis.com/token', {
+        code,
+        client_id: this.configService.get<string>('GOOGLE_CLIENT_ID'),
+        client_secret: this.configService.get<string>('GOOGLE_CLIENT_SECRET'),
+        redirect_uri: this.configService.get<string>('GOOGLE_CALLBACK_URL'),
+        grant_type: 'authorization_code',
+      }),
     );
 
-    return profile;
+    return data;
+  }
+
+  async getGoogleUserInfo(accessToken: string) {
+    const { data } = await lastValueFrom(
+      this.httpService.get('https://www.googleapis.com/oauth2/v3/userinfo', {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      }),
+    );
+
+    return data;
   }
 }
