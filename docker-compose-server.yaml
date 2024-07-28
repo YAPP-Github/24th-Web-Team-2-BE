@@ -3,6 +3,9 @@ version: '3.8'
 services:
   api-gateway:
     image: 'leobang/api-gateway'
+    environment:
+      - INFISICAL_MACHINE_IDENTITY_CLIENT_ID=${INFISICAL_MACHINE_IDENTITY_CLIENT_ID}
+      - INFISICAL_MACHINE_IDENTITY_CLIENT_SECRET=${INFISICAL_MACHINE_IDENTITY_CLIENT_SECRET}
     container_name: api-gateway
     ports:
       - '3000:3000'
@@ -10,6 +13,9 @@ services:
 
   auth:
     image: 'leobang/auth'
+    environment:
+      - INFISICAL_MACHINE_IDENTITY_CLIENT_ID=${INFISICAL_MACHINE_IDENTITY_CLIENT_ID}
+      - INFISICAL_MACHINE_IDENTITY_CLIENT_SECRET=${INFISICAL_MACHINE_IDENTITY_CLIENT_SECRET}
     container_name: auth
     ports:
       - '3001:3000'
