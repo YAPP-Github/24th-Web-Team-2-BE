@@ -47,13 +47,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Create docker-compose file from template
+      - name: Inject secrets into docker-compose file
         run: |
-          cp docker-compose-server.yaml.template docker-compose-server.yaml
-          sed -i "s/\${INFISICAL_MACHINE_IDENTITY_CLIENT_ID}/${{ secrets.API_GATEWAY_CLIENT_ID }}/g" docker-compose-server.yaml
-          sed -i "s/\${INFISICAL_MACHINE_IDENTITY_CLIENT_SECRET}/${{ secrets.API_GATEWAY_CLIENT_SECRET }}/g" docker-compose-server.yaml
-          sed -i "s/\${INFISICAL_MACHINE_IDENTITY_CLIENT_ID}/${{ secrets.AUTH_CLIENT_ID }}/g" docker-compose-server.yaml
-          sed -i "s/\${INFISICAL_MACHINE_IDENTITY_CLIENT_SECRET}/${{ secrets.AUTH_CLIENT_SECRET }}/g" docker-compose-server.yaml
+          sed -i "s/INFISICAL_MACHINE_IDENTITY_CLIENT_ID=.*/INFISICAL_MACHINE_IDENTITY_CLIENT_ID=${{ secrets.API_GATEWAY_CLIENT_ID }}/" docker-compose-server.yaml
+          sed -i "s/INFISICAL_MACHINE_IDENTITY_CLIENT_SECRET=.*/INFISICAL_MACHINE_IDENTITY_CLIENT_SECRET=${{ secrets.API_GATEWAY_CLIENT_SECRET }}/" docker-compose-server.yaml
+          sed -i "s/INFISICAL_MACHINE_IDENTITY_CLIENT_ID=.*/INFISICAL_MACHINE_IDENTITY_CLIENT_ID=${{ secrets.AUTH_CLIENT_ID }}/" docker-compose-server.yaml
+          sed -i "s/INFISICAL_MACHINE_IDENTITY_CLIENT_SECRET=.*/INFISICAL_MACHINE_IDENTITY_CLIENT_SECRET=${{ secrets.AUTH_CLIENT_SECRET }}/" docker-compose-server.yaml
 
       - name: Copy docker-compose file
         uses: garygrossgarten/github-action-scp@release
