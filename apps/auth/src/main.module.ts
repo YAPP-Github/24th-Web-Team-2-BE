@@ -7,7 +7,7 @@ import { AuthModule } from './auth.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      // envFilePath: ['.env', 'apps/auth/.env'],
+      envFilePath: ['.env'],
       isGlobal: true,
     }),
     TypeOrmModule.forRoot({

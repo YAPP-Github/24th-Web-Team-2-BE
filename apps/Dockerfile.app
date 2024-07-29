@@ -1,4 +1,3 @@
-
 # Base Stage
 FROM node:20-slim AS base
 
@@ -26,6 +25,11 @@ RUN pnpm --filter=$PKG_NAME build
 
 # Remove unnecessary dependencies from production
 RUN pnpm --filter=$PKG_NAME deploy --prod /prod
+
+# Create .env file for production
+# Use default values or pass them as build args
+RUN echo "DATABASE_URL=${DATABASE_URL:-default_database_url}" >> /prod/.env
+RUN echo "API_KEY=${API_KEY:-default_api_key}" >> /prod/.env
 
 # Prod Stage
 FROM base AS prod
