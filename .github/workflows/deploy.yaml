@@ -93,7 +93,7 @@ jobs:
           password: ${{ secrets.NCP_SERVER_PASSWORD }}
           port: 22
           script: |
-            ls -al
+            ls -al apps
             pwd
             cat .env
             docker-compose -f apps/docker-compose-server.yaml down
