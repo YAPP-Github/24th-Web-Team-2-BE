@@ -28,6 +28,18 @@ jobs:
           username: ${{ secrets.NCP_ACCESS_KEY }}
           password: ${{ secrets.NCP_SECRET_KEY }}
 
+      - name: Create .env file
+        run: |
+          echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> .env
+          echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> .env
+          echo "GOOGLE_CALLBACK_URL=${{ secrets.GOOGLE_CALLBACK_URL }}" >> .env
+          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
+          echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
+          echo "DB_USER=${{ secrets.DB_USER }}" >> .env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+          echo "AUTH_DB_NAME=${{ secrets.AUTH_DB_NAME }}" >> .env
+          echo "USER_DB_NAME=${{ secrets.USER_DB_NAME }}" >> .env
+
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
@@ -40,25 +52,33 @@ jobs:
             PORT=3000
 
   pull-n-run-docker-compose:
-    name: Move docker-compose file to remote server and compose docker containers.
+    name: Move docker-compose file to remote server and compose docker containers
     needs: docker-image-push
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Inject secrets into docker-compose file
+      - name: Create .env file for remote server
         run: |
-          sed -i "s/INFISICAL_MACHINE_IDENTITY_CLIENT_ID=.*/INFISICAL_MACHINE_IDENTITY_CLIENT_ID=${{ secrets.API_GATEWAY_CLIENT_ID }}/" docker-compose-server.yaml
-          sed -i "s/INFISICAL_MACHINE_IDENTITY_CLIENT_SECRET=.*/INFISICAL_MACHINE_IDENTITY_CLIENT_SECRET=${{ secrets.API_GATEWAY_CLIENT_SECRET }}/" docker-compose-server.yaml
-          sed -i "s/INFISICAL_MACHINE_IDENTITY_CLIENT_ID=.*/INFISICAL_MACHINE_IDENTITY_CLIENT_ID=${{ secrets.AUTH_CLIENT_ID }}/" docker-compose-server.yaml
-          sed -i "s/INFISICAL_MACHINE_IDENTITY_CLIENT_SECRET=.*/INFISICAL_MACHINE_IDENTITY_CLIENT_SECRET=${{ secrets.AUTH_CLIENT_SECRET }}/" docker-compose-server.yaml
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
+          echo "API_KEY=${{ secrets.API_KEY }}" >> .env
+        # Ensure this .env file is ready for the remote server step
 
       - name: Copy docker-compose file
         uses: garygrossgarten/github-action-scp@release
         with:
           local: ./docker-compose-server.yaml
           remote: apps/docker-compose-server.yaml
+          host: ${{ secrets.NCP_SERVER_HOST }}
+          username: ${{ secrets.NCP_SERVER_USERNAME }}
+          password: ${{ secrets.NCP_SERVER_PASSWORD }}
+
+      - name: Copy .env file to remote server
+        uses: garygrossgarten/github-action-scp@release
+        with:
+          local: .env
+          remote: /path/to/remote/.env
           host: ${{ secrets.NCP_SERVER_HOST }}
           username: ${{ secrets.NCP_SERVER_USERNAME }}
           password: ${{ secrets.NCP_SERVER_PASSWORD }}
@@ -71,6 +91,12 @@ jobs:
           password: ${{ secrets.NCP_SERVER_PASSWORD }}
           port: 22
           script: |
+            # Move to the directory where docker-compose is located
+            cd /path/to/remote
+
+            # Use the .env file
+            export $(cat .env | xargs)
+
             docker-compose -f apps/docker-compose-server.yaml down
             docker-compose -f apps/docker-compose-server.yaml pull
             docker-compose -f apps/docker-compose-server.yaml up -d

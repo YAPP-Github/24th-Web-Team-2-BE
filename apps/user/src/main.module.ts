@@ -7,7 +7,7 @@ import { User } from './entity/user.entity';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: ['.env', 'apps/user/.env'],
+      envFilePath: ['.env'],
       isGlobal: true,
     }),
     TypeOrmModule.forRoot({
