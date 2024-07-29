@@ -59,6 +59,9 @@ jobs:
           echo "AUTH_DB_NAME=${{ secrets.AUTH_DB_NAME }}" >> .env
           echo "USER_DB_NAME=${{ secrets.USER_DB_NAME }}" >> .env
 
+          ls -al
+          pwd
+
       - name: Copy docker-compose file
         uses: garygrossgarten/github-action-scp@release
         with:
