@@ -57,10 +57,6 @@ jobs:
           echo "DB_USER=${{ secrets.DB_USER }}" >> .env
           echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
           echo "AUTH_DB_NAME=${{ secrets.AUTH_DB_NAME }}" >> .env
-          echo "USER_DB_NAME=${{ secrets.USER_DB_NAME }}" >> .env
-
-          ls -al
-          pwd
 
       - name: Copy docker-compose file
         uses: garygrossgarten/github-action-scp@release
@@ -74,7 +70,7 @@ jobs:
       - name: Copy .env file to remote server
         uses: garygrossgarten/github-action-scp@release
         with:
-          local: .env
+          local: ./.env
           remote: apps/.env
           host: ${{ secrets.NCP_SERVER_HOST }}
           username: ${{ secrets.NCP_SERVER_USERNAME }}
