@@ -28,18 +28,6 @@ jobs:
           username: ${{ secrets.NCP_ACCESS_KEY }}
           password: ${{ secrets.NCP_SECRET_KEY }}
 
-      - name: Create .env file
-        run: |
-          echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> .env
-          echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> .env
-          echo "GOOGLE_CALLBACK_URL=${{ secrets.GOOGLE_CALLBACK_URL }}" >> .env
-          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
-          echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
-          echo "DB_USER=${{ secrets.DB_USER }}" >> .env
-          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
-          echo "AUTH_DB_NAME=${{ secrets.AUTH_DB_NAME }}" >> .env
-          echo "USER_DB_NAME=${{ secrets.USER_DB_NAME }}" >> .env
-
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
@@ -61,9 +49,15 @@ jobs:
 
       - name: Create .env file for remote server
         run: |
-          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
-          echo "API_KEY=${{ secrets.API_KEY }}" >> .env
-        # Ensure this .env file is ready for the remote server step
+          echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> .env
+          echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> .env
+          echo "GOOGLE_CALLBACK_URL=${{ secrets.GOOGLE_CALLBACK_URL }}" >> .env
+          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
+          echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
+          echo "DB_USER=${{ secrets.DB_USER }}" >> .env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+          echo "AUTH_DB_NAME=${{ secrets.AUTH_DB_NAME }}" >> .env
+          echo "USER_DB_NAME=${{ secrets.USER_DB_NAME }}" >> .env
 
       - name: Copy docker-compose file
         uses: garygrossgarten/github-action-scp@release
@@ -78,7 +72,7 @@ jobs:
         uses: garygrossgarten/github-action-scp@release
         with:
           local: .env
-          remote: /path/to/remote/.env
+          remote: .env
           host: ${{ secrets.NCP_SERVER_HOST }}
           username: ${{ secrets.NCP_SERVER_USERNAME }}
           password: ${{ secrets.NCP_SERVER_PASSWORD }}
