@@ -91,12 +91,6 @@ jobs:
           password: ${{ secrets.NCP_SERVER_PASSWORD }}
           port: 22
           script: |
-            # Move to the directory where docker-compose is located
-            cd /path/to/remote
-
-            # Use the .env file
-            export $(cat .env | xargs)
-
             docker-compose -f apps/docker-compose-server.yaml down
             docker-compose -f apps/docker-compose-server.yaml pull
             docker-compose -f apps/docker-compose-server.yaml up -d
