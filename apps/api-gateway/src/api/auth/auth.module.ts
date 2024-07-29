@@ -3,7 +3,6 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { PassportModule } from '@nestjs/passport';
-import { SessionSerializer } from './utils/session.serializer';
 
 @Module({
   imports: [
@@ -22,6 +21,6 @@ import { SessionSerializer } from './utils/session.serializer';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, SessionSerializer],
+  providers: [AuthService],
 })
 export class AuthModule {}
