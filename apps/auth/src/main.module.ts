@@ -17,7 +17,7 @@ import { AuthModule } from './auth.module';
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.AUTH_DB_NAME,
-      logging: true,
+      logging: false,
       synchronize: true,
       entities: [Auths],
     }),

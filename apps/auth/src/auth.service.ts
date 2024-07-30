@@ -25,7 +25,7 @@ export class AuthService {
     let authInfo = await this.authRepository.findOne({ where: { providerId: googleUserInfo.sub } });
 
     if (!authInfo) {
-      const guestUser = await lastValueFrom(this.userClient.send({ cmd: 'create-guest-user' }, {}));
+      const guestUser = await lastValueFrom(this.userClient.send({ cmd: 'create-guest-user' }, googleUserInfo.name));
       const guestUserData = this.authRepository.create({
         //user 생성 후 들어가야 함
         userId: guestUser.id,
