@@ -20,17 +20,18 @@ export class AuthService {
 
   async googleLogin(code: string) {
     const tokenData = await this.getGoogleOAuthToken(code);
-    const userInfo = await this.getGoogleUserInfo(tokenData.access_token);
+    const googleUserInfo = await this.getGoogleUserInfo(tokenData.access_token);
 
-    let authInfo = await this.authRepository.findOne({ where: { providerId: userInfo.sub } });
+    let authInfo = await this.authRepository.findOne({ where: { providerId: googleUserInfo.sub } });
 
     if (!authInfo) {
+      const guestUser = await lastValueFrom(this.userClient.send({ cmd: 'create-guest-user' }, {}));
       const guestUserData = this.authRepository.create({
         //user 생성 후 들어가야 함
-        userId: 'asdfasd222',
+        userId: guestUser.id,
         role: 'guest',
         providerType: 'google',
-        providerId: userInfo.sub,
+        providerId: googleUserInfo.sub,
         refreshToken: tokenData.refresh_token,
       });
       authInfo = await this.authRepository.save(guestUserData);

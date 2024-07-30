@@ -93,9 +93,6 @@ jobs:
           password: ${{ secrets.NCP_SERVER_PASSWORD }}
           port: 22
           script: |
-            ls -al apps
-            pwd
-            cat .env
             docker-compose -f apps/docker-compose-server.yaml down
             docker-compose -f apps/docker-compose-server.yaml pull
             docker-compose -f apps/docker-compose-server.yaml up -d
