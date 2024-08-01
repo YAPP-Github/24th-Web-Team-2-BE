@@ -7,18 +7,6 @@ import { Model } from 'mongoose';
 export class MailRepository {
   constructor(@Inject(ModelTokens.MAIL_MODEL) private readonly mailModel: Model<Mail>) {}
 
-  async createMail() {
-    const mailModel = new this.mailModel({
-      userId: '123',
-      provider: {
-        messageId: '123',
-        source: 'gmail',
-      },
-    });
-    const result = await mailModel.save();
-    console.log(result);
-  }
-
   async findMailById(_id: string) {
     return await this.mailModel.findOne({ _id });
   }
