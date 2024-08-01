@@ -1,0 +1,34 @@
+{
+  "name": "@apps/inbox",
+  "version": "1.0.0",
+  "dependencies": {
+    "@libs/common": "workspace:*",
+    "@nestjs/microservices": "^10.3.9",
+    "@nestjs/mongoose": "^10.0.10",
+    "@nestjs/passport": "^10.0.3",
+    "@types/passport": "^1.0.16",
+    "connect-redis": "^7.1.1",
+    "cookie-parser": "^1.4.6",
+    "express-session": "^1.18.0",
+    "ioredis": "^5.4.1",
+    "joi": "^17.13.3",
+    "mongodb": "^6.8.0",
+    "mongoose": "^8.5.1",
+    "mongoose:latest": "link:@nest/mongoose:latest",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
+    "rxjs": "^7.8.1"
+  },
+  "scripts": {
+    "start": "nest start",
+    "dev": "nest start --watch",
+    "build": "nest build",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@types/cookie-parser": "^1.4.7",
+    "@types/express-session": "^1.18.0",
+    "@types/passport-google-oauth20": "^2.0.16",
+    "i": "^0.3.7"
+  }
+}
