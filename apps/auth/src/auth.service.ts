@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { firstValueFrom, lastValueFrom } from 'rxjs';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Auths } from './entity/auth.entity';
+import { Auth } from './entity/auth.entity';
 import { Repository } from 'typeorm';
 import { ClientProxy } from '@nestjs/microservices';
 import { HttpService } from '@nestjs/axios';
@@ -10,8 +10,8 @@ import { ConfigService } from '@nestjs/config';
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(Auths)
-    private readonly authRepository: Repository<Auths>,
+    @InjectRepository(Auth)
+    private readonly authRepository: Repository<Auth>,
     @Inject('USER_SERVICE')
     private readonly userClient: ClientProxy,
     private readonly httpService: HttpService,

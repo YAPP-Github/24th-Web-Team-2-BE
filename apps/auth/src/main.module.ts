@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Auths } from './entity/auth.entity';
+import { Auth } from './entity/auth.entity';
 import { AuthModule } from './auth.module';
 
 @Module({
@@ -19,7 +19,7 @@ import { AuthModule } from './auth.module';
       database: process.env.AUTH_DB_NAME,
       logging: false,
       synchronize: true,
-      entities: [Auths],
+      entities: [Auth],
     }),
     AuthModule,
   ],

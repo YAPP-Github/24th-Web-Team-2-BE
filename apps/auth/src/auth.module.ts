@@ -3,7 +3,7 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { HttpModule } from '@nestjs/axios';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Auths } from './entity/auth.entity';
+import { Auth } from './entity/auth.entity';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
@@ -19,7 +19,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         },
       },
     ]),
-    TypeOrmModule.forFeature([Auths]),
+    TypeOrmModule.forFeature([Auth]),
   ],
   providers: [AuthService],
   controllers: [AuthController],
