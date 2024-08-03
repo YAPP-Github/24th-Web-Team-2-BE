@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [
@@ -16,9 +15,6 @@ import { PassportModule } from '@nestjs/passport';
         },
       },
     ]),
-    PassportModule.register({
-      session: true,
-    }),
   ],
   controllers: [AuthController],
   providers: [AuthService],

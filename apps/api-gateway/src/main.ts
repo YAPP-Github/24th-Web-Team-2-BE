@@ -2,7 +2,6 @@ import { NestFactory } from '@nestjs/core';
 import { ApiGatewayModule } from './api-gateway.module';
 import * as cookieParser from 'cookie-parser';
 import * as session from 'express-session';
-import * as passport from 'passport';
 // import Redis from 'ioredis';
 // import RedisStore from 'connect-redis';
 
@@ -31,8 +30,6 @@ async function bootstrap() {
     }),
   );
   app.use(cookieParser());
-  app.use(passport.initialize());
-  app.use(passport.session());
 
   await app.listen(3000);
 }
