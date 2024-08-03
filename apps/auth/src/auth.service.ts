@@ -18,6 +18,28 @@ export class AuthService {
     private readonly configService: ConfigService,
   ) {}
 
+  async reIssueToken(userId: string, providerType: string) {
+    // @TODO: userId만 사용해도 될듯 -> refreshToken이 애초에 DB에 저장되어 있음
+
+    const user = await lastValueFrom(this.userClient.send({ cmd: 'find-user' }, userId));
+    const auth = await this.authRepository.findOne({
+      where: {
+        userId,
+        providerType,
+      },
+    });
+    const params = new URLSearchParams();
+    params.append('client_id', this.configService.get<string>('GOOGLE_CLIENT_ID'));
+    params.append('client_secret', this.configService.get<string>('GOOGLE_CLIENT_SECRET'));
+    params.append('refresh_token', auth.refreshToken);
+    params.append('grant_type', 'refresh_token');
+
+    const response = await firstValueFrom(this.httpService.post('https://oauth2.googleapis.com/token', params));
+
+    const newAccessToken = response.data.access_token;
+
+    return newAccessToken;
+  }
   async googleLogin(code: string) {
     const tokenData = await this.getGoogleOAuthToken(code);
     const googleUserInfo = await this.getGoogleUserInfo(tokenData.access_token);

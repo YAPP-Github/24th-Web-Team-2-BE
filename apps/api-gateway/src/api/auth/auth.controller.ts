@@ -37,4 +37,12 @@ export class AuthController {
       isGuest: false,
     };
   }
+
+  @Get('google/re-issue-token')
+  async googleReIssueToken(@Session() session, @Res() res: Response) {
+    const { userId, providerType } = session.user;
+    const accessToken = await this.authService.reIssueToken(userId, providerType);
+    session.user.accessToken = accessToken;
+    res.send('google access token 재발급');
+  }
 }

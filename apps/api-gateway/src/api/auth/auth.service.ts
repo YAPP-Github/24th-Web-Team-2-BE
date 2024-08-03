@@ -13,4 +13,8 @@ export class AuthService {
   async googleLogin(code: string) {
     return lastValueFrom(this.authClient.send({ cmd: 'google_login' }, code));
   }
+
+  async reIssueToken(userId: string, providerType: string) {
+    return lastValueFrom(this.authClient.send({ cmd: 're-issue-token' }, { userId, providerType }));
+  }
 }

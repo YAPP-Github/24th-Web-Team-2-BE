@@ -10,4 +10,9 @@ export class UserController {
   async createGuestUser(username: string) {
     return await this.userService.createGuestUser(username);
   }
+
+  // @MessagePattern({ cmd: 'find-user' })
+  // async findUser(userId: string) {
+  //   return await this.userService.findUser(userId);
+  // }
 }
