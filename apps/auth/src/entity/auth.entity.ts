@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, Index } from 'typeorm';
 
 @Entity()
 @Index(['providerType', 'providerId'], { unique: true })
-export class Auths {
+export class Auth {
   @PrimaryGeneratedColumn()
   id: number;
 

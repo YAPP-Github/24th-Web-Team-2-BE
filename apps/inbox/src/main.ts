@@ -1,16 +1,16 @@
 import { NestFactory } from '@nestjs/core';
-import { UserModule } from './user.module';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
-import { MainModule } from './main.module';
+import { InboxModule } from './inbox.module';
 
 async function bootstrap() {
-  const app = await NestFactory.createMicroservice<MicroserviceOptions>(MainModule, {
+  const app = await NestFactory.createMicroservice<MicroserviceOptions>(InboxModule, {
     transport: Transport.TCP,
     options: {
-      host: '127.0.0.1',
-      port: 3003,
+      host: process.env.INBOX_HOST_DEV,
+      port: parseInt(process.env.INBOX_PORT_DEV),
     },
   });
+
   await app.listen();
 }
 bootstrap();

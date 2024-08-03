@@ -1,8 +1,8 @@
 import { Controller, Get, Query, Redirect, Req, Res, Session, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ConfigService } from '@nestjs/config';
-import { Request, Response } from 'express';
-import { AuthGuard } from './guards/auth.guard';
+import { Response } from 'express';
+import { AuthRedirectRO } from './dtos/auth-redirect.response.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -23,13 +23,19 @@ export class AuthController {
   }
 
   @Get('google')
-  async googleAuthRedirect(@Query('code') code: string, @Session() session: Record<string, any>, @Res() res: Response) {
+  async googleAuthRedirect(@Query('code') code: string, @Session() session: Record<string, any>): Promise<AuthRedirectRO> {
     const user = await this.authService.googleLogin(code);
-    if (user) {
-      session.user = user;
+    session.user = user;
+
+    if (user.role === 'guest') {
+      return {
+        isGuest: true,
+      };
     }
 
-    res.redirect('/');
+    return {
+      isGuest: false,
+    };
   }
 
   @Get('google/re-issue-token')

@@ -2,7 +2,7 @@ import { Test } from '@nestjs/testing';
 import { AuthService } from './auth.service';
 import { HttpModule } from '@nestjs/axios';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Auths } from './entity/auth.entity';
+import { Auth } from './entity/auth.entity';
 
 describe('auth service', () => {
   let authService: AuthService;
