@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        service: [api-gateway, auth]
+        service: [api-gateway, auth, inbox]
 
     steps:
       - name: Checkout
@@ -57,6 +57,9 @@ jobs:
           echo "DB_USER=${DB_USER}" >> .env
           echo "DB_PASSWORD=${DB_PASSWORD}" >> .env
           echo "AUTH_DB_NAME=${AUTH_DB_NAME}" >> .env
+          echo "INBOX_HOST_DEV=${INBOX_HOST_DEV}" >> .env
+          echo "INBOX_PORT_DEV=${INBOX_PORT_DEV}" >> .env
+          echo "MONGO_CONNECTION_STRING_DEV=${MONGO_CONNECTION_STRING_DEV}" >> .env
         env:
           GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
           GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
