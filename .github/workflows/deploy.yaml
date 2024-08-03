@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        service: [api-gateway, auth, user]
+        service: [api-gateway, auth, user, inbox]
 
     steps:
       - name: Checkout
