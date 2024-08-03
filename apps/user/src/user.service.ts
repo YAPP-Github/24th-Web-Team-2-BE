@@ -12,7 +12,7 @@ export class UserService {
   async createGuestUser(username: string) {
     const guestUserInfo: User = this.userRepository.create({
       username: username,
-      onboardingStep: 'create-guest-id',
+      onboardingStep: 'create-guest-user',
     });
 
     return await this.userRepository.save(guestUserInfo);

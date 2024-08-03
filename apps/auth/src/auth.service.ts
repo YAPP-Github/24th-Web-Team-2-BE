@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { firstValueFrom, lastValueFrom } from 'rxjs';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Auths } from './entity/auth.entity';
+import { Auth } from './entity/auth.entity';
 import { Repository } from 'typeorm';
 import { ClientProxy } from '@nestjs/microservices';
 import { HttpService } from '@nestjs/axios';
@@ -10,8 +10,8 @@ import { ConfigService } from '@nestjs/config';
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(Auths)
-    private readonly authRepository: Repository<Auths>,
+    @InjectRepository(Auth)
+    private readonly authRepository: Repository<Auth>,
     @Inject('USER_SERVICE')
     private readonly userClient: ClientProxy,
     private readonly httpService: HttpService,
@@ -20,17 +20,18 @@ export class AuthService {
 
   async googleLogin(code: string) {
     const tokenData = await this.getGoogleOAuthToken(code);
-    const userInfo = await this.getGoogleUserInfo(tokenData.access_token);
+    const googleUserInfo = await this.getGoogleUserInfo(tokenData.access_token);
 
-    let authInfo = await this.authRepository.findOne({ where: { providerId: userInfo.sub } });
+    let authInfo = await this.authRepository.findOne({ where: { providerId: googleUserInfo.sub } });
 
     if (!authInfo) {
+      const guestUser = await lastValueFrom(this.userClient.send({ cmd: 'create-guest-user' }, googleUserInfo.name));
       const guestUserData = this.authRepository.create({
         //user 생성 후 들어가야 함
-        userId: 'asdfasd222',
+        userId: guestUser.id,
         role: 'guest',
         providerType: 'google',
-        providerId: userInfo.sub,
+        providerId: googleUserInfo.sub,
         refreshToken: tokenData.refresh_token,
       });
       authInfo = await this.authRepository.save(guestUserData);

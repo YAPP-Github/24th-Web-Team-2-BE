@@ -1,8 +1,8 @@
 import { Controller, Get, Query, Redirect, Req, Res, Session, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ConfigService } from '@nestjs/config';
-import { Request, Response } from 'express';
-import { AuthGuard } from './guards/auth.guard';
+import { Response } from 'express';
+import { AuthRedirectRO } from './dtos/auth-redirect.response.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -14,7 +14,7 @@ export class AuthController {
   // Google Auth Code를 통해 Access Token을 발급한다.
   // Access Token을 통해 Profile 정보를 얻어온다.
 
-  @Get('google')
+  @Get('dev/google')
   googleAuth(@Res() res: Response) {
     const googleClientId = this.configService.get<string>('GOOGLE_CLIENT_ID');
     const redirectUri = this.configService.get<string>('GOOGLE_CALLBACK_URL');
@@ -22,14 +22,19 @@ export class AuthController {
     res.redirect(authUrl);
   }
 
-  @Get('google/callback')
-  async googleAuthRedirect(@Query('code') code: string, @Session() session: Record<string, any>, @Res() res: Response) {
+  @Get('google')
+  async googleAuthRedirect(@Query('code') code: string, @Session() session: Record<string, any>): Promise<AuthRedirectRO> {
     const user = await this.authService.googleLogin(code);
+    session.user = user;
 
-    if (user) {
-      session.user = user;
+    if (user.role === 'guest') {
+      return {
+        isGuest: true,
+      };
     }
 
-    res.redirect('/');
+    return {
+      isGuest: false,
+    };
   }
 }

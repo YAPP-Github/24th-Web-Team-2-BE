@@ -10,7 +10,7 @@ export class AuthService {
     private readonly authClient: ClientProxy,
   ) {}
 
-  async googleLogin(data: string) {
-    return lastValueFrom(this.authClient.send({ cmd: 'google_login' }, data));
+  async googleLogin(code: string) {
+    return lastValueFrom(this.authClient.send({ cmd: 'google_login' }, code));
   }
 }
