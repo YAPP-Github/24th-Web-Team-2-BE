@@ -14,7 +14,7 @@ export class AuthController {
   // Google Auth Code를 통해 Access Token을 발급한다.
   // Access Token을 통해 Profile 정보를 얻어온다.
 
-  @Get('google')
+  @Get('dev/google')
   googleAuth(@Res() res: Response) {
     const googleClientId = this.configService.get<string>('GOOGLE_CLIENT_ID');
     const redirectUri = this.configService.get<string>('GOOGLE_CALLBACK_URL');
@@ -22,14 +22,21 @@ export class AuthController {
     res.redirect(authUrl);
   }
 
-  @Get('google/callback')
+  @Get('google')
   async googleAuthRedirect(@Query('code') code: string, @Session() session: Record<string, any>, @Res() res: Response) {
     const user = await this.authService.googleLogin(code);
-
     if (user) {
       session.user = user;
     }
 
     res.redirect('/');
+  }
+
+  @Get('google/re-issue-token')
+  async googleReIssueToken(@Session() session, @Res() res: Response) {
+    const { userId, providerType } = session.user;
+    const accessToken = await this.authService.reIssueToken(userId, providerType);
+    session.user.accessToken = accessToken;
+    res.send('google access token 재발급');
   }
 }
