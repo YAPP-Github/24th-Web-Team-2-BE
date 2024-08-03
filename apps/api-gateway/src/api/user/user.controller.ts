@@ -20,9 +20,12 @@ export class UserController {
   async modifyUser(@Body('username') username: string, @Session() session, @Res() res: Response) {
     const user = session.user;
 
-    const modifyData = await this.userService.modifyUser(user);
+    const modifyData = await this.userService.modifyUser(username, user);
 
-    return res.status(204).send('사용자 이름 변경 완료');
+    return res.status(204).send({
+      message: '사용자 이름 변경 완료',
+      data: modifyData,
+    });
   }
 
   @Delete()
@@ -31,6 +34,9 @@ export class UserController {
 
     const removeData = await this.userService.removeUser(user);
 
-    return res.status(204).send('사용자 정보 삭제 완료');
+    return res.status(204).send({
+      message: '사용자 정보 삭제 완료',
+      data: removeData,
+    });
   }
 }

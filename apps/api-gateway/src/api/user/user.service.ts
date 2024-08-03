@@ -5,6 +5,12 @@ import { ClientProxy } from '@nestjs/microservices';
 export class UserService {
   constructor(
     @Inject('USER_SERVICE')
-    private readonly authClient: ClientProxy,
+    private readonly userClient: ClientProxy,
   ) {}
+
+  async findUser(user) {}
+
+  async modifyUser(username: string, user) {}
+
+  async removeUser(user) {}
 }
