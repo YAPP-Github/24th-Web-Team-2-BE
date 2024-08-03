@@ -19,11 +19,20 @@ services:
       - '3001:3000'
     restart: 'no'
 
+  inbox:
+    image: 'leobang/inbox'
+    container_name: inbox
+    env_file:
+      - .env
+    ports:
+      - '3002:3000'
+    restart: 'no'
+
   user:
-  image: 'leobang/user'
-  container_name: user
-  env_file:
-    - .env
-  ports:
-    - '3003:3000'
-  restart: 'no'
+    image: 'leobang/user'
+    container_name: user
+    env_file:
+      - .env
+    ports:
+      - '3003:3000'
+    restart: 'no'

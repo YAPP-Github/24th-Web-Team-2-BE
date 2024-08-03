@@ -44,6 +44,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/user/tsconfig.app.json"
       }
+    },
+    "inbox": {
+      "type": "application",
+      "root": "apps/inbox",
+      "entryFile": "main",
+      "sourceRoot": "apps/inbox/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/inbox/tsconfig.app.json"
+      }
     }
   }
 }
