@@ -36,3 +36,12 @@ services:
     ports:
       - '3003:3000'
     restart: 'no'
+
+  mail-integrator:
+    image: 'leobang/mail-integrator'
+    container_name: mail-integrator
+    env_file:
+      - .env
+    ports:
+      - '3004:3000'
+    restart: 'no'
