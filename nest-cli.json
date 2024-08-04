@@ -53,6 +53,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/inbox/tsconfig.app.json"
       }
+    },
+    "mail-integrator": {
+      "type": "application",
+      "root": "apps/mail-integrator",
+      "entryFile": "main",
+      "sourceRoot": "apps/mail-integrator/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/mail-integrator/tsconfig.app.json"
+      }
     }
   }
 }
