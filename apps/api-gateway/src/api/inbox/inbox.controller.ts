@@ -17,10 +17,20 @@ interface AuthInfo {
 export class InboxController {
   constructor(private readonly inboxService: InboxService) {}
 
+  @Get('/subscriptions')
+  async getSubscriptions(@AuthInfo() authInfo: AuthInfo) {
+    return await this.inboxService.getSubscriptions(authInfo.userId);
+  }
+
   @Post('/subscriptions')
   async addSubscription(@AuthInfo() authInfo: AuthInfo, @Body() subscriptionDTO: SubscriptionDTO) {
     const { subscriptions } = subscriptionDTO;
     return await this.inboxService.addSubscription(authInfo.userId, subscriptions);
+  }
+
+  @Get('/spams')
+  async getSpams(@AuthInfo() authInfo: AuthInfo) {
+    return await this.inboxService.getSpams(authInfo.userId);
   }
 
   @Post('/spams')
@@ -33,15 +43,5 @@ export class InboxController {
   async addInterest(@AuthInfo() authInfo: AuthInfo, @Body() interestDTO: InterestDTO) {
     const { interests } = interestDTO;
     return await this.inboxService.addInterest(authInfo.userId, interests);
-  }
-
-  @Get('/subscriptions')
-  async getSubscriptions(@AuthInfo() authInfo: AuthInfo) {
-    return await this.inboxService.getSubscriptions(authInfo.userId);
-  }
-
-  @Get('/spams')
-  async getSpams(@AuthInfo() authInfo: AuthInfo) {
-    return await this.inboxService.getSpams(authInfo.userId);
   }
 }
