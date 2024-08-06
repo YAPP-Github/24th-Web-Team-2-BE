@@ -8,10 +8,6 @@ export class InboxService {
     @Inject('INBOX_SERVICE')
     private readonly inboxClient: ClientProxy,
   ) {}
-  async createInbox(userId: string) {
-    return lastValueFrom(this.inboxClient.send({ cmd: 'create-inbox' }, { userId }));
-  }
-
   async addSubscription(userId: string, subscriptions: string[]) {
     return lastValueFrom(this.inboxClient.send({ cmd: 'add-subscriptions' }, { userId, subscriptions }));
   }
