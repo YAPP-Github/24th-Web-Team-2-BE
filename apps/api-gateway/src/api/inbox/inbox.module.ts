@@ -10,8 +10,8 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         name: 'INBOX_SERVICE',
         transport: Transport.TCP,
         options: {
-          host: process.env.INBOX_HOST_DEV,
-          port: parseInt(process.env.INBOX_PORT_DEV),
+          host: 'localhost',
+          port: 3002,
         },
       },
     ]),
