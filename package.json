@@ -12,6 +12,7 @@
     "user": "pnpm -F @apps/user",
     "api": "pnpm -F @apps/api-gateway",
     "inbox": "pnpm -F @apps/inbox",
+    "mail": "pnpm -F @apps/mail-integrator",
     "common": "pnpm -F @libs/common",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
