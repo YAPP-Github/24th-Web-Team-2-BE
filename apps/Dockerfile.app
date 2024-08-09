@@ -20,7 +20,7 @@ COPY . .
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 
 # Build shared libraries & Auth application
-RUN pnpm --filter "libs/*" build
+RUN pnpm --filter "@libs/*" build
 RUN pnpm --filter=$PKG_NAME build
 
 # Remove unnecessary dependencies from production
