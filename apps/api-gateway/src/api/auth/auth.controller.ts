@@ -3,6 +3,7 @@ import { AuthService } from './auth.service';
 import { ConfigService } from '@nestjs/config';
 import { Response } from 'express';
 import { AuthRedirectRO } from './dtos/auth-redirect.response.dto';
+import { AuthGuard } from '../../common/guards/auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -24,10 +25,10 @@ export class AuthController {
 
   @Get('google')
   async googleAuthRedirect(@Query('code') code: string, @Session() session: Record<string, any>): Promise<AuthRedirectRO> {
-    const user = await this.authService.googleLogin(code);
-    session.user = user;
+    const authInfo = await this.authService.googleLogin(code);
+    session.auth = authInfo;
 
-    if (user.role === 'guest') {
+    if (authInfo.role === 'guest') {
       return {
         isGuest: true,
       };
@@ -39,10 +40,11 @@ export class AuthController {
   }
 
   @Get('google/re-issue-token')
+  @UseGuards(AuthGuard)
   async googleReIssueToken(@Session() session, @Res() res: Response) {
-    const { userId, providerType } = session.user;
+    const { userId, providerType } = session.auth;
     const accessToken = await this.authService.reIssueToken(userId, providerType);
-    session.user.accessToken = accessToken;
+    session.auth.accessToken = accessToken;
     res.send('google access token 재발급');
   }
 }

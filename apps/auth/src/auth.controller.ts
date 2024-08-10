@@ -12,7 +12,7 @@ export class AuthController {
   }
 
   @MessagePattern({ cmd: 're-issue-token' })
-  async reIssueToken({ userId, providerType }) {
+  async reIssueToken({ userId, providerType }: { userId: string; providerType: string }) {
     return this.authService.reIssueToken(userId, providerType);
   }
 }

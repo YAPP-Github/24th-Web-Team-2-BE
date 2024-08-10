@@ -19,9 +19,6 @@ export class AuthService {
   ) {}
 
   async reIssueToken(userId: string, providerType: string) {
-    // @TODO: userId만 사용해도 될듯 -> refreshToken이 애초에 DB에 저장되어 있음
-
-    const user = await lastValueFrom(this.userClient.send({ cmd: 'find-user' }, userId));
     const auth = await this.authRepository.findOne({
       where: {
         userId,

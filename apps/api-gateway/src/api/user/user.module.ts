@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { PassportModule } from '@nestjs/passport';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
 
@@ -16,9 +15,6 @@ import { UserService } from './user.service';
         },
       },
     ]),
-    PassportModule.register({
-      session: true,
-    }),
   ],
   controllers: [UserController],
   providers: [UserService],
