@@ -49,29 +49,24 @@ jobs:
 
       - name: Create .env file for remote server
         run: |
-          echo "GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}" >> .env
-          echo "GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}" >> .env
-          echo "GOOGLE_CALLBACK_URL=${GOOGLE_CALLBACK_URL}" >> .env
-          echo "DB_HOST=${DB_HOST}" >> .env
-          echo "DB_PORT=${DB_PORT}" >> .env
-          echo "DB_USER=${DB_USER}" >> .env
-          echo "DB_PASSWORD=${DB_PASSWORD}" >> .env
-          echo "AUTH_DB_NAME=${AUTH_DB_NAME}" >> .env
+          echo "GOOGLE_CLIENT_ID=${secrets.GOOGLE_CLIENT_ID}" >> .env
+          echo "GOOGLE_CLIENT_SECRET=${secrets.GOOGLE_CLIENT_SECRET}" >> .env
+          echo "GOOGLE_CALLBACK_URL=${secrets.GOOGLE_CALLBACK_URL}" >> .env
+          echo "DB_HOST=${secrets.DB_HOST}" >> .env
+          echo "DB_PORT=${secrets.DB_PORT}" >> .env
+          echo "DB_USER=${secrets.DB_USER}" >> .env
+          echo "DB_PASSWORD=${secrets.DB_PASSWORD}" >> .env
+          echo "AUTH_DB_NAME=${secrets.AUTH_DB_NAME}" >> .env
+          echo "USER_DB_NAME=${secrets.USER_DB_NAME}" >> .env
+          echo "AUTH_SERVICE_HOST=${{secrets.AUTH_SERVICE_HOST}}" >> .env
+          echo "AUTH_SERVICE_PORT=${{secrets.AUTH_SERVICE_PORT}}" >> .env
+          echo "USER_SERVICE_HOST=${{secrets.USER_SERVICE_HOST}}" >> .env
+          echo "USER_SERVICE_PORT=${{secrets.USER_SERVICE_PORT}}" >> .env
           echo "INBOX_HOST_DEV=${{secrets.INBOX_HOST_DEV}}" >> .env
           echo "INBOX_PORT_DEV=${{secrets.INBOX_PORT_DEV}}" >> .env
           echo "MAIL_INTEGRATOR_HOST_DEV=${{secrets.MAIL_INTEGRATOR_HOST_DEV}}" >> .env
           echo "MAIL_INTEGRATOR_PORT_DEV=${{secrets.MAIL_INTEGRATOR_PORT_DEV}}" >> .env
           echo "MONGO_CONNECTION_STRING_DEV=${{secrets.MONGO_CONNECTION_STRING_DEV}}" >> .env
-
-        env:
-          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
-          GOOGLE_CALLBACK_URL: ${{ secrets.GOOGLE_CALLBACK_URL }}
-          DB_HOST: ${{ secrets.DB_HOST }}
-          DB_PORT: ${{ secrets.DB_PORT }}
-          DB_USER: ${{ secrets.DB_USER }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          AUTH_DB_NAME: ${{ secrets.AUTH_DB_NAME }}
 
       - name: Copy docker-compose file
         uses: garygrossgarten/github-action-scp@release
