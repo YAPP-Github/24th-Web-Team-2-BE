@@ -1,6 +1,6 @@
 import { Module, Scope } from '@nestjs/common';
 import { google } from 'googleapis';
-import { ConstantsModule } from 'libs/common';
+import { ConstantsModule } from '@libs/common';
 
 import { ProviderToken } from '../provider-tokens';
 import { GoogleMailFactory } from './google-mail.factory';
