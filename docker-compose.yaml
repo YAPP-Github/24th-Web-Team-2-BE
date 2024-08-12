@@ -1,6 +1,21 @@
 version: '3.8'
 
 services:
+  api-gateway:
+    image: 'hedwig/api-gateway'
+    build:
+      context: .
+      dockerfile: ./apps/Dockerfile.app
+      args:
+        - PKG_NAME=@apps/api-gateway
+        - PORT=3000
+    container_name: api-gateway
+    env_file:
+      - .env
+    ports:
+      - '3000:3000'
+    restart: 'no'
+
   auth:
     image: 'hedwig/auth'
     build:
@@ -10,6 +25,53 @@ services:
         - PKG_NAME=@apps/auth
         - PORT=3000
     container_name: auth
+    env_file:
+      - .env
     ports:
-      - '3000:3000'
+      - '3001:3000'
+    restart: 'no'
+
+  inbox:
+    image: 'hedwig/inbox'
+    build:
+      context: .
+      dockerfile: ./apps/Dockerfile.app
+      args:
+        - PKG_NAME=@apps/inbox
+        - PORT=3000
+    container_name: inbox
+    env_file:
+      - .env
+    ports:
+      - '3002:3000'
+    restart: 'no'
+
+  user:
+    image: 'hedwig/user'
+    build:
+      context: .
+      dockerfile: ./apps/Dockerfile.app
+      args:
+        - PKG_NAME=@apps/hedwig
+        - PORT=3000
+    container_name: user
+    env_file:
+      - .env
+    ports:
+      - '3003:3000'
+    restart: 'no'
+
+  mail-integrator:
+    image: 'hedwig/mail-integrator'
+    build:
+      context: .
+      dockerfile: ./apps/Dockerfile.app
+      args:
+        - PKG_NAME=@apps/mail-integrator
+        - PORT=3000
+    container_name: mail-integrator
+    env_file:
+      - .env
+    ports:
+      - '3004:3000'
     restart: 'no'
