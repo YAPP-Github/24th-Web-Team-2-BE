@@ -62,6 +62,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/mail-integrator/tsconfig.app.json"
       }
+    },
+    "publish-automation": {
+      "type": "application",
+      "root": "apps/publish-automation",
+      "entryFile": "main",
+      "sourceRoot": "apps/publish-automation/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/publish-automation/tsconfig.app.json"
+      }
     }
   }
 }

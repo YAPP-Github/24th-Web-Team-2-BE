@@ -1,0 +1,14 @@
+{
+  "name": "@apps/publish-automation",
+  "version": "1.0.0",
+  "dependencies": {
+    "@libs/common": "workspace:*",
+    "@nestjs/microservices": "^10.3.9"
+  },
+  "scripts": {
+    "start": "nest start",
+    "dev": "nest start --watch",
+    "build": "nest build",
+    "test": "jest"
+  }
+}

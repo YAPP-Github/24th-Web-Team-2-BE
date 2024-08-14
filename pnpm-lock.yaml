@@ -225,6 +225,15 @@ importers:
         specifier: ^5.1.2
         version: 5.1.2
 
+  apps/publish-automation:
+    dependencies:
+      '@libs/common':
+        specifier: workspace:*
+        version: link:../../libs/common
+      '@nestjs/microservices':
+        specifier: ^10.3.9
+        version: 10.3.9(@nestjs/common@10.3.9(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.9)(ioredis@5.4.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+
   apps/user:
     dependencies:
       '@libs/common':
