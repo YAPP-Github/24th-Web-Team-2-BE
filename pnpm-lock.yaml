@@ -167,7 +167,7 @@ importers:
         version: 10.3.9(@nestjs/common@10.3.9(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.9)(ioredis@5.4.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/mongoose':
         specifier: ^10.0.10
-        version: 10.0.10(@nestjs/common@10.3.9(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.9(@nestjs/common@10.3.9(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/microservices@10.3.9)(@nestjs/platform-express@10.3.9)(reflect-metadata@0.2.2)(rxjs@7.8.1))(mongoose@8.5.1)(rxjs@7.8.1)
+        version: 10.0.10(@nestjs/common@10.3.9(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.9(@nestjs/common@10.3.9(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/microservices@10.3.9)(@nestjs/platform-express@10.3.9)(reflect-metadata@0.2.2)(rxjs@7.8.1))(mongoose@8.5.1(socks@2.8.3))(rxjs@7.8.1)
       connect-redis:
         specifier: ^7.1.1
         version: 7.1.1(express-session@1.18.0)
@@ -232,6 +232,9 @@ importers:
       '@nestjs/microservices':
         specifier: ^10.3.9
         version: 10.3.9(@nestjs/common@10.3.9(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.9)(ioredis@5.4.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      puppeteer:
+        specifier: ^23.0.2
+        version: 23.0.2(typescript@5.4.5)
 
   apps/user:
     dependencies:
