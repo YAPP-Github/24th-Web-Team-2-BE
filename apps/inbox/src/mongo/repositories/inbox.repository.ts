@@ -23,10 +23,22 @@ export class InboxRepository {
   }
 
   async addSpams(userId: string, addresses: string[]) {
-    return this.inboxModel.findOneAndUpdate({ userId }, { $push: { spams: { $each: addresses } } }, { new: true }).exec();
+    const inbox = await this.findByUserId(userId);
+    inbox.spams.push(...addresses);
+    return await inbox.save();
   }
 
   async addInterests(userId: string, interests: string[]) {
-    return this.inboxModel.findOneAndUpdate({ userId }, { $push: { interests: { $each: interests } } }, { new: true }).exec();
+    const inbox = await this.findByUserId(userId);
+    inbox.interests.push(...interests);
+    return await inbox.save();
+  }
+
+  async findByUserId(userId: string) {
+    const inbox = await this.inboxModel.findOne({ userId }).exec();
+    if (!inbox) {
+      throw new Error(`${userId}에 해당하는 Inbox가 존재하지 않음.`);
+    }
+    return inbox;
   }
 }
