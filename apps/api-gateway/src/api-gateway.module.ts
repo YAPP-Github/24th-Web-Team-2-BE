@@ -10,6 +10,7 @@ import { HttpLoggerMiddleware } from './common/middlewares/logging.middleware';
 import { APP_FILTER } from '@nestjs/core';
 import { AllGlobalExceptionsFilter } from './common/exceptions/global-exception.filter';
 import { MailIntegratorModule } from './api/mail-integrator/mail-integrator.module';
+import { AutomationModule } from './api/publish-automation/automation.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { MailIntegratorModule } from './api/mail-integrator/mail-integrator.modu
     InboxModule,
     AutomationModule,
     MailIntegratorModule,
+    AutomationModule,
     ConfigModule.forRoot({
       envFilePath: ['.env'],
       isGlobal: true,
