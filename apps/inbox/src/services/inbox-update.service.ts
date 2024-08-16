@@ -5,8 +5,16 @@ import { InboxRepository } from '../mongo/repositories/inbox.repository';
 export class InboxUpdateService {
   constructor(private readonly inboxRepository: InboxRepository) {}
 
-  async addSubscription(userId: string, subscriptions: string[]) {
+  async addSubscriptions(userId: string, subscriptions: { name: string; address: string }[]) {
     return await this.inboxRepository.addSubscriptions(userId, subscriptions);
+  }
+
+  async addGroup(userId: string, groupName: string) {
+    return await this.inboxRepository.addGroup(userId, groupName);
+  }
+
+  async addSenderToGroup(userId: string, groupId: string, sender: { name: string; address: string }) {
+    return await this.inboxRepository.addSenderToGroup(userId, groupId, sender);
   }
 
   async addSpam(userId: string, spams: string[]) {
