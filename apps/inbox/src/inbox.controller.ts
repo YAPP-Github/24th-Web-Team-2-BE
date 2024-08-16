@@ -50,9 +50,9 @@ export class InboxController {
     };
   }
 
-  @MessagePattern({ cmd: 'get-groups' })
+  @MessagePattern({ cmd: 'get-group' })
   async getGroups(data: { userId: string }) {
-    const res = await this.inboxReadService.getGroups(data.userId);
+    const res = await this.inboxReadService.getGroup(data.userId);
     return {
       groups: res,
     };
