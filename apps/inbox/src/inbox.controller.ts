@@ -18,8 +18,18 @@ export class InboxController {
   }
 
   @MessagePattern({ cmd: 'add-subscriptions' })
-  async addSubscription(data: { userId: string; subscriptions: string[] }) {
-    return await this.inboxUpdateService.addSubscription(data.userId, data.subscriptions);
+  async addSubscription(data: { userId: string; subscriptions: { name: string; address: string }[] }) {
+    return await this.inboxUpdateService.addSubscriptions(data.userId, data.subscriptions);
+  }
+
+  @MessagePattern({ cmd: 'add-group' })
+  async addGroup(data: { userId: string; groupName: string }) {
+    return await this.inboxUpdateService.addGroup(data.userId, data.groupName);
+  }
+
+  @MessagePattern({ cmd: 'add-sender-to-group' })
+  async addSenderToGroup(data: { userId: string; groupName: string; sender: { name: string; address: string } }) {
+    return await this.inboxUpdateService.addSenderToGroup(data.userId, data.groupName, data.sender);
   }
 
   @MessagePattern({ cmd: 'add-spams' })
@@ -37,6 +47,14 @@ export class InboxController {
     const res = await this.inboxReadService.getSubscriptions(data.userId);
     return {
       subscriptions: res,
+    };
+  }
+
+  @MessagePattern({ cmd: 'get-groups' })
+  async getGroups(data: { userId: string }) {
+    const res = await this.inboxReadService.getGroups(data.userId);
+    return {
+      groups: res,
     };
   }
 

@@ -18,8 +18,23 @@ export class InboxRepository {
     return this.inboxModel.findOne({ userId });
   }
 
-  async addSubscriptions(userId: string, addresses: string[]) {
-    return this.inboxModel.findOneAndUpdate({ userId }, { $push: { subscriptions: { $each: addresses } } }, { new: true }).exec();
+  async addSubscriptions(userId: string, addresses: { name: string; address: string }[]) {
+    const inbox = await this.findByUserId(userId);
+    inbox.subscriptions.push(...addresses);
+    return await inbox.save();
+  }
+
+  async addGroup(userId: string, groupName: string) {
+    const inbox = await this.findByUserId(userId);
+    inbox.groups.push({ name: groupName, senders: [] });
+    return await inbox.save();
+  }
+
+  async addSenderToGroup(userId: string, groupId: string, sender: { name: string; address: string }) {
+    const inbox = await this.findByUserId(userId);
+    const group = inbox.groups.id(groupId);
+    group.senders.push(sender);
+    return await inbox.save();
   }
 
   async addSpams(userId: string, addresses: string[]) {
