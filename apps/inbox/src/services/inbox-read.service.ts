@@ -14,7 +14,7 @@ export class InboxReadService {
     });
   }
 
-  async getGroups(userId: string) {
+  async getGroup(userId: string) {
     const inbox = await this.inboxRepository.findInboxByUserId(userId);
     return inbox.groups.map((group) => {
       return {
