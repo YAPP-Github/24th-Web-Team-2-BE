@@ -8,7 +8,10 @@ export type Message = {
   date: Date;
   labels: string[];
   snippet: string; // 메일 내용의 일부분
-  from: string;
+  from: {
+    name: string;
+    address: string;
+  };
   to: string;
   mimeType: string;
   payload: {
@@ -79,11 +82,30 @@ class MimeParser {
     return this.message.labelIds;
   }
 
-  get from(): string {
+  get from(): { name: string; address: string } {
     const rawFrom = this.getMimeHeader('From');
-    const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
+
+    const emailRegex = /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/;
+    const nameRegex = /^(.*?)(?=\s*[<"]?[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}[">]?)/;
+
+    // 이메일 주소 추출
     const emailMatch = rawFrom.match(emailRegex);
-    return emailMatch[0];
+    const address = emailMatch ? emailMatch[1].trim() : null;
+
+    // 이름 추출
+    let name = null;
+    if (rawFrom.includes('<') || rawFrom.includes('"')) {
+      const nameMatch = rawFrom.match(nameRegex);
+      name = nameMatch ? nameMatch[1].replace(/["<]/g, '').trim() : null;
+    } else if (address) {
+      // 이름이 없는 경우 이메일 주소 앞 부분을 이름으로 사용
+      name = rawFrom.replace(address, '').trim() || address.split('@')[0];
+    }
+
+    return {
+      name: name,
+      address: address,
+    };
   }
 
   get to(): string {
