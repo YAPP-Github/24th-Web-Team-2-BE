@@ -125,7 +125,7 @@ class MimeParser {
   }
 
   private getMimeHeader(target: string): string {
-    return this.message.payload.headers.find((header) => header.name === target).value;
+    return this.message.payload.headers.find((header) => header.name === target)?.value || '';
   }
 }
 
