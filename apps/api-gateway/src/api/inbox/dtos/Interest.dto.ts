@@ -1,3 +1,5 @@
 export class InterestDTO {
-  interests: string[];
+  interests: {
+    category: string;
+  }[];
 }
