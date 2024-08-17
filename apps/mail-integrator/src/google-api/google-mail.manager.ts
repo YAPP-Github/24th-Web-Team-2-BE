@@ -4,6 +4,7 @@ import { MailFetchPolicy } from './mail-fetch.policy';
 import { Message } from './google-mail.parser';
 
 import { MailContextService } from './mail-context.service';
+import gmailPageTokenCache from './caches/gmail-pageToken.cache';
 
 @Injectable()
 export class GoogleMailManager {
@@ -12,21 +13,23 @@ export class GoogleMailManager {
     private readonly mailContextService: MailContextService,
   ) {}
 
-  async processMessages(userId: string, mailPolicy: MailFetchPolicy) {
+  async *retrieveMessages(userId: string, mailPolicy: MailFetchPolicy) {
     this.mailContextService.setUserId(userId);
-    while (mailPolicy.fetchFlag()) {
-      const includedMessages: Message[] = [];
+    while (mailPolicy.fetchFlag() && gmailPageTokenCache.get('userId') !== null) {
       const messages = await this.googleMailReader.readMessages();
-
+      const includedMessages: Message[] = [];
       messages.forEach((message) => {
         mailPolicy.checkIfNext(message);
-        if (mailPolicy.senderIncludeRule(message.from) && mailPolicy.fetchFlag()) {
+        if (mailPolicy.fetchFlag()) {
           includedMessages.push(message);
         }
       });
-      // TODO: includedMessage들을 inbox API를 호출해서 DB에 저장
-    }
 
-    return;
+      if (includedMessages.length > 0) {
+        yield includedMessages;
+      }
+    }
+    // TODO: token cache 일괄 관리하도록 수정
+    gmailPageTokenCache.del('userId');
   }
 }
