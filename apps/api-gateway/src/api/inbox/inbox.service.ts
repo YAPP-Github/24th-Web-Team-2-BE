@@ -16,7 +16,7 @@ export class InboxService {
     return lastValueFrom(this.inboxClient.send({ cmd: 'add-spams' }, { userId, spams }));
   }
 
-  async addInterest(userId: string, interests: string[]) {
+  async addInterest(userId: string, interests: { category: string }[]) {
     return lastValueFrom(this.inboxClient.send({ cmd: 'add-interests' }, { userId, interests }));
   }
 

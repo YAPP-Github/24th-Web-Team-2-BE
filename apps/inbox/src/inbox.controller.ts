@@ -28,8 +28,11 @@ export class InboxController {
   }
 
   @MessagePattern({ cmd: 'add-interests' })
-  async addInterest(data: { userId: string; interests: string[] }) {
-    return await this.inboxUpdateService.addInterest(data.userId, data.interests);
+  async addInterest(data: { userId: string; interests: { category: string }[] }) {
+    return await this.inboxUpdateService.addInterest(
+      data.userId,
+      data.interests.map((interest) => interest.category),
+    );
   }
 
   @MessagePattern({ cmd: 'get-subscriptions' })
