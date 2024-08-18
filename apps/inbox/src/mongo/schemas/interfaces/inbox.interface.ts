@@ -1,6 +1,6 @@
 import { Document, ObjectId, Types } from 'mongoose';
 
-interface Group extends Document {
+export interface Group extends Document {
   name: string;
   senders: { name: string; address: string }[];
 }
