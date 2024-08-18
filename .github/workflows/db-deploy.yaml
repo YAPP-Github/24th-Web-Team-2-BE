@@ -6,55 +6,33 @@ on:
       - test/docker-mysql
 
 jobs:
-  docker-image-push:
-    name: Push to container registry
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        service: [database]
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Login to NCP Container Registry
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.NCP_ACCESS_KEY }}
-          password: ${{ secrets.NCP_SECRET_KEY }}
-
-      - name: Build and push
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          file: ./apps/Dockerfile.app
-          push: true
-          tags: ${{ secrets.NCP_CONTAINER_REGISTRY_URL }}/${{ matrix.service }}:latest
-          build-args: |
-            PKG_NAME=@apps/${{ matrix.service }}
-            PORT=3306
-
   pull-n-run-docker-compose:
-    name: Move docker-compose file to remote server and compose docker containers
-    needs: docker-image-push
+    name: Deploy MySQL Container with Docker Compose
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Copy docker-compose file
+      - name: Copy docker-compose file to remote server
         uses: garygrossgarten/github-action-scp@release
         with:
-          local: ./docker-compose-db.yaml
-          remote: apps/docker-compose-db.yaml
+          local: ./docker-compose.yml
+          remote: /home/ubuntu/docker-compose.yml
           host: ${{ secrets.NCP_SERVER_HOST }}
           username: ${{ secrets.NCP_SERVER_USERNAME }}
           password: ${{ secrets.NCP_SERVER_PASSWORD }}
 
-      - name: Access to remote server via SSH and run docker-compose
+      - name: Copy MySQL init scripts to remote server
+        uses: garygrossgarten/github-action-scp@release
+        with:
+          local: .infra/mysql-init/
+          remote: /home/ubuntu/.infra/mysql-init/
+          host: ${{ secrets.NCP_SERVER_HOST }}
+          username: ${{ secrets.NCP_SERVER_USERNAME }}
+          password: ${{ secrets.NCP_SERVER_PASSWORD }}
+
+      - name: Access remote server via SSH and run docker-compose
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.NCP_SERVER_HOST }}
@@ -62,6 +40,6 @@ jobs:
           password: ${{ secrets.NCP_SERVER_PASSWORD }}
           port: 22
           script: |
-            docker-compose -f apps/docker-compose-db.yaml down
-            docker-compose -f apps/docker-compose-db.yaml pull
-            docker-compose -f apps/docker-compose-db.yaml up -d
+            docker-compose -f /home/ubuntu/docker-compose.yml down
+            docker-compose -f /home/ubuntu/docker-compose.yml pull
+            docker-compose -f /home/ubuntu/docker-compose.yml up -d
