@@ -1,10 +1,9 @@
 name: server-deploy
 
 on:
-  pull_request:
-    types: [closed]
+  push:
     branches:
-      - development
+      - test/docker-mysql
 
 jobs:
   docker-image-push:
