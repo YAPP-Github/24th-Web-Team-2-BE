@@ -4,6 +4,8 @@ services:
   mysql:
     image: mysql:8.0
     container_name: hedwig-database-dev
+    env_file:
+      - .database.env
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_USER: ${MYSQL_USER}
