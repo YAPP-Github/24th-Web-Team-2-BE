@@ -29,7 +29,13 @@ export class MailIntegratorService {
 
     // 게인 메일 제외하기
     const queryBuilder = new GmailQueryBuilder();
-    const query = queryBuilder.excludeFromDomains(this.mailConsants.privateMailDomains).and().newerThan(1, 'm').buildQuery();
+    const query = queryBuilder
+      .excludeFromDomains(this.mailConsants.privateMailDomains)
+      .and()
+      .excludeLabels(['SENT'])
+      .and()
+      .newerThan(1, 'm')
+      .buildQuery();
     this.mailContextService.setMessagesListOption({ q: query });
 
     const senderMap = new Map<string, Message>();
@@ -47,15 +53,20 @@ export class MailIntegratorService {
     // TODO: date 설정 분리
     const currentDate = new Date();
     const fetchThreshold = new Date(currentDate);
-    fetchThreshold.setMonth(currentDate.getMonth() - 12);
-    this.mailContextService.setMessagesListOption({
-      userId: 'me',
-      labelIds: ['UNREAD'],
-    });
+    fetchThreshold.setMonth(currentDate.getMonth() - 3);
 
     const policy = new MailFetchPolicy({ fetchThreshold });
-    const query = new GmailQueryBuilder().includeFromDomains(addresses).and().excludeLabels(['SENT']).and().newerThan(12, 'm').buildQuery();
-    this.mailContextService.setMessagesListOption({ q: query });
+    const query = new GmailQueryBuilder()
+      .includeFromDomains(addresses)
+      .and()
+      .includeLabels(['UNREAD'])
+      .and()
+      .excludeLabels(['SENT'])
+      .and()
+      .newerThan(3, 'm')
+      .buildQuery();
+
+    this.mailContextService.setMessagesListOption({ userId: 'me', q: query });
 
     const msgs: Message[] = [];
     for await (const messages of this.googleMailManager.retrieveMessages(userId, policy)) {
