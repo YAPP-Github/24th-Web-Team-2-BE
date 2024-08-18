@@ -1,9 +1,9 @@
 name: database-deploy
 
 on:
-  push:
-    branches:
-      - test/docker-mysql
+  # push:
+  # branches:
+  # - test/docker-mysql
 
 jobs:
   pull-n-run-docker-compose:
