@@ -42,6 +42,11 @@ export class InboxController {
     return await this.inboxUpdateService.addInterest(data.userId, data.interests);
   }
 
+  @MessagePattern({ cmd: 'get-inbox' })
+  async getInbox(data: { userId: string }) {
+    return await this.inboxReadService.getInbox(data.userId);
+  }
+
   @MessagePattern({ cmd: 'get-subscriptions' })
   async getSubscriptions(data: { userId: string }) {
     const res = await this.inboxReadService.getSubscriptions(data.userId);
