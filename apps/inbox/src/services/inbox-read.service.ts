@@ -20,11 +20,7 @@ export class InboxReadService {
 
   async getSubscriptions(userId: string) {
     const inbox = await this.inboxRepository.findInboxByUserId(userId);
-    return inbox.subscriptions.map((sub) => {
-      return {
-        address: sub,
-      };
-    });
+    return inbox.subscriptions;
   }
 
   async getGroup(userId: string) {
