@@ -26,7 +26,7 @@ jobs:
       - name: Copy MySQL init scripts to remote server
         uses: garygrossgarten/github-action-scp@release
         with:
-          local: .infra/mysql-init/
+          local: ./infra/mysql-init/
           remote: apps/.infra/mysql-init/
           host: ${{ secrets.NCP_SERVER_HOST }}
           username: ${{ secrets.NCP_SERVER_USERNAME }}
