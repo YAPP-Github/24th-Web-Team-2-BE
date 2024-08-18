@@ -5,6 +5,19 @@ import { InboxRepository } from '../mongo/repositories/inbox.repository';
 export class InboxReadService {
   constructor(private readonly inboxRepository: InboxRepository) {}
 
+  async getInbox(userId: string) {
+    const inbox = await this.inboxRepository.findInboxByUserId(userId);
+    return {
+      inboxId: inbox._id,
+      subscriptions: inbox.subscriptions,
+      groups: inbox.groups,
+      spams: inbox.spams,
+      interests: inbox.interests,
+      createdAt: inbox.createdAt,
+      updatedAt: inbox.updatedAt,
+    };
+  }
+
   async getSubscriptions(userId: string) {
     const inbox = await this.inboxRepository.findInboxByUserId(userId);
     return inbox.subscriptions.map((sub) => {
