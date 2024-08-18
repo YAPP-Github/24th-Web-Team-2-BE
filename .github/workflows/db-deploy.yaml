@@ -16,9 +16,9 @@ jobs:
 
       - name: Create .database.env file for remote server
         run: |
-          echo "{MYSQL_ROOT_PASSWORD=${{secrets.{MYSQL_ROOT_PASSWORD}}" >> .database.env
-          echo "MYSQL_USER=${{secrets.MYSQL_USER}}" >> .database.env
-          echo "MYSQL_PASSWORD=${{secrets.MYSQL_PASSWORD}}" >> .database.env
+          echo "MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}" >> .database.env
+          echo "MYSQL_USER=${{ secrets.MYSQL_USER }}" >> .database.env
+          echo "MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}" >> .database.env
 
       - name: Copy docker-compose file to remote server
         uses: garygrossgarten/github-action-scp@release
