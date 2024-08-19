@@ -28,6 +28,6 @@ import { MailContextService } from './mail-context.service';
       scope: Scope.REQUEST,
     },
   ],
-  exports: [GoogleMailManager],
+  exports: [GoogleMailManager, MailContextService],
 })
 export class GoogleApiModule {}
