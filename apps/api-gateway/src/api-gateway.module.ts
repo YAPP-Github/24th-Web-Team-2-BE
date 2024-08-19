@@ -5,8 +5,13 @@ import { AuthModule } from './api/auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './api/user/user.module';
 import { InboxModule } from './api/inbox/inbox.module';
+<<<<<<< HEAD
 import { AutomationModule } from './api/publish-automation/automation.module';
 import { HttpLoggerMiddleware } from './common/middlewares/logging.middleware';
+=======
+import { APP_FILTER } from '@nestjs/core';
+import { AllGlobalExceptionsFilter } from './common/exceptions/global-exception.filter';
+>>>>>>> 2177a73 (feat: custom exception filter 적용)
 
 @Module({
   imports: [
@@ -20,7 +25,13 @@ import { HttpLoggerMiddleware } from './common/middlewares/logging.middleware';
     }),
   ],
   controllers: [ApiGatewayController],
-  providers: [ApiGatewayService],
+  providers: [
+    ApiGatewayService,
+    {
+      provide: APP_FILTER,
+      useClass: AllGlobalExceptionsFilter,
+    },
+  ],
 })
 export class ApiGatewayModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {
