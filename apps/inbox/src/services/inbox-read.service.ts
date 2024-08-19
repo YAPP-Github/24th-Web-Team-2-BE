@@ -14,6 +14,17 @@ export class InboxReadService {
     });
   }
 
+  async getGroup(userId: string) {
+    const inbox = await this.inboxRepository.findInboxByUserId(userId);
+    return inbox.groups.map((group) => {
+      return {
+        groupId: group._id,
+        name: group.name,
+        senders: group.senders,
+      };
+    });
+  }
+
   async getSpams(userId: string) {
     const inbox = await this.inboxRepository.findInboxByUserId(userId);
     return inbox.spams.map((spam) => {
