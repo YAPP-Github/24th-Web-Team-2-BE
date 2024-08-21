@@ -46,4 +46,16 @@ export class MailIntegratorController {
       }),
     };
   }
+
+  @MessagePattern({ cmd: 'modify-message-as-read' })
+  async modifyMessageAsRead(data: { userId: string; mailId: string }) {
+    const res = await this.mailIntegratorService.modifyMessageAsRead(data.userId, data.mailId);
+    return res;
+  }
+
+  @MessagePattern({ cmd: 'modify-message-as-unread' })
+  async modifyMessageAsUnread(data: { userId: string; mailId: string }) {
+    const res = await this.mailIntegratorService.modifyMessageAsUnread(data.userId, data.mailId);
+    return res;
+  }
 }
