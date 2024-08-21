@@ -18,15 +18,6 @@
         "tsConfigPath": "apps/auth/tsconfig.app.json"
       }
     },
-    "common": {
-      "type": "library",
-      "root": "libs/common",
-      "entryFile": "index",
-      "sourceRoot": "libs/common/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/common/tsconfig.lib.json"
-      }
-    },
     "api-gateway": {
       "type": "application",
       "root": "apps/api-gateway",
@@ -70,6 +61,24 @@
       "sourceRoot": "apps/publish-automation/src",
       "compilerOptions": {
         "tsConfigPath": "apps/publish-automation/tsconfig.app.json"
+      }
+    },
+    "common": {
+      "type": "library",
+      "root": "libs/common",
+      "entryFile": "index",
+      "sourceRoot": "libs/common/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/common/tsconfig.lib.json"
+      }
+    },
+    "network": {
+      "type": "library",
+      "root": "libs/network",
+      "entryFile": "index",
+      "sourceRoot": "libs/network/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/network/tsconfig.lib.json"
       }
     }
   }

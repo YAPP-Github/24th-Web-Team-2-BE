@@ -18,13 +18,10 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@libs/common/*": [
-        "libs/common/src/*"
-      ]
+      "@libs/common/*": ["libs/common/src/*"],
+      "@libs/network": ["libs/network/src"],
+      "@libs/network/*": ["libs/network/src/*"]
     }
   },
-  "include": [
-    "apps/**/*",
-    "libs/**/*"
-  ]
+  "include": ["apps/**/*", "libs/**/*"]
 }
