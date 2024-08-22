@@ -28,7 +28,7 @@
     "libs/*"
   ],
   "lint-staged": {
-    "*.{ts}": [
+    "*.ts": [
       "pnpm run format",
       "pnpm run lint"
     ]
