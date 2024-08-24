@@ -9,7 +9,7 @@ on:
 
 jobs:
   docker-image-push:
-    if: github.event.pull_request.merged == true
+    # if: github.event.pull_request.merged == true
     name: Push to container registry
     runs-on: ubuntu-latest
     strategy:
