@@ -68,10 +68,10 @@ export class MailIntegratorService {
 
     this.mailContextService.setMessagesListOption({ userId: 'me', q: query });
 
-    const msgs: Message[] = [];
-    for await (const messages of this.googleMailManager.retrieveMessages(userId, policy)) {
-      msgs.push(...messages);
-    }
+    const msgs: Message[] = await this.googleMailManager.retrieveMessagesOnce(userId);
+    // for await (const messages of this.googleMailManager.retrieveMessages(userId, policy)) {
+    //   msgs.push(...messages);
+    // }
 
     return msgs;
   }
