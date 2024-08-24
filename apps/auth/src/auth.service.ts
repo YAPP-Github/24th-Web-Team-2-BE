@@ -14,6 +14,8 @@ export class AuthService {
     private readonly authRepository: Repository<Auth>,
     @Inject('USER_SERVICE')
     private readonly userClient: ClientProxy,
+    @Inject('INBOX_SERVICE')
+    private readonly inboxClient: ClientProxy,
     private readonly httpService: HttpService,
     private readonly configService: ConfigService,
   ) {}
@@ -54,6 +56,7 @@ export class AuthService {
         refreshToken: tokenData.refresh_token,
       });
       authInfo = await this.authRepository.save(guestUserData);
+      this.inboxClient.send({ cmd: 'create-inbox' }, { userId: authInfo.userId });
     }
 
     const auth = {
