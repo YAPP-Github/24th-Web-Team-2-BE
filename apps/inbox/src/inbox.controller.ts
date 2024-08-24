@@ -68,4 +68,12 @@ export class InboxController {
       spams: res,
     };
   }
+
+  @MessagePattern({ cmd: 'get-subscriptions-list' })
+  async getSubscriptionsList() {
+    const res = await this.inboxReadService.getSubscriptionsList();
+    return {
+      subscriptions: res,
+    };
+  }
 }
