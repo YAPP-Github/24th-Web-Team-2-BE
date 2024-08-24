@@ -8,15 +8,11 @@ export class InboxService {
     @Inject('INBOX_SERVICE')
     private readonly inboxClient: ClientProxy,
   ) {}
-  async addSubscription(userId: string, subscriptions: string[]) {
+  async addSubscriptions(userId: string, subscriptions: { name: string; address: string }[]) {
     return lastValueFrom(this.inboxClient.send({ cmd: 'add-subscriptions' }, { userId, subscriptions }));
   }
 
-  async addSpam(userId: string, spams: string[]) {
-    return lastValueFrom(this.inboxClient.send({ cmd: 'add-spams' }, { userId, spams }));
-  }
-
-  async addInterest(userId: string, interests: string[]) {
+  async addInterests(userId: string, interests: { category: string }[]) {
     return lastValueFrom(this.inboxClient.send({ cmd: 'add-interests' }, { userId, interests }));
   }
 
@@ -24,7 +20,15 @@ export class InboxService {
     return lastValueFrom(this.inboxClient.send({ cmd: 'get-subscriptions' }, { userId }));
   }
 
+  async addSpams(userId: string, spams: string[]) {
+    return lastValueFrom(this.inboxClient.send({ cmd: 'add-spams' }, { userId, spams }));
+  }
+
   async getSpams(userId: string) {
     return lastValueFrom(this.inboxClient.send({ cmd: 'get-spams' }, { userId }));
+  }
+
+  async getSubscriptionsList() {
+    return lastValueFrom(this.inboxClient.send({ cmd: 'get-subscriptions-list' }, {}));
   }
 }

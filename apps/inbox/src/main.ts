@@ -6,8 +6,8 @@ async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(InboxModule, {
     transport: Transport.TCP,
     options: {
-      host: process.env.INBOX_HOST_DEV,
-      port: parseInt(process.env.INBOX_PORT_DEV),
+      host: process.env.INBOX_SERVICE_HOST,
+      port: parseInt(process.env.INBOX_SERVICE_HOST),
     },
   });
 

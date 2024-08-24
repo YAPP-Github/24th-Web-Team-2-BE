@@ -1,9 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InboxRepository } from '../mongo/repositories/inbox.repository';
-
+import { SubscriptionListConstants } from '@libs/common';
 @Injectable()
 export class InboxReadService {
-  constructor(private readonly inboxRepository: InboxRepository) {}
+  constructor(
+    private readonly inboxRepository: InboxRepository,
+    private readonly subscriptionList: SubscriptionListConstants,
+  ) {}
 
   async getInbox(userId: string) {
     const inbox = await this.inboxRepository.findInboxByUserId(userId);
@@ -41,5 +44,9 @@ export class InboxReadService {
         address: spam,
       };
     });
+  }
+
+  async getSubscriptionsList() {
+    return this.subscriptionList.subscriptionList;
   }
 }

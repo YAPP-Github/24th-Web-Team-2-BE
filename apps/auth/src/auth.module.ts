@@ -18,6 +18,14 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
           port: parseInt(process.env.USER_SERVICE_PORT),
         },
       },
+      {
+        name: 'INBOX_SERVICE',
+        transport: Transport.TCP,
+        options: {
+          host: process.env.INBOX_SERVICE_HOST,
+          port: parseInt(process.env.INBOX_SERVICE_PORT),
+        },
+      },
     ]),
     TypeOrmModule.forFeature([Auth]),
   ],

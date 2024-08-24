@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: hedwig-database-dev
+    env_file:
+      - .database.env
+    ports:
+      - '3306:3306'
+    volumes:
+      - .infra/mysql-init:/docker-entrypoint-initdb.d
+    networks:
+      - imc-docker-bridge
+
+networks:
+  imc-docker-bridge:
+    external: true

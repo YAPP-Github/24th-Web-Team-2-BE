@@ -4,29 +4,54 @@ import { MailFetchPolicy } from './mail-fetch.policy';
 import { Message } from './google-mail.parser';
 
 import { MailContextService } from './mail-context.service';
+import gmailPageTokenCache from './caches/gmail-pageToken.cache';
+import { GoogleMailClient } from './google-mail.client';
 
 @Injectable()
 export class GoogleMailManager {
   constructor(
     private readonly googleMailReader: GoogleMailReader,
     private readonly mailContextService: MailContextService,
+    private readonly mailClient: GoogleMailClient,
   ) {}
 
-  async processMessages(userId: string, mailPolicy: MailFetchPolicy) {
+  async *retrieveMessages(userId: string, mailPolicy: MailFetchPolicy) {
     this.mailContextService.setUserId(userId);
-    while (mailPolicy.fetchFlag()) {
-      const includedMessages: Message[] = [];
+    while (mailPolicy.fetchFlag() && gmailPageTokenCache.get('userId') !== null) {
       const messages = await this.googleMailReader.readMessages();
-
+      const includedMessages: Message[] = [];
       messages.forEach((message) => {
         mailPolicy.checkIfNext(message);
-        if (mailPolicy.senderIncludeRule(message.from) && mailPolicy.fetchFlag()) {
+        if (mailPolicy.fetchFlag()) {
           includedMessages.push(message);
         }
       });
-      // TODO: includedMessage들을 inbox API를 호출해서 DB에 저장
-    }
 
-    return;
+      if (includedMessages.length > 0) {
+        yield includedMessages;
+      }
+    }
+    // TODO: token cache 일괄 관리하도록 수정
+    gmailPageTokenCache.del('userId');
+  }
+
+  async retrieveMessagesOnce(userId: string) {
+    this.mailContextService.setUserId(userId);
+    return await this.googleMailReader.readMessages();
+  }
+
+  async modifyMessageAsRead(userId: string, messageId: string) {
+    this.mailContextService.setUserId(userId);
+    return await this.mailClient.removeLabelsFromMessage(messageId, ['UNREAD']);
+  }
+
+  async modifyMessageAsUnread(userId: string, messageId: string) {
+    this.mailContextService.setUserId(userId);
+    return await this.mailClient.addLabelsToMessage(messageId, ['UNREAD']);
+  }
+
+  async removeMessage(userId: string, messageId: string) {
+    this.mailContextService.setUserId(userId);
+    return await this.mailClient.removeMessage(messageId);
   }
 }

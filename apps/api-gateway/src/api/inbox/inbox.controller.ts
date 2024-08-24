@@ -16,9 +16,9 @@ export class InboxController {
   }
 
   @Post('/subscriptions')
-  async addSubscription(@AuthInfo() authInfo: IAuthInfo, @Body() subscriptionDTO: SubscriptionDTO) {
+  async addSubscriptions(@AuthInfo() authInfo: IAuthInfo, @Body() subscriptionDTO: SubscriptionDTO) {
     const { subscriptions } = subscriptionDTO;
-    return await this.inboxService.addSubscription(authInfo.userId, subscriptions);
+    return await this.inboxService.addSubscriptions(authInfo.userId, subscriptions);
   }
 
   @Get('/spams')
@@ -27,14 +27,19 @@ export class InboxController {
   }
 
   @Post('/spams')
-  async addSpam(@AuthInfo() authInfo: IAuthInfo, @Body() spamDTO: SpamDTO) {
+  async addSpams(@AuthInfo() authInfo: IAuthInfo, @Body() spamDTO: SpamDTO) {
     const { spams } = spamDTO;
-    return await this.inboxService.addSpam(authInfo.userId, spams);
+    return await this.inboxService.addSpams(authInfo.userId, spams);
   }
 
   @Post('/interests')
-  async addInterest(@AuthInfo() authInfo: IAuthInfo, @Body() interestDTO: InterestDTO) {
+  async addInterests(@AuthInfo() authInfo: IAuthInfo, @Body() interestDTO: InterestDTO) {
     const { interests } = interestDTO;
-    return await this.inboxService.addInterest(authInfo.userId, interests);
+    return await this.inboxService.addInterests(authInfo.userId, interests);
+  }
+
+  @Get('/subscriptions-list')
+  async getSubscriptionsList() {
+    return await this.inboxService.getSubscriptionsList();
   }
 }

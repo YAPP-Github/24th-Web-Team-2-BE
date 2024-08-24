@@ -1,0 +1,16 @@
+export const privateMailDomains: string[] = [
+  '@naver.com',
+  '@daum.net',
+  '@kakao.com',
+  '@gmail.com',
+  '@nate.com',
+  '@yahoo.co.kr',
+  '@yahoo.co.jp',
+  '@yahoo.co.ph',
+  '@yahoo.com',
+  '@hanmail.net',
+  '@outlook.com',
+  '@hotmail.com',
+  '@icloud.com',
+  '@ezweb.ne.jp',
+];
