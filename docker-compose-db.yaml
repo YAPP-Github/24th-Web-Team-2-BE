@@ -14,3 +14,9 @@ services:
       - '3306:3306'
     volumes:
       - .infra/mysql-init:/docker-entrypoint-initdb.d
+    networks:
+      - imc-docker-bridge
+
+networks:
+  imc-docker-bridge:
+    external: true
