@@ -7,12 +7,14 @@ import { UserModule } from './api/user/user.module';
 import { InboxModule } from './api/inbox/inbox.module';
 import { APP_FILTER } from '@nestjs/core';
 import { AllGlobalExceptionsFilter } from './common/exceptions/global-exception.filter';
+import { MailIntegratorModule } from './api/mail-integrator/mail-integrator.module';
 
 @Module({
   imports: [
     AuthModule,
     UserModule,
     InboxModule,
+    MailIntegratorModule,
     ConfigModule.forRoot({
       envFilePath: ['.env'],
       isGlobal: true,
