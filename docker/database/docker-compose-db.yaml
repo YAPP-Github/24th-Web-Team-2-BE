@@ -15,7 +15,7 @@ services:
     volumes:
       - .infra/mysql-init:/docker-entrypoint-initdb.d
     networks:
-      - hedwig-database-dev
+      - hedwig-server-dev
 
 networks:
   hedwig-server-dev:
