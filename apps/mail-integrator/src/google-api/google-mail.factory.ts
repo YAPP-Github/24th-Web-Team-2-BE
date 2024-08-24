@@ -4,14 +4,27 @@ import { google } from 'googleapis';
 import { ProviderToken } from '../provider-tokens';
 import { MailContextService } from './mail-context.service';
 import gmailAccessTokenCache from './caches/gmail-accessToken.cache';
+import { ClientProxy, ClientProxyFactory, Transport } from '@nestjs/microservices';
+import { lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class GoogleMailFactory {
+  // URGENT: client proxy -> network client로 변경
+  private client: ClientProxy;
+
   constructor(
     @Inject(ProviderToken.GOOGLE_OAUTH2_CLIENT)
     private readonly googleOAuth2Client: OAuth2Client,
     private readonly mailContextService: MailContextService,
-  ) {}
+  ) {
+    this.client = ClientProxyFactory.create({
+      transport: Transport.TCP,
+      options: {
+        host: process.env.AUTH_SERVICE_HOST,
+        port: parseInt(process.env.AUTH_SERVICE_PORT),
+      },
+    });
+  }
 
   // TODO: user id로 access token 받아오기
   // TODO: Cache provider 분리
@@ -37,6 +50,10 @@ export class GoogleMailFactory {
   }
 
   private async fetchAccessToken(): Promise<string> {
-    return 'token';
+    // URGENT: auth client 호출로 변경
+    const res = await lastValueFrom(
+      this.client.send({ cmd: 're-issue-token' }, { userId: this.mailContextService.getUserId(), providerType: 'google' }),
+    );
+    return res as string;
   }
 }
