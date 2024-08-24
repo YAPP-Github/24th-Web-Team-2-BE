@@ -45,8 +45,10 @@ export class AuthService {
 
     let authInfo = await this.authRepository.findOne({ where: { providerId: googleUserInfo.sub } });
 
+    console.log(authInfo);
     if (!authInfo) {
       const guestUser = await lastValueFrom(this.userClient.send({ cmd: 'create-guest-user' }, googleUserInfo.name));
+      console.log("guestUser", guestUser);  
       const guestUserData = this.authRepository.create({
         //user 생성 후 들어가야 함
         userId: guestUser.id,
@@ -56,7 +58,8 @@ export class AuthService {
         refreshToken: tokenData.refresh_token,
       });
       authInfo = await this.authRepository.save(guestUserData);
-      this.inboxClient.send({ cmd: 'create-inbox' }, { userId: authInfo.userId });
+      const res = await lastValueFrom(this.inboxClient.send({ cmd: 'create-inbox' }, { userId: authInfo.userId }));
+      console.log("결과 결과", res)
     }
 
     const auth = {
