@@ -16,3 +16,7 @@ services:
       - .infra/mysql-init:/docker-entrypoint-initdb.d
     networks:
       - hedwig-database-dev
+
+networks:
+  hedwig-server-dev:
+    driver: bridge
