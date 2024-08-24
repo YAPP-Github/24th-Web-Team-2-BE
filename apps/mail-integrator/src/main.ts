@@ -7,8 +7,8 @@ async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(MailIntegratorModule, {
     transport: Transport.TCP,
     options: {
-      host: process.env.MAIL_INTEGRATOR_HOST_DEV,
-      port: parseInt(process.env.MAIL_INTEGRATOR_PORT_DEV),
+      host: process.env.MAIL_INTEGRATOR_SERVICE_HOST,
+      port: parseInt(process.env.MAIL_INTEGRATOR_SERVICE_PORT),
     },
   });
 
