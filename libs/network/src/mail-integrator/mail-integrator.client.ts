@@ -3,7 +3,11 @@ import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 
 import { MailIntegratorCommandToken } from './mail-integrator-command.token';
-import { GetMailSendersRequest, GetUnreadMessagesRequest } from '../@types/mail-integrator/mail-integrator-service.request';
+import {
+  GetMailSendersRequest,
+  GetUnreadMessagesRequest,
+  RemoveMessageRequest,
+} from '../@types/mail-integrator/mail-integrator-service.request';
 import { GetMailSendersResponse, GetUnreadMessagesResponse } from '../@types/mail-integrator/mail-integrator-service.response';
 
 @Injectable()
@@ -24,5 +28,9 @@ export class MailIntegratorClient {
 
   async modifyMessageAsUnread(request: GetUnreadMessagesRequest): Promise<void> {
     return lastValueFrom(this.client.send({ cmd: MailIntegratorCommandToken.MODIFY_MESSAGE_AS_UNREAD }, request));
+  }
+
+  async removeMessage(request: RemoveMessageRequest): Promise<void> {
+    return lastValueFrom(this.client.send({ cmd: MailIntegratorCommandToken.REMOVE_MESSAGE }, request));
   }
 }
