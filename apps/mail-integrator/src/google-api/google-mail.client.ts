@@ -29,6 +29,36 @@ export class GoogleMailClient {
     return messages.map((message) => message.data);
   }
 
+  async addLabelsToMessage(messageId: string, labels: string[]): Promise<void> {
+    const gmail = await this.googleMailFactory.gmail();
+    await gmail.users.messages.modify({
+      userId: 'me',
+      id: messageId,
+      requestBody: {
+        addLabelIds: labels,
+      },
+    });
+  }
+
+  async removeLabelsFromMessage(messageId: string, labels: string[]): Promise<void> {
+    const gmail = await this.googleMailFactory.gmail();
+    await gmail.users.messages.modify({
+      userId: 'me',
+      id: messageId,
+      requestBody: {
+        removeLabelIds: labels,
+      },
+    });
+  }
+
+  async removeMessage(messageId: string): Promise<void> {
+    const gmail = await this.googleMailFactory.gmail();
+    await gmail.users.messages.trash({
+      userId: 'me',
+      id: messageId,
+    });
+  }
+
   async applyFilterBySender(from: string, labels: string[]) {
     const gmail = await this.googleMailFactory.gmail();
     gmail.users.settings.filters.create({
