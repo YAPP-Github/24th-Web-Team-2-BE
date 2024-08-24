@@ -39,3 +39,7 @@ export interface GetGroupsRequest {
 export interface GetSpamsRequest {
   userId: string;
 }
+
+export type GetInboxRequest = {
+  userId: string;
+};

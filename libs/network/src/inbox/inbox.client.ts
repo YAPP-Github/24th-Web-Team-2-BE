@@ -9,11 +9,13 @@ import {
   AddSubscriptionRequest,
   CreateInboxRequest,
   GetGroupsRequest,
+  GetInboxRequest,
   GetSpamsRequest,
   GetSubscriptionsRequest,
 } from '../@types/inbox/inbox-service.request';
 
 import { InboxCommandToken } from './inbox-commad.token';
+import { GetInboxResponse } from '../@types/inbox/inbox-service.response';
 
 @Injectable()
 export class InboxClient {
@@ -53,5 +55,9 @@ export class InboxClient {
 
   async getSpams(request: GetSpamsRequest) {
     return lastValueFrom(this.client.send({ cmd: InboxCommandToken.GET_SPAMS }, request));
+  }
+
+  async getInbox(request: GetInboxRequest): Promise<GetInboxResponse> {
+    return lastValueFrom(this.client.send({ cmd: InboxCommandToken.GET_INBOX }, request));
   }
 }
