@@ -28,11 +28,9 @@
     "libs/*"
   ],
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "eslint --fix"
-    ],
-    "package.json": [
-      "pnpm lint"
+    "*.{ts}": [
+      "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
+      "eslint \"{src,apps,libs,test}/**/*.ts\" --fix"
     ]
   },
   "dependencies": {

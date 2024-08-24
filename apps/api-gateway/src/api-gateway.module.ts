@@ -5,6 +5,8 @@ import { AuthModule } from './api/auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './api/user/user.module';
 import { InboxModule } from './api/inbox/inbox.module';
+import { APP_FILTER } from '@nestjs/core';
+import { AllGlobalExceptionsFilter } from './common/exceptions/global-exception.filter';
 
 @Module({
   imports: [
@@ -17,6 +19,12 @@ import { InboxModule } from './api/inbox/inbox.module';
     }),
   ],
   controllers: [ApiGatewayController],
-  providers: [ApiGatewayService],
+  providers: [
+    ApiGatewayService,
+    {
+      provide: APP_FILTER,
+      useClass: AllGlobalExceptionsFilter,
+    },
+  ],
 })
 export class ApiGatewayModule {}
