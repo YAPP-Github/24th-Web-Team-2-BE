@@ -6,10 +6,6 @@ services:
     container_name: hedwig-database-dev
     env_file:
       - .database.env
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
       - '3306:3306'
     volumes:
