@@ -14,6 +14,7 @@ export class InboxController {
 
   @MessagePattern({ cmd: 'create-inbox' })
   async createInbox(data: { userId: string }) {
+    console.log("들어왔어용!", data)
     return await this.inboxCreateService.createInbox(data.userId);
   }
 
