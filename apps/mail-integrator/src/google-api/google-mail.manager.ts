@@ -35,6 +35,11 @@ export class GoogleMailManager {
     gmailPageTokenCache.del('userId');
   }
 
+  async retrieveMessagesOnce(userId: string) {
+    this.mailContextService.setUserId(userId);
+    return await this.googleMailReader.readMessages();
+  }
+
   async modifyMessageAsRead(userId: string, messageId: string) {
     this.mailContextService.setUserId(userId);
     return await this.mailClient.removeLabelsFromMessage(messageId, ['UNREAD']);
