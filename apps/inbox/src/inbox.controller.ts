@@ -45,6 +45,11 @@ export class InboxController {
     );
   }
 
+  @MessagePattern({ cmd: 'get-inbox' })
+  async getInbox(data: { userId: string }) {
+    return await this.inboxReadService.getInbox(data.userId);
+  }
+
   @MessagePattern({ cmd: 'get-subscriptions' })
   async getSubscriptions(data: { userId: string }) {
     const res = await this.inboxReadService.getSubscriptions(data.userId);
@@ -53,9 +58,9 @@ export class InboxController {
     };
   }
 
-  @MessagePattern({ cmd: 'get-group' })
+  @MessagePattern({ cmd: 'get-groups' })
   async getGroups(data: { userId: string }) {
-    const res = await this.inboxReadService.getGroup(data.userId);
+    const res = await this.inboxReadService.getGroups(data.userId);
     return {
       groups: res,
     };

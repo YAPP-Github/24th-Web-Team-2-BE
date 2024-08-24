@@ -8,16 +8,25 @@ export class InboxReadService {
     private readonly subscriptionList: SubscriptionListConstants,
   ) {}
 
-  async getSubscriptions(userId: string) {
+  async getInbox(userId: string) {
     const inbox = await this.inboxRepository.findInboxByUserId(userId);
-    return inbox.subscriptions.map((sub) => {
-      return {
-        address: sub,
-      };
-    });
+    return {
+      inboxId: inbox._id,
+      subscriptions: inbox.subscriptions,
+      groups: inbox.groups,
+      spams: inbox.spams,
+      interests: inbox.interests,
+      createdAt: inbox.createdAt,
+      updatedAt: inbox.updatedAt,
+    };
   }
 
-  async getGroup(userId: string) {
+  async getSubscriptions(userId: string) {
+    const inbox = await this.inboxRepository.findInboxByUserId(userId);
+    return inbox.subscriptions;
+  }
+
+  async getGroups(userId: string) {
     const inbox = await this.inboxRepository.findInboxByUserId(userId);
     return inbox.groups.map((group) => {
       return {
