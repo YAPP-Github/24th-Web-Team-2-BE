@@ -1,3 +1,3 @@
 export class SubscriptionDTO {
-  subscriptions: string[];
+  subscriptions: { name: string; address: string }[];
 }
