@@ -9,6 +9,8 @@ services:
     ports:
       - '3000:3000'
     restart: 'no'
+    networks:
+      - hedwig-server-dev
 
   auth:
     image: 'leobang/auth'
@@ -18,6 +20,8 @@ services:
     ports:
       - '3001:3000'
     restart: 'no'
+    networks:
+      - hedwig-server-dev
 
   inbox:
     image: 'leobang/inbox'
@@ -27,6 +31,8 @@ services:
     ports:
       - '3002:3000'
     restart: 'no'
+    networks:
+      - hedwig-server-dev
 
   user:
     image: 'leobang/user'
@@ -36,6 +42,8 @@ services:
     ports:
       - '3003:3000'
     restart: 'no'
+    networks:
+      - hedwig-server-dev
 
   mail-integrator:
     image: 'leobang/mail-integrator'
@@ -45,3 +53,9 @@ services:
     ports:
       - '3004:3000'
     restart: 'no'
+    networks:
+      - hedwig-server-dev
+
+networks:
+  hedwig-server-dev:
+    driver: bridge
