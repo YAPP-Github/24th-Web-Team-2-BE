@@ -76,6 +76,12 @@ export class MailIntegratorController {
     };
   }
 
+  @MessagePattern({ cmd: 'remove-message' })
+  async removeMessage(data: { userId: string; mailId: string }) {
+    const res = await this.mailIntegratorService.removeMessage(data.userId, data.mailId);
+    return res;
+  }
+
   @MessagePattern({ cmd: 'modify-message-as-read' })
   async modifyMessageAsRead(data: { userId: string; mailId: string }) {
     const res = await this.mailIntegratorService.modifyMessageAsRead(data.userId, data.mailId);

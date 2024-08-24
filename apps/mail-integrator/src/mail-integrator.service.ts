@@ -83,4 +83,8 @@ export class MailIntegratorService {
   async modifyMessageAsUnread(userId: string, messageId: string) {
     return await this.googleMailManager.modifyMessageAsUnread(userId, messageId);
   }
+
+  async removeMessage(userId: string, messageId: string) {
+    return await this.googleMailManager.removeMessage(userId, messageId);
+  }
 }

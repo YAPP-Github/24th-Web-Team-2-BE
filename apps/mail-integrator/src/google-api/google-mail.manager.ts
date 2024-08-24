@@ -44,4 +44,9 @@ export class GoogleMailManager {
     this.mailContextService.setUserId(userId);
     return await this.mailClient.addLabelsToMessage(messageId, ['UNREAD']);
   }
+
+  async removeMessage(userId: string, messageId: string) {
+    this.mailContextService.setUserId(userId);
+    return await this.mailClient.removeMessage(messageId);
+  }
 }
