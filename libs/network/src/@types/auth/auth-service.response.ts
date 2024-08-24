@@ -1,0 +1,1 @@
+export type ReIssueTokenResponse = string;
