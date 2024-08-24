@@ -1,10 +1,11 @@
 name: server-deploy
 
 on:
-  pull_request:
-    types: [closed]
+  push:
+    # pull_request:
+    #   types: [closed]
     branches:
-      - development
+      - hotfix/docker-compose-file-fix
 
 jobs:
   docker-image-push:
@@ -71,8 +72,8 @@ jobs:
       - name: Copy docker-compose file
         uses: garygrossgarten/github-action-scp@release
         with:
-          local: ./docker-compose-server.yaml
-          remote: apps/docker-compose-server.yaml
+          local: ./docker/server/docker-compose-server.yaml
+          remote: apps/docker/server/docker-compose-server.yaml
           host: ${{ secrets.NCP_SERVER_HOST }}
           username: ${{ secrets.NCP_SERVER_USERNAME }}
           password: ${{ secrets.NCP_SERVER_PASSWORD }}
@@ -81,7 +82,7 @@ jobs:
         uses: garygrossgarten/github-action-scp@release
         with:
           local: ./.env
-          remote: apps/.env
+          remote: apps/docker/server/.env
           host: ${{ secrets.NCP_SERVER_HOST }}
           username: ${{ secrets.NCP_SERVER_USERNAME }}
           password: ${{ secrets.NCP_SERVER_PASSWORD }}
@@ -94,6 +95,6 @@ jobs:
           password: ${{ secrets.NCP_SERVER_PASSWORD }}
           port: 22
           script: |
-            docker-compose -f apps/docker-compose-server.yaml down
-            docker-compose -f apps/docker-compose-server.yaml pull
-            docker-compose -f apps/docker-compose-server.yaml up -d
+            docker-compose -f apps/docker/server/docker-compose-server.yaml down
+            docker-compose -f apps/docker/server/docker-compose-server.yaml pull
+            docker-compose -f apps/docker/server/docker-compose-server.yaml up -d
