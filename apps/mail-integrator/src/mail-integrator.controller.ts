@@ -35,6 +35,7 @@ export class MailIntegratorController {
   @MessagePattern({ cmd: 'get-unread-messages' })
   async getUnreadMessages(data: { userId: string; type: 'SENDER' | 'GROUP' | 'ALL'; target?: string }) {
     // URGENT: inbox client 호출로 변경
+    console.log("얍");
     const inbox = (await lastValueFrom(this.client.send({ cmd: 'get-inbox' }, { userId: data.userId }))) as {
       inboxId: unknown;
       subscriptions: {
@@ -53,6 +54,7 @@ export class MailIntegratorController {
       createdAt: Date;
       updatedAt: Date;
     };
+    console.log("inbox", inbox)
 
     let addresses = [];
     switch (data.type) {
