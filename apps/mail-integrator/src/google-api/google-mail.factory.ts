@@ -51,9 +51,11 @@ export class GoogleMailFactory {
 
   private async fetchAccessToken(): Promise<string> {
     // URGENT: auth client 호출로 변경
+    console.log("fetch 까지 옴")
     const res = await lastValueFrom(
       this.client.send({ cmd: 're-issue-token' }, { userId: this.mailContextService.getUserId(), providerType: 'google' }),
     );
+    console.log(res)
     return res as string;
   }
 }
