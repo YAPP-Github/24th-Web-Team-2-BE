@@ -8,4 +8,5 @@ export enum InboxCommandToken {
   GET_SUBSCRIPTIONS = 'get-subscriptions',
   GET_GROUPS = 'get-groups',
   GET_SPAMS = 'get-spams',
+  GET_INBOX = 'get-inbox',
 }
