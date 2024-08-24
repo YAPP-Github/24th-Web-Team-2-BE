@@ -53,7 +53,7 @@ export class MailIntegratorController {
       createdAt: Date;
       updatedAt: Date;
     };
-
+    console.log("인박스 ~ 짱 ~", inbox)
     let addresses = [];
     switch (data.type) {
       case 'SENDER':

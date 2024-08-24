@@ -76,6 +76,7 @@ export class GoogleMailClient {
 
   // TODO: token cache를 별도의 provider로 분리
   private async messageIdentifiers() {
+    console.log("리스트를 호출했어요~")
     const gmail = await this.googleMailFactory.gmail();
     const res = await gmail.users.messages.list({
       userId: 'me',
