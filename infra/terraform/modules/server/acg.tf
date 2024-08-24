@@ -28,6 +28,13 @@ resource "ncloud_access_control_group_rule" "temp-server-acg-rule" {
     description = "accept 3000 port"
   }
 
+  inbound {
+    protocol    = "TCP"
+    ip_block    = "0.0.0.0/0"
+    port_range  = "3306"
+    description = "accept 3306 port"
+  }
+
   outbound {
     protocol    = "TCP"
     ip_block    = "0.0.0.0/0"

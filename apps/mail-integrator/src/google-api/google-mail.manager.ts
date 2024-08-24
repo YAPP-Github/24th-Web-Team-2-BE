@@ -5,12 +5,14 @@ import { Message } from './google-mail.parser';
 
 import { MailContextService } from './mail-context.service';
 import gmailPageTokenCache from './caches/gmail-pageToken.cache';
+import { GoogleMailClient } from './google-mail.client';
 
 @Injectable()
 export class GoogleMailManager {
   constructor(
     private readonly googleMailReader: GoogleMailReader,
     private readonly mailContextService: MailContextService,
+    private readonly mailClient: GoogleMailClient,
   ) {}
 
   async *retrieveMessages(userId: string, mailPolicy: MailFetchPolicy) {
@@ -31,5 +33,20 @@ export class GoogleMailManager {
     }
     // TODO: token cache 일괄 관리하도록 수정
     gmailPageTokenCache.del('userId');
+  }
+
+  async modifyMessageAsRead(userId: string, messageId: string) {
+    this.mailContextService.setUserId(userId);
+    return await this.mailClient.removeLabelsFromMessage(messageId, ['UNREAD']);
+  }
+
+  async modifyMessageAsUnread(userId: string, messageId: string) {
+    this.mailContextService.setUserId(userId);
+    return await this.mailClient.addLabelsToMessage(messageId, ['UNREAD']);
+  }
+
+  async removeMessage(userId: string, messageId: string) {
+    this.mailContextService.setUserId(userId);
+    return await this.mailClient.removeMessage(messageId);
   }
 }

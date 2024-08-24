@@ -1,11 +1,22 @@
 import { Controller } from '@nestjs/common';
 
 import { MailIntegratorService } from './mail-integrator.service';
-import { MessagePattern } from '@nestjs/microservices';
+import { ClientProxy, ClientProxyFactory, MessagePattern, Transport } from '@nestjs/microservices';
+import { lastValueFrom } from 'rxjs';
 
 @Controller()
 export class MailIntegratorController {
-  constructor(private readonly mailIntegratorService: MailIntegratorService) {}
+  // URGENT: client proxy -> network client로 변경
+  private client: ClientProxy;
+  constructor(private readonly mailIntegratorService: MailIntegratorService) {
+    this.client = ClientProxyFactory.create({
+      transport: Transport.TCP,
+      options: {
+        host: process.env.INBOX_SERVICE_HOST,
+        port: parseInt(process.env.INBOX_SERVICE_PORT),
+      },
+    });
+  }
 
   @MessagePattern({ cmd: 'get-mail-senders' })
   async getMailSenders(data: { userId: string }) {
@@ -23,8 +34,26 @@ export class MailIntegratorController {
 
   @MessagePattern({ cmd: 'get-unread-messages' })
   async getUnreadMessages(data: { userId: string; type: 'SENDER' | 'GROUP' | 'ALL'; target?: string }) {
-    // TODO inbox API 호출
-    const inbox = {} as any; // user Id로 가져온 inbox 엔티티
+    // URGENT: inbox client 호출로 변경
+    const inbox = (await lastValueFrom(this.client.send({ cmd: 'get-inbox' }, { userId: data.userId }))) as {
+      inboxId: unknown;
+      subscriptions: {
+        name: string;
+        address: string;
+      }[];
+      groups: {
+        name: string;
+        senders: {
+          name: string;
+          address: string;
+        }[];
+      }[];
+      spams: string[];
+      interests: [string];
+      createdAt: Date;
+      updatedAt: Date;
+    };
+
     let addresses = [];
     switch (data.type) {
       case 'SENDER':
@@ -45,5 +74,23 @@ export class MailIntegratorController {
         };
       }),
     };
+  }
+
+  @MessagePattern({ cmd: 'remove-message' })
+  async removeMessage(data: { userId: string; mailId: string }) {
+    const res = await this.mailIntegratorService.removeMessage(data.userId, data.mailId);
+    return res;
+  }
+
+  @MessagePattern({ cmd: 'modify-message-as-read' })
+  async modifyMessageAsRead(data: { userId: string; mailId: string }) {
+    const res = await this.mailIntegratorService.modifyMessageAsRead(data.userId, data.mailId);
+    return res;
+  }
+
+  @MessagePattern({ cmd: 'modify-message-as-unread' })
+  async modifyMessageAsUnread(data: { userId: string; mailId: string }) {
+    const res = await this.mailIntegratorService.modifyMessageAsUnread(data.userId, data.mailId);
+    return res;
   }
 }
