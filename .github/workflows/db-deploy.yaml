@@ -3,7 +3,7 @@ name: database-deploy
 on:
   push:
     branches:
-      - database/*
+      - deploy-test
   # pull_request:
   #   types: [closed]
   #   branches:
