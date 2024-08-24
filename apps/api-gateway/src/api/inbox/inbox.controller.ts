@@ -37,4 +37,9 @@ export class InboxController {
     const { interests } = interestDTO;
     return await this.inboxService.addInterests(authInfo.userId, interests);
   }
+
+  @Get('/subscriptions-list')
+  async getSubscriptionsList() {
+    return await this.inboxService.getSubscriptionsList();
+  }
 }

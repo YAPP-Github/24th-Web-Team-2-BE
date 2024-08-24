@@ -27,4 +27,8 @@ export class InboxService {
   async getSpams(userId: string) {
     return lastValueFrom(this.inboxClient.send({ cmd: 'get-spams' }, { userId }));
   }
+
+  async getSubscriptionsList() {
+    return lastValueFrom(this.inboxClient.send({ cmd: 'get-subscriptions-list' }, {}));
+  }
 }
