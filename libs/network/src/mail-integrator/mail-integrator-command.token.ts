@@ -4,4 +4,6 @@ export enum MailIntegratorCommandToken {
 
   MODIFY_MESSAGE_AS_READ = 'modify-message-as-read',
   MODIFY_MESSAGE_AS_UNREAD = 'modify-message-as-unread',
+
+  REMOVE_MESSAGE = 'remove-message',
 }

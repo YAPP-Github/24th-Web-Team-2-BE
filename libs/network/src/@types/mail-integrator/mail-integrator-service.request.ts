@@ -17,3 +17,8 @@ export type ModifyMessageAsUnReadRequest = {
   userId: string;
   mailId: string;
 };
+
+export type RemoveMessageRequest = {
+  userId: string;
+  mailId: string;
+};
