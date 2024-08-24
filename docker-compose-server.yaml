@@ -9,6 +9,8 @@ services:
     ports:
       - '3000:3000'
     restart: 'no'
+    networks:
+      - imc-docker-bridge
 
   auth:
     image: 'leobang/auth'
@@ -18,6 +20,8 @@ services:
     ports:
       - '3001:3000'
     restart: 'no'
+    networks:
+      - imc-docker-bridge
 
   inbox:
     image: 'leobang/inbox'
@@ -27,6 +31,8 @@ services:
     ports:
       - '3002:3000'
     restart: 'no'
+    networks:
+      - imc-docker-bridge
 
   user:
     image: 'leobang/user'
@@ -36,6 +42,8 @@ services:
     ports:
       - '3003:3000'
     restart: 'no'
+    networks:
+      - imc-docker-bridge
 
   mail-integrator:
     image: 'leobang/mail-integrator'
@@ -45,3 +53,9 @@ services:
     ports:
       - '3004:3000'
     restart: 'no'
+    networks:
+      - imc-docker-bridge
+
+networks:
+  imc-docker-bridge:
+    external: true
