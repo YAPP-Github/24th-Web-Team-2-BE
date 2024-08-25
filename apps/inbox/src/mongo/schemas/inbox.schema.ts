@@ -8,7 +8,7 @@ export const InboxSchema = new Schema(
       {
         _id: false,
         name: { type: String, required: true },
-        address: { type: String, required: true},
+        address: { type: String, required: true },
       },
     ],
     groups: [
