@@ -76,6 +76,7 @@ export class MailIntegratorController {
         const { messageId, labels, ...rest } = message;
         return {
           mailId: messageId,
+          read: false,
           ...rest,
         };
       }),
