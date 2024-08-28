@@ -57,7 +57,7 @@ export class InboxController {
     return await this.inboxService.addGroup(authInfo.userId, groupName);
   }
 
-  @Post('/:groupId/senders')
+  @Post('/groups/:groupId/senders')
   async addSenderToGroup(@AuthInfo() authInfo: IAuthInfo, @Param('groupId') groupId: string, @Body() SenderToGroupDTO: SenderToGroupDTO) {
     const { name, address } = SenderToGroupDTO;
     return await this.inboxService.addSenderToGroup(authInfo.userId, groupId, { name, address });
