@@ -10,7 +10,7 @@ interface Newsletter {
 export interface SubscriptionList {
   tech: Newsletter[];
   business: Newsletter[];
-  health: Newsletter[];
+  design: Newsletter[];
   trend: Newsletter[];
   career: Newsletter[];
   startup: Newsletter[];
@@ -86,7 +86,7 @@ const startupNewsletterList: Newsletter[] = [
 export const subscriptionNewsletterList: SubscriptionList = {
   tech: techNewsletterList,
   business: businessNewsletterList,
-  health: designNewsletterList,
+  design: designNewsletterList,
   trend: trendNewsletterList,
   career: careerNewsletterList,
   startup: startupNewsletterList,
