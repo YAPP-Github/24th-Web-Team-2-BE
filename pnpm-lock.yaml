@@ -211,6 +211,9 @@ importers:
       '@libs/common':
         specifier: workspace:*
         version: link:../../libs/common
+      '@libs/network':
+        specifier: workspace:*
+        version: link:../../libs/network
       '@nestjs/microservices':
         specifier: ^10.3.9
         version: 10.3.9(@nestjs/common@10.3.9(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.9)(ioredis@5.4.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
@@ -477,8 +480,8 @@ packages:
     resolution: { integrity: sha512-foQZKJig7Ob0BMAYBfcJk8d77QtOe7Wo4ox7ff1lQYoNNAb6jwcY1ncdoy2e9wQZzvNy7ODZCYJkK8kzmcAnAg== }
 
   '@humanwhocodes/config-array@0.11.14':
-    resolution: {integrity: sha512-3T8LkOmg45BV5FICb15QQMsyUSWrQ8AygVfC7ZG32zOalnqrilm018ZVCw0eapXux8FtA33q8PSRSstjee3jSg==}
-    engines: {node: '>=10.10.0'}
+    resolution: { integrity: sha512-3T8LkOmg45BV5FICb15QQMsyUSWrQ8AygVfC7ZG32zOalnqrilm018ZVCw0eapXux8FtA33q8PSRSstjee3jSg== }
+    engines: { node: '>=10.10.0' }
     deprecated: Use @eslint/config-array instead
 
   '@humanwhocodes/module-importer@1.0.1':
@@ -486,7 +489,7 @@ packages:
     engines: { node: '>=12.22' }
 
   '@humanwhocodes/object-schema@2.0.3':
-    resolution: {integrity: sha512-93zYdMES/c1D69yZiKDBj0V24vqNzB/koF26KPaagAfd3P/4gUlh3Dys5ogAK+Exi9QyzlD8x/08Zt7wIKcDcA==}
+    resolution: { integrity: sha512-93zYdMES/c1D69yZiKDBj0V24vqNzB/koF26KPaagAfd3P/4gUlh3Dys5ogAK+Exi9QyzlD8x/08Zt7wIKcDcA== }
     deprecated: Use @eslint/object-schema instead
 
   '@ioredis/commands@1.2.0':

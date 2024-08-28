@@ -2,13 +2,17 @@ import { Controller } from '@nestjs/common';
 
 import { MailIntegratorService } from './mail-integrator.service';
 import { ClientProxy, ClientProxyFactory, MessagePattern, Transport } from '@nestjs/microservices';
+import { InboxClient } from '@libs/network/dist';
 import { lastValueFrom } from 'rxjs';
 
 @Controller()
 export class MailIntegratorController {
   // URGENT: client proxy -> network client로 변경
   private client: ClientProxy;
-  constructor(private readonly mailIntegratorService: MailIntegratorService) {
+  constructor(
+    private readonly mailIntegratorService: MailIntegratorService,
+    private readonly inboxClient: InboxClient,
+  ) {
     this.client = ClientProxyFactory.create({
       transport: Transport.TCP,
       options: {
@@ -35,24 +39,26 @@ export class MailIntegratorController {
   @MessagePattern({ cmd: 'get-unread-messages' })
   async getUnreadMessages(data: { userId: string; type: 'SENDER' | 'GROUP' | 'ALL'; target?: string }) {
     // URGENT: inbox client 호출로 변경
-    const inbox = (await lastValueFrom(this.client.send({ cmd: 'get-inbox' }, { userId: data.userId }))) as {
-      inboxId: unknown;
-      subscriptions: {
-        name: string;
-        address: string;
-      }[];
-      groups: {
-        name: string;
-        senders: {
-          name: string;
-          address: string;
-        }[];
-      }[];
-      spams: string[];
-      interests: [string];
-      createdAt: Date;
-      updatedAt: Date;
-    };
+    const inbox = await this.inboxClient.getInbox({ userId: data.userId });
+    console.log('inbox', inbox);
+    // (await lastValueFrom(this.client.send({ cmd: 'get-inbox' }, { userId: data.userId }))) as {
+    //   inboxId: unknown;
+    //   subscriptions: {
+    //     name: string;
+    //     address: string;
+    //   }[];
+    //   groups: {
+    //     name: string;
+    //     senders: {
+    //       name: string;
+    //       address: string;
+    //     }[];
+    //   }[];
+    //   spams: string[];
+    //   interests: [string];
+    //   createdAt: Date;
+    //   updatedAt: Date;
+    // };
 
     let addresses = [];
     switch (data.type) {
@@ -70,6 +76,7 @@ export class MailIntegratorController {
         const { messageId, labels, ...rest } = message;
         return {
           mailId: messageId,
+          read: false,
           ...rest,
         };
       }),

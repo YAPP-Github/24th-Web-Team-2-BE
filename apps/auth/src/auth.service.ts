@@ -56,7 +56,7 @@ export class AuthService {
         refreshToken: tokenData.refresh_token,
       });
       authInfo = await this.authRepository.save(guestUserData);
-      this.inboxClient.send({ cmd: 'create-inbox' }, { userId: authInfo.userId });
+      await lastValueFrom(this.inboxClient.send({ cmd: 'create-inbox' }, { userId: authInfo.userId }));
     }
 
     const auth = {
