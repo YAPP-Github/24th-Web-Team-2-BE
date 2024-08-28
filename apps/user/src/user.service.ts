@@ -19,12 +19,12 @@ export class UserService {
     return await this.userRepository.save(guestUserInfo);
   }
 
-  // async findUser(userId: string) {
-  //   const userInfo: User = await this.userRepository.findOne({
-  //     where: {
-  //       id: userId,
-  //     },
-  //   });
-  //   return userInfo;
-  // }
+  async findUser(userId: string) {
+    const userInfo: User = await this.userRepository.findOne({
+      where: {
+        id: userId,
+      },
+    });
+    return userInfo;
+  }
 }
