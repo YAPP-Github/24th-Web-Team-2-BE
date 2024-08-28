@@ -31,4 +31,16 @@ export class InboxService {
   async getSubscriptionsList() {
     return lastValueFrom(this.inboxClient.send({ cmd: 'get-subscriptions-list' }, {}));
   }
+
+  async getGroups(userId: string) {
+    return lastValueFrom(this.inboxClient.send({ cmd: 'get-groups' }, { userId }));
+  }
+
+  async addGroup(userId: string, groupName: string) {
+    return lastValueFrom(this.inboxClient.send({ cmd: 'add-group' }, { userId, groupName }));
+  }
+
+  async addSenderToGroup(userId: string, groupName: string, sender: { name: string; address: string }) {
+    return lastValueFrom(this.inboxClient.send({ cmd: 'add-sender-to-group' }, { userId, groupName, sender }));
+  }
 }
