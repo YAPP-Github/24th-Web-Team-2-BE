@@ -1,10 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Patch, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Query, UseGuards } from '@nestjs/common';
 import { MailIntegratorService } from './mail-integrator.service';
 import { AuthInfo } from '../../common/decorators/auth-info.decorator';
 import { IAuthInfo } from '../../common/interfaces/auth.interface';
 import { ModifyMailDTO } from './dtos/modify-mail.dto';
+import { AuthGuard } from '../../common/guards/auth.guard';
 
 @Controller('inbox')
+@UseGuards(AuthGuard)
 export class MailIntegratorController {
   constructor(private readonly mailIntegratorService: MailIntegratorService) {}
 
