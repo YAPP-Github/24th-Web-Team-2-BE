@@ -1,26 +1,26 @@
-import { Body, Controller, Delete, Get, Patch, Query, Res, Session } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { Body, Controller, Delete, Get, Patch, Res } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Response } from 'express';
+import { AuthInfo } from '../../common/decorators/auth-info.decorator';
+import { IAuthInfo } from '../../common/interfaces/auth.interface';
 
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  async findUser(@Session() session, @Res() res: Response) {
-    const user = session.user;
+  async findUser(@AuthInfo() authInfo: IAuthInfo, @Res() res: Response) {
+    const { userId } = authInfo;
+    const userInfo = await this.userService.findUser(userId);
 
-    const findData = await this.userService.findUser(user);
-
-    return res.send(user);
+    return res.send(userInfo);
   }
 
   @Patch()
-  async modifyUser(@Body('username') username: string, @Session() session, @Res() res: Response) {
-    const user = session.user;
+  async modifyUser(@Body('username') username: string, @AuthInfo() authInfo: IAuthInfo, @Res() res: Response) {
+    const { userId } = authInfo;
 
-    const modifyData = await this.userService.modifyUser(username, user);
+    const modifyData = await this.userService.modifyUser(username, userId);
 
     return res.status(204).send({
       message: '사용자 이름 변경 완료',
@@ -29,10 +29,10 @@ export class UserController {
   }
 
   @Delete()
-  async removeUser(@Session() session, @Res() res: Response) {
-    const user = session.user;
+  async removeUser(@AuthInfo() authInfo: IAuthInfo, @Res() res: Response) {
+    const { userId } = authInfo;
 
-    const removeData = await this.userService.removeUser(user);
+    const removeData = await this.userService.removeUser(userId);
 
     return res.status(204).send({
       message: '사용자 정보 삭제 완료',
