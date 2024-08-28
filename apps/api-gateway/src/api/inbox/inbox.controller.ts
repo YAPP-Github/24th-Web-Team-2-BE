@@ -1,14 +1,16 @@
-import { Body, Controller, Get, Param, Post, Request } from '@nestjs/common';
+import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
 import { InboxService } from './inbox.service';
 import { SubscriptionDTO } from './dtos/subscription.dto';
 import { SpamDTO } from './dtos/spam.dto';
 import { InterestDTO } from './dtos/Interest.dto';
 import { IAuthInfo } from '../../common/interfaces/auth.interface';
 import { AuthInfo } from '../../common/decorators/auth-info.decorator';
+import { AuthGuard } from '../../common/guards/auth.guard';
 import { GroupDTO } from './dtos/group.dto';
 import { SenderToGroupDTO } from './dtos/sender-to-group.dto';
 
 @Controller('inbox')
+@UseGuards(AuthGuard)
 export class InboxController {
   constructor(private readonly inboxService: InboxService) {}
 

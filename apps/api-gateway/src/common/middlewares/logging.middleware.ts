@@ -33,8 +33,16 @@ export class HttpLoggerMiddleware implements NestMiddleware {
 
     // logging response
     response.on('finish', async () => {
-      return setTimeout(() => {
-        const responseLog = { method, path, statusCode: response.statusCode, body };
+      const shouldExcludeBody = path.startsWith('/inbox');
+
+      const responseLog = {
+        method,
+        path,
+        statusCode: response.statusCode,
+        ...(shouldExcludeBody ? {} : { body }),
+      };
+
+      setTimeout(() => {
         this.logger.log(`Response: ${JSON.stringify(responseLog)}`);
       }, 0);
     });
