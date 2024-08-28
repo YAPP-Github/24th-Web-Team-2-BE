@@ -1,10 +1,12 @@
-import { Body, Controller, Get, Post, Request } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Request } from '@nestjs/common';
 import { InboxService } from './inbox.service';
 import { SubscriptionDTO } from './dtos/subscription.dto';
 import { SpamDTO } from './dtos/spam.dto';
 import { InterestDTO } from './dtos/Interest.dto';
 import { IAuthInfo } from '../../common/interfaces/auth.interface';
 import { AuthInfo } from '../../common/decorators/auth-info.decorator';
+import { GroupDTO } from './dtos/group.dto';
+import { SenderToGroupDTO } from './dtos/sender-to-group.dto';
 
 @Controller('inbox')
 export class InboxController {
@@ -47,5 +49,17 @@ export class InboxController {
   async getGroups(@AuthInfo() authInfo: IAuthInfo) {
     const { userId } = authInfo;
     return await this.inboxService.getGroups(userId);
+  }
+
+  @Post('/groups')
+  async addGroup(@AuthInfo() authInfo: IAuthInfo, @Body() groupDTO: GroupDTO) {
+    const { groupName } = groupDTO;
+    return await this.inboxService.addGroup(authInfo.userId, groupName);
+  }
+
+  @Post('/:groupId/senders')
+  async addSenderToGroup(@AuthInfo() authInfo: IAuthInfo, @Param('groupId') groupId: string, @Body() SenderToGroupDTO: SenderToGroupDTO) {
+    const { name, address } = SenderToGroupDTO;
+    return await this.inboxService.addSenderToGroup(authInfo.userId, groupId, { name, address });
   }
 }
