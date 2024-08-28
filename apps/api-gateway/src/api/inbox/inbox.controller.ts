@@ -42,4 +42,10 @@ export class InboxController {
   async getSubscriptionsList() {
     return await this.inboxService.getSubscriptionsList();
   }
+
+  @Get('/groups')
+  async getGroups(@AuthInfo() authInfo: IAuthInfo) {
+    const { userId } = authInfo;
+    return await this.inboxService.getGroups(userId);
+  }
 }
