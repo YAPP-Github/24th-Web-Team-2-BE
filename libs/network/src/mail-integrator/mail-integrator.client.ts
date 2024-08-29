@@ -5,10 +5,15 @@ import { lastValueFrom } from 'rxjs';
 import { MailIntegratorCommandToken } from './mail-integrator-command.token';
 import {
   GetMailSendersRequest,
+  GetMessageRequest,
   GetUnreadMessagesRequest,
   RemoveMessageRequest,
 } from '../@types/mail-integrator/mail-integrator-service.request';
-import { GetMailSendersResponse, GetUnreadMessagesResponse } from '../@types/mail-integrator/mail-integrator-service.response';
+import {
+  GetMailSendersResponse,
+  GetMessageResponse,
+  GetUnreadMessagesResponse,
+} from '../@types/mail-integrator/mail-integrator-service.response';
 
 @Injectable()
 export class MailIntegratorClient {
@@ -20,6 +25,10 @@ export class MailIntegratorClient {
 
   async getUnreadMessages(request: GetUnreadMessagesRequest): Promise<GetUnreadMessagesResponse> {
     return lastValueFrom(this.client.send({ cmd: MailIntegratorCommandToken.GET_UNREAD_MESSAGES }, request));
+  }
+
+  async getMessage(request: GetMessageRequest): Promise<GetMessageResponse> {
+    return lastValueFrom(this.client.send({ cmd: MailIntegratorCommandToken.GET_MESSAGE }, request));
   }
 
   async modifyMessageAsRead(request: GetUnreadMessagesRequest): Promise<void> {

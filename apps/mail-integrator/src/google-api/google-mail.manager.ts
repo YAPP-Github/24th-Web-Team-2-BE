@@ -40,6 +40,11 @@ export class GoogleMailManager {
     return await this.googleMailReader.readMessages();
   }
 
+  async retrieveMessage(userId: string, messageId: string) {
+    this.mailContextService.setUserId(userId);
+    return await this.googleMailReader.readMessage(messageId);
+  }
+
   async modifyMessageAsRead(userId: string, messageId: string) {
     this.mailContextService.setUserId(userId);
     return await this.mailClient.removeLabelsFromMessage(messageId, ['UNREAD']);

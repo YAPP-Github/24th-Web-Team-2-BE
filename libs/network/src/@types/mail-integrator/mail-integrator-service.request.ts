@@ -8,6 +8,11 @@ export type GetUnreadMessagesRequest = {
   target?: string;
 };
 
+export type GetMessageRequest = {
+  userId: string;
+  mailId: string;
+};
+
 export type ModifyMessageAsReadRequest = {
   userId: string;
   mailId: string;
