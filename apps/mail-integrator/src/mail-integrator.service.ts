@@ -73,6 +73,10 @@ export class MailIntegratorService {
     return msgs;
   }
 
+  async getMessage(userId: string, messageId: string) {
+    return await this.googleMailManager.retrieveMessage(userId, messageId);
+  }
+
   async modifyMessageAsRead(userId: string, messageId: string) {
     return await this.googleMailManager.modifyMessageAsRead(userId, messageId);
   }

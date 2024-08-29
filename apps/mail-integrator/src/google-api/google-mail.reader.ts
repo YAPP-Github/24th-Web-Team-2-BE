@@ -14,4 +14,9 @@ export class GoogleMailReader {
     const messages = await this.googleMailClient.messages();
     return messages.map((message) => this.googleMailParser.parse(message)).filter((messages) => messages !== undefined);
   }
+
+  async readMessage(messageId: string) {
+    const message = await this.googleMailClient.getMessage(messageId);
+    return this.googleMailParser.parse(message);
+  }
 }

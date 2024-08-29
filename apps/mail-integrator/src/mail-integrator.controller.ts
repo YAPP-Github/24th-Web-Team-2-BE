@@ -63,6 +63,17 @@ export class MailIntegratorController {
     };
   }
 
+  @MessagePattern({ cmd: 'get-message' })
+  async getMessage(data: { userId: string; mailId: string }) {
+    const message = await this.mailIntegratorService.getMessage(data.userId, data.mailId);
+    const { messageId, labels, ...rest } = message;
+    return {
+      mailId: messageId,
+      read: false,
+      ...rest,
+    };
+  }
+
   @MessagePattern({ cmd: 'remove-message' })
   async removeMessage(data: { userId: string; mailId: string }) {
     const res = await this.mailIntegratorService.removeMessage(data.userId, data.mailId);

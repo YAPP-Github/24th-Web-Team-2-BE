@@ -29,6 +29,18 @@ export class GoogleMailClient {
     return messages.map((message) => message.data);
   }
 
+  async getMessage(messageId: string): Promise<gmail_v1.Schema$Message> {
+    const gmail = await this.googleMailFactory.gmail();
+    const res = await gmail.users.messages.get({
+      userId: 'me',
+      id: messageId,
+      format: 'full',
+      ...this.mailContextService.getMessagesFetchOption(),
+    });
+
+    return res.data;
+  }
+
   async addLabelsToMessage(messageId: string, labels: string[]): Promise<void> {
     const gmail = await this.googleMailFactory.gmail();
     await gmail.users.messages.modify({
