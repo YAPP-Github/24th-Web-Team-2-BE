@@ -17,15 +17,19 @@ export class MailIntegratorService {
     return await lastValueFrom(this.mailClient.send({ cmd: 'get-unread-messages' }, { userId, type, target }));
   }
 
-  async removeMail(userId: string, mailId: string) {
-    return await lastValueFrom(this.mailClient.send({ cmd: 'remove-mail' }, { userId, mailId }));
+  async getMessage(userId: string, mailId: string) {
+    return await lastValueFrom(this.mailClient.send({ cmd: 'get-message' }, { userId, mailId }));
   }
 
-  async modifyMailAsRead(userId: string, mailId: string) {
-    return await lastValueFrom(this.mailClient.send({ cmd: 'modify-mail-as-read' }, { userId, mailId }));
+  async removeMessage(userId: string, mailId: string) {
+    return await lastValueFrom(this.mailClient.send({ cmd: 'remove-message' }, { userId, mailId }));
   }
 
-  async modifyMailAsUnread(userId: string, mailId: string) {
-    return await lastValueFrom(this.mailClient.send({ cmd: 'modify-mail-as-unread' }, { userId, mailId }));
+  async modifyMessageAsRead(userId: string, mailId: string) {
+    return await lastValueFrom(this.mailClient.send({ cmd: 'modify-message-as-read' }, { userId, mailId }));
+  }
+
+  async modifyMessageAsUnread(userId: string, mailId: string) {
+    return await lastValueFrom(this.mailClient.send({ cmd: 'modify-message-as-unread' }, { userId, mailId }));
   }
 }

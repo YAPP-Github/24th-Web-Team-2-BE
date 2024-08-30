@@ -40,19 +40,24 @@ export class MailIntegratorController {
     return await this.mailIntegratorService.getUnreadMessages(authInfo.userId, type, target);
   }
 
+  @Get('mails/:mailId')
+  async getMessage(@AuthInfo() authInfo: IAuthInfo, @Param('mailId') mailId: string) {
+    return await this.mailIntegratorService.getMessage(authInfo.userId, mailId);
+  }
+
   @Delete('mails/:mailId')
-  async removeMail(@AuthInfo() authInfo: IAuthInfo, @Param('mailId') mailId: string) {
-    return await this.mailIntegratorService.removeMail(authInfo.userId, mailId);
+  async removeMessage(@AuthInfo() authInfo: IAuthInfo, @Param('mailId') mailId: string) {
+    return await this.mailIntegratorService.removeMessage(authInfo.userId, mailId);
   }
 
   @Patch('mails/:mailId')
-  async modifyMail(@AuthInfo() authInfo: IAuthInfo, @Param('mailId') mailId: string, @Body() modifyMailDTO: ModifyMailDTO) {
+  async modifyMessage(@AuthInfo() authInfo: IAuthInfo, @Param('mailId') mailId: string, @Body() modifyMailDTO: ModifyMailDTO) {
     const { action } = modifyMailDTO;
 
     if (action === 'read') {
-      return await this.mailIntegratorService.modifyMailAsRead(authInfo.userId, mailId);
+      return await this.mailIntegratorService.modifyMessageAsRead(authInfo.userId, mailId);
     } else if (action === 'unread') {
-      return await this.mailIntegratorService.modifyMailAsUnread(authInfo.userId, mailId);
+      return await this.mailIntegratorService.modifyMessageAsUnread(authInfo.userId, mailId);
     }
   }
 }
