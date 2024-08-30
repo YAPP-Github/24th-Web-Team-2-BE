@@ -37,9 +37,7 @@ export class InboxService {
       const subscriptionRandomList = await lastValueFrom(this.inboxClient.send({ cmd: 'get-subscriptions-random-list' }, {}));
       const userSubscriptionList = await lastValueFrom(this.inboxClient.send({ cmd: 'get-subscriptions' }, { userId }));
 
-      for (const subscription of subscriptionRandomList) {
-        subscription.isSubscribed = userSubscriptionList.some((userSub) => userSub.name === subscription.name);
-      }
+      console.log(subscriptionRandomList);
 
       return subscriptionRandomList;
     } catch (e) {
