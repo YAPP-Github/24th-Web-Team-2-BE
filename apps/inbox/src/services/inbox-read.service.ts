@@ -49,4 +49,10 @@ export class InboxReadService {
   async getSubscriptionsList() {
     return this.subscriptionList.subscriptionList;
   }
+
+  async getSubscriptionsRandomList() {
+    const simpleSubscriptionList = this.subscriptionList.simpleSubscriptionList;
+    const randomList = simpleSubscriptionList.sort(() => 0.5 - Math.random()).slice(0, 3);
+    return randomList;
+  }
 }

@@ -4,6 +4,7 @@ import { designatedMailSenders } from './designatedMailSenders';
 import { privateMailDomains } from './privateMailDomains';
 import { SubscriptionListConstants } from './subscription-list.constants';
 import { subscriptionNewsletterList } from './subscriptionNewsletterList';
+import { subscriptionSimpleNewsletterList } from './subscriptionSimpleNewsletterList';
 
 @Module({
   providers: [
@@ -20,6 +21,10 @@ import { subscriptionNewsletterList } from './subscriptionNewsletterList';
     {
       provide: 'SUBSCRIPTION_LIST',
       useValue: subscriptionNewsletterList,
+    },
+    {
+      provide: 'SIMPLE_SUBSCRIPTION_LIST',
+      useValue: subscriptionSimpleNewsletterList,
     },
   ],
   exports: [MailConstants, SubscriptionListConstants],
