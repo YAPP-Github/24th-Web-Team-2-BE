@@ -38,6 +38,15 @@ export class InboxService {
       const userSubscriptionList = await lastValueFrom(this.inboxClient.send({ cmd: 'get-subscriptions' }, { userId }));
 
       console.log(subscriptionRandomList);
+      console.log(userSubscriptionList);
+
+      userSubscriptionList.subscriptions.forEach((userSubscription) => {
+        subscriptionRandomList.forEach((subscription) => {
+          if (subscription.name === userSubscription.name) {
+            subscription.isSubscribed = true;
+          }
+        });
+      });
 
       return subscriptionRandomList;
     } catch (e) {
