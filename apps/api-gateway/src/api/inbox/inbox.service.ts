@@ -41,7 +41,7 @@ export class InboxService {
       console.log(userSubscriptionList);
 
       userSubscriptionList.subscriptions.forEach((userSubscription) => {
-        subscriptionRandomList.forEach((subscription) => {
+        subscriptionRandomList.subscriptions.forEach((subscription) => {
           if (subscription.name === userSubscription.name) {
             subscription.isSubscribed = true;
           }
