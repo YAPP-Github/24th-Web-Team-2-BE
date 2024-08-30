@@ -81,4 +81,12 @@ export class InboxController {
       subscriptions: res,
     };
   }
+
+  @MessagePattern({ cmd: 'get-subscriptions-random-list' })
+  async getSubscriptionsRandomList() {
+    const res = await this.inboxReadService.getSubscriptionsRandomList();
+    return {
+      subscriptions: res,
+    };
+  }
 }
