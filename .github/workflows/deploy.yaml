@@ -1,14 +1,16 @@
 name: server-deploy
 
 on:
-  pull_request:
-    types: [closed]
+  # pull_request:
+  #   types: [closed]
+  push:
     branches:
-      - development
+      # - development
+      - fix/newsletter-list-random-user-service
 
 jobs:
   docker-image-push:
-    if: github.event.pull_request.merged == true
+    # if: github.event.pull_request.merged == true
     name: Push to container registry
     runs-on: ubuntu-latest
     strategy:
