@@ -1,5 +1,6 @@
 interface Newsletter {
   name: string;
+  address: string;
   companyName: string;
   isAutomated: boolean;
   content: string;
@@ -24,9 +25,11 @@ const techNewsletterList: Newsletter[] = [
     isAutomated: false,
     content:
       '네이버 FE 엔지니어들이 엄선한 양질의 FE 및 주요한 기술 소식들을 큐레이션 해 공유하는 것을 목표로 합니다. 매월 첫째 주 수요일, 월 1회 발행 됩니다.',
-    thumbnailImage: '',
+    thumbnailImage:
+      'https://substackcdn.com/image/fetch/w_170,c_limit,f_auto,q_auto:best,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F8a361db4-9ede-4d1a-baf0-c7357acd4e4c_479x479.png',
     subscriptionLink: 'https://fenews.substack.com/embed',
     contentLink: 'https://github.com/naver/fe-news/blob/master/issues/2024-08.md',
+    address: '@substack.com',
   },
   {
     name: '요즘 IT',
@@ -36,6 +39,7 @@ const techNewsletterList: Newsletter[] = [
     thumbnailImage: 'https://yozm.wishket.com/static/renewal/img/news/og-img-main.png',
     subscriptionLink: 'https://yozm.wishket.com/magazine/',
     contentLink: 'https://yozm.wishket.com/magazine/',
+    address: '@wishket.com',
   },
   {
     name: '뭐지 뉴스레터',
@@ -45,6 +49,7 @@ const techNewsletterList: Newsletter[] = [
     thumbnailImage: 'https://moji.or.kr/new_logo_text.svg',
     subscriptionLink: 'https://moji.or.kr/',
     contentLink: 'https://moji.or.kr/archive/',
+    address: '@moji.or.kr',
   },
   {
     name: 'GeekNews',
@@ -55,6 +60,7 @@ const techNewsletterList: Newsletter[] = [
       'https://app.heybunny.io/_next/image?url=https%3A%2F%2Fassets.heybunny.io%2Fnewsletter%2Fweb%2Fgeeknews.png&w=3840&q=75',
     subscriptionLink: 'https://news.hada.io/weekly',
     contentLink: 'https://news.hada.io/weekly',
+    address: '@hada.io',
   },
   {
     name: '팁스터',
@@ -64,6 +70,7 @@ const techNewsletterList: Newsletter[] = [
     thumbnailImage: 'https://cdn.maily.so/mailydfd3985cf89c8dd5ed873917477ed7c61627967836',
     subscriptionLink: 'https://maily.so/tipster?pop=up',
     contentLink: 'https://maily.so/tipster?pop=up',
+    address: '@maily.so',
   },
   {
     name: '일분톡',
@@ -73,6 +80,7 @@ const techNewsletterList: Newsletter[] = [
     thumbnailImage: 'https://t1.daumcdn.net/news/202311/06/ilbuntok/20231106110238888fodm.png',
     subscriptionLink: 'https://ilbuntok.com/',
     contentLink: 'https://page.stibee.com/archives/328756',
+    address: '@ilbuntok.com',
   },
   {
     name: '죠스레터',
@@ -82,6 +90,7 @@ const techNewsletterList: Newsletter[] = [
     thumbnailImage: 'https://www.jawsletter.blog/content/images/size/w256h256/2024/03/character2.png',
     subscriptionLink: 'https://www.jawsletter.blog/subscribe/',
     contentLink: 'https://www.jawsletter.blog/',
+    address: '@jawsletter.blog',
   },
 ];
 
@@ -95,6 +104,7 @@ const businessNewsletterList: Newsletter[] = [
       'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOkAAACUCAMAAABBVf7OAAAAbFBMVEX/IiL/////AAD/qan/0dH/9vb/bm7/Hh7/YWH/4uL/enr/Cwv/LCz/3Nz/ZGT//Pz/ior/R0f/GBj/w8P/7+//PDz/nZ3/k5P/y8v/XFz/hob/1tb/QkL/NDT/WFj/uLj/UVH/r6//gID/o6P43nXFAAAECElEQVR4nO3c23KqMBSAYViCgOEgIRwUELHv/44bULuT4ITOnu6xK13/RVudXvgNB0MMOg5FURRFURRFURRFURRFURRF/c84bPTuF/hd8W5n7mgLFUbXnMj5u1/j9wTehtQP2btf4/cEDUlJijWS2i1NEnH/I2qF3dLLtVp+i30+2C29Qblsy4qD5dtUgPMx206wt+A4ZfoAvpXOPnsIfdcdYojwS/m19ZSiTJJG0A9udoCTBedeeWuty1I4uEWpbGe00sQkdRMom3rZhW2X+ilcrupgwlKpWwCHk5CfsVUanRiM8knKWmk2Qq7+i63SafdN1dOzBdKorj4rrJaOwDkPnGD6CTerpQX0fe9wZ/oZ1xZIAzX9OK2nQZEVx2kQxGqBr8Jq2CvvKW4THDBKg+CYqGnQtdT19ccopLxsXXNrqR5Jf1YkJelLafpbpFmJ4VPFf5G2R6Uaxc6rSofnk1fPII0u2twhCqgmZU48DenjIG9M0hMOmpYiFU3hlXDwCs+3QMqZEpTagD6HauM4RSLlXapWa+PclbSpB4xSXo6RmlBda+kqHFIWGmforZJuzYeRlKQ/NZKapJmv1nQYBvSK1E/aqUT5JHgtzXYHtRzDJlWlXrwM0C+jb5J6nTagx7BFdWnJLqdTCVA9qCKJRAfHaTwh2T2ca1o1KSRJ4p2Zc79Iy8ZLmDqsTMNwwCfVF6KcIkU6/4pS+FgO1awCxnjAGbARnRQu2ulEHq1P0vlRVsPZf+y9zwQ2Kb8m2luEfJ79Kz3qE/fyf6GQsr1+qaIY7ntv28FgmBOzRDoURe1AZ7rAsUMaLBNevXEBrx3S+f00PJsHiHZIQfhiY9oapTSbU6UvZEKbfqn64N2ML6RIk9sy4z74knS9QcUhVGbUwh7DJlWlw32UFH8+91LqgTpNyjBsUU1aQFx9VCl8Lrd+KW1QXJOt0qTdfKDWwXMFb9MjluoDel06H4gX2N2fiPb5CopFyva1+omfPPh5SN3QOFOEQ8pebKOVNMqNN5TikMq3dryUCiGim3yri63SeJ7vAvM0px3SZUCfV8bxnx3SfjeOg2ce6Noh7bZG8yil/vO2ySTJTFKhLZDco5Me2WOVdVAWBmmiL3rlKMa5svT8XIAMgUk6nabU3m34Wq+ljln67hf9T21Jr79EKsZiBbVT+jKS/vBISlKS/vx+p7R+PPAhlhZgZ5H6DQYejnnrVbJ0GhEtwh3069ltbAtRVilXbTGERdvuGJylTbrDubOuUq7Ehx5gnv5Nhe3SrDhfujyt5ClfO6XzajnPUz/Xt1W6jqToIilJ8bYtHS2RsuuG1K8skTpQmb9TuEJxT+yX2vqeaGugFEVRFEVRFEVRFEVRFEVR1Pv7Az9ZWog4v77uAAAAAElFTkSuQmCC',
     subscriptionLink: 'https://uppity.co.kr/newsletter/money-letter/',
     contentLink: 'https://uppity.co.kr/newsletter/money-letter/',
+    address: '@uppity.co.kr',
   },
   {
     name: '뉴닉 데일리',
@@ -105,6 +115,7 @@ const businessNewsletterList: Newsletter[] = [
       'https://img1.daumcdn.net/thumb/R1280x0/?fname=http://t1.daumcdn.net/brunch/service/user/cnB6/image/IhsF3EupicqXfXqXn4YmNPBgeIk.png',
     subscriptionLink: 'https://page.stibee.com/subscriptions/26847',
     contentLink: 'https://page.stibee.com/archives/26847',
+    address: '@stibee.com',
   },
   {
     name: '부딩',
@@ -115,6 +126,7 @@ const businessNewsletterList: Newsletter[] = [
       'https://static.wixstatic.com/media/6cb3fa_7a010a4bed4847cf942d1fadeeb58cda~mv2.jpg/v1/fill/w_640,h_220,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/6cb3fa_7a010a4bed4847cf942d1fadeeb58cda~mv2.jpg',
     subscriptionLink: 'https://www.booding.co/',
     contentLink: 'https://www.booding.co/',
+    address: '@booding.co',
   },
   {
     name: '미스터동',
@@ -125,6 +137,7 @@ const businessNewsletterList: Newsletter[] = [
       'https://static.wixstatic.com/media/6cb3fa_7a010a4bed4847cf942d1fadeeb58cda~mv2.jpg/v1/fill/w_640,h_220,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/6cb3fa_7a010a4bed4847cf942d1fadeeb58cda~mv2.jpg',
     subscriptionLink: 'https://mrdongnews.com/onboarding',
     contentLink: 'https://mrdongnews.com/',
+    address: '@mrdongnews.com',
   },
   {
     name: '순살브리핑',
@@ -134,6 +147,7 @@ const businessNewsletterList: Newsletter[] = [
     thumbnailImage: 'https://yt3.googleusercontent.com/ytc/AIdro_lMar43mGyvDkwpYrlBmk9iqVrKDX1uKxwWCzB1IHyew2k=s900-c-k-c0x00ffffff-no-rj',
     subscriptionLink: 'https://page.stibee.com/subscriptions/51845?name=%EC%9E%84%EC%B1%84%ED%98%84&email=news.jdustar122%40heybunny.io',
     contentLink: 'https://soonsal.com/',
+    address: '@soonsal.com',
   },
   {
     name: '디그',
@@ -143,6 +157,7 @@ const businessNewsletterList: Newsletter[] = [
     thumbnailImage: 'https://s3.ap-northeast-2.amazonaws.com/img.stibee.com/a82ab710-ca85-4f2e-bda8-3c7abcbad46a.png',
     subscriptionLink: 'https://page.stibee.com/subscriptions/159161?name=%EC%9E%84%EC%B1%84%ED%98%84&email=news.jdustar122%40heybunny.io',
     contentLink: 'https://page.stibee.com/archives/159161',
+    address: '@stibee.com',
   },
   {
     name: '너겟레터',
@@ -152,6 +167,7 @@ const businessNewsletterList: Newsletter[] = [
     thumbnailImage: 'https://img.stibee.com/b49d7b21-1aad-4e17-ba8d-05fe317d162f.jpg',
     subscriptionLink: 'https://page.stibee.com/subscriptions/132031?name=%EC%9E%84%EC%B1%84%ED%98%84&email=news.jdustar122%40heybunny.io',
     contentLink: 'https://nugget.im/',
+    address: '@nugget.im',
   },
   {
     name: '커피팟',
@@ -161,6 +177,7 @@ const businessNewsletterList: Newsletter[] = [
     thumbnailImage: 'https://cdn.imweb.me/upload/S20191122814e60292f7a5/71c918a03846e.png',
     subscriptionLink: 'https://page.stibee.com/subscriptions/52057',
     contentLink: 'https://coffeepot.me/',
+    address: '@coffeepot.me',
   },
 ];
 
@@ -173,6 +190,7 @@ const designNewsletterList: Newsletter[] = [
     thumbnailImage: '',
     subscriptionLink: 'https://designcompass.org/',
     contentLink: 'https://designcompass.org/',
+    address: '@designcompass.org',
   },
   {
     name: 'MSV 임팩트레터',
@@ -182,6 +200,7 @@ const designNewsletterList: Newsletter[] = [
     thumbnailImage: 'https://cdn.imweb.me/thumbnail/20230327/142a114118c84.png',
     subscriptionLink: 'https://www.magazinemsv.com/newsletter',
     contentLink: 'https://www.magazinemsv.com/Letter',
+    address: '@magazinemsv.com',
   },
   {
     name: '텔유어월드',
@@ -191,6 +210,7 @@ const designNewsletterList: Newsletter[] = [
     thumbnailImage: 'https://img.stibee.com/ce6709c2-26cd-4388-bcfc-80fa1c267b4a.jpg',
     subscriptionLink: 'https://tellyourworld.stibee.com/',
     contentLink: 'https://tellyourworld.stibee.com/',
+    address: '@stibee.com',
   },
   {
     name: '아트레터',
@@ -200,6 +220,7 @@ const designNewsletterList: Newsletter[] = [
     thumbnailImage: 'https://cdn.imweb.me/thumbnail/20240825/9a391319747ef.png',
     subscriptionLink: 'https://artlamp.org/artletter',
     contentLink: 'https://artlamp.org/artletter',
+    address: '@artlamp.org',
   },
   {
     name: 'from.designer',
@@ -209,6 +230,7 @@ const designNewsletterList: Newsletter[] = [
     thumbnailImage: 'https://cdn.maily.so/maily96b1a25984762d02e6b644e5b3ebf3321617349721',
     subscriptionLink: 'https://maily.so/from.designer',
     contentLink: 'https://maily.so/from.designer',
+    address: '@maily.so',
   },
 ];
 
@@ -221,6 +243,7 @@ const trendNewsletterList: Newsletter[] = [
     thumbnailImage: 'https://img.stibee.com/66918_1676014333.png',
     subscriptionLink: 'https://www.careet.net/Subscribe',
     contentLink: 'https://universitytomorrow.com/',
+    address: '@careet.net',
   },
   {
     name: '은하맨숀',
@@ -231,6 +254,7 @@ const trendNewsletterList: Newsletter[] = [
     thumbnailImage: 'https://cdn.maily.so/202405/1714788595415344.png',
     subscriptionLink: 'https://maily.so/eunhamansion',
     contentLink: 'https://maily.so/eunhamansion',
+    address: '@maily.so',
   },
   {
     name: '미라클레터',
@@ -240,6 +264,7 @@ const trendNewsletterList: Newsletter[] = [
     thumbnailImage: 'https://wimg.mk.co.kr/svc/newsletter/product/202311/02/a5f311db-0b6a-41ef-805c-71582823396f.jpg',
     subscriptionLink: 'https://page.stibee.com/subscriptions/33271',
     contentLink: 'https://m.mk.co.kr/newsletter/past/7',
+    address: '@mk.co.kr',
   },
   {
     name: '어거스트',
@@ -249,6 +274,7 @@ const trendNewsletterList: Newsletter[] = [
     thumbnailImage: 'https://s3.ap-northeast-2.amazonaws.com/img.stibee.com/ec66e8cd-0ed0-4e1a-b60e-80697b8e03b3.png',
     subscriptionLink: 'https://august.stibee.com/subscribe/',
     contentLink: 'https://august.stibee.com/',
+    address: '@stibee.com',
   },
   {
     name: '트렌드 라이트',
@@ -259,6 +285,7 @@ const trendNewsletterList: Newsletter[] = [
       'https://media.licdn.com/dms/image/D4E16AQF2_AtqtMnD9w/profile-displaybackgroundimage-shrink_200_800/0/1665629374336?e=2147483647&v=beta&t=5hTYVGo_0eUx_VFGlPSbwlauLyw-DfoFyg-5J-t-lg8',
     subscriptionLink: 'https://page.stibee.com/subscriptions/41037?name=%EC%9E%84%EC%B1%84%ED%98%84&email=news.jdustar122%40heybunny.io',
     contentLink: 'https://trendlite.stibee.com/',
+    address: '@stibee.com',
   },
 ];
 
@@ -271,6 +298,7 @@ const careerNewsletterList: Newsletter[] = [
     thumbnailImage: 'https://www.surfit.io/assets/img/bi/symbol-mark-light-bg.png',
     subscriptionLink: 'https://surfside.stibee.com/',
     contentLink: 'https://surfside.stibee.com/',
+    address: '@surfit.io',
   },
   {
     name: '점선면',
@@ -281,6 +309,7 @@ const careerNewsletterList: Newsletter[] = [
       'https://app.heybunny.io/_next/image?url=https%3A%2F%2Fimages.heybunny.io%2Flarge%2F1711934366133-%ED%9D%B0%EB%B0%B0%EA%B2%BD_%EA%B3%B5%EC%9A%A9%EB%A1%9C%EA%B3%A0.png&w=3840&q=75',
     subscriptionLink: 'https://page.stibee.com/subscriptions/228606?name=%EC%9E%84%EC%B1%84%ED%98%84&email=news.jdustar122%40heybunny.io',
     contentLink: 'https://www.khan.co.kr/newsletter/cube',
+    address: '@khan.co.kr',
   },
   {
     name: '당근메일',
@@ -291,6 +320,7 @@ const careerNewsletterList: Newsletter[] = [
       'https://oopy.lazyrockets.com/api/v2/notion/image?src=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F0a466fc4-9e99-44ce-b469-bb14a2b2cbc7%2FLogo_Copy_3.png&blockId=0a32d27b-3b47-41bd-aadd-fcb71689dc0c&width=256',
     subscriptionLink: 'https://www.carrotletter.com/',
     contentLink: 'https://www.carrotletter.com/before',
+    address: '@carrotletter.com',
   },
   {
     name: '폴인',
@@ -300,6 +330,7 @@ const careerNewsletterList: Newsletter[] = [
     thumbnailImage: 'https://www.folin.co/api/folin.jpg',
     subscriptionLink: 'https://folin-letter.stibee.com/',
     contentLink: 'https://folin-letter.stibee.com/',
+    address: '@folin.co',
   },
   {
     name: '커리업',
@@ -309,6 +340,7 @@ const careerNewsletterList: Newsletter[] = [
     thumbnailImage: 'https://careerup.hankookilbo.com/assets2/careerup-default-thumbs.jpg',
     subscriptionLink: 'https://page.stibee.com/subscriptions/163956',
     contentLink: 'https://www.hankookilbo.com/NewsLetter/careeup?curpage=1',
+    address: '@hankookilbo.com',
   },
 ];
 
@@ -321,6 +353,7 @@ const startupNewsletterList: Newsletter[] = [
     thumbnailImage: '',
     subscriptionLink: 'https://maily.so/josh',
     contentLink: 'https://maily.so/josh',
+    address: '@maily.so',
   },
   {
     name: '스타트업 위클리',
@@ -331,16 +364,7 @@ const startupNewsletterList: Newsletter[] = [
       'https://img1.daumcdn.net/thumb/R1280x0.fpng/?fname=http://t1.daumcdn.net/brunch/service/user/zIH/image/5sCKxNn2pgDIdcO7SHGa4J18opg.png',
     subscriptionLink: 'http://glance.media/subscription/subscribe',
     contentLink: 'http://glance.media/startupweekly/4zL9QSmHgsznIA8921q13MPQ/F763mgYyafQ5G5F79892QOfb5w/rxF8Bbth9njiKyBkxBaqRA',
-  },
-  {
-    name: '스타트업 위클리',
-    companyName: '스타트업 위클리',
-    isAutomated: false,
-    content: '국내외 스타트업의 다양한 소식을 한눈에 볼 수 있도록 리스트업해서 보내드려요',
-    thumbnailImage:
-      'https://img1.daumcdn.net/thumb/R1280x0.fpng/?fname=http://t1.daumcdn.net/brunch/service/user/zIH/image/5sCKxNn2pgDIdcO7SHGa4J18opg.png',
-    subscriptionLink: 'http://glance.media/subscription/subscribe',
-    contentLink: 'http://glance.media/startupweekly/4zL9QSmHgsznIA8921q13MPQ/F763mgYyafQ5G5F79892QOfb5w/rxF8Bbth9njiKyBkxBaqRA',
+    address: '@glance.media',
   },
   {
     name: '아웃스탠딩',
@@ -350,6 +374,7 @@ const startupNewsletterList: Newsletter[] = [
     thumbnailImage: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTX4obITfK2yDzS4mgu5KIaAUgY0ao7xduYlA&s',
     subscriptionLink: 'https://outstanding.us1.list-manage.com/subscribe?u=58649932600b1a93ad942d0a7&id=546a6b6aba',
     contentLink: 'https://outstanding.kr/',
+    address: '@outstanding.kr',
   },
   {
     name: 'EO뉴스레터',
@@ -359,6 +384,7 @@ const startupNewsletterList: Newsletter[] = [
     thumbnailImage: 'https://img.stibee.com/37f43248-31f4-4d8f-ab64-af1808f88cf7.jpg',
     subscriptionLink: 'https://page.stibee.com/subscriptions/174446',
     contentLink: 'https://page.stibee.com/archives/174446',
+    address: '@stibee.com',
   },
   {
     name: 'PRODUCT LAB',
@@ -368,6 +394,7 @@ const startupNewsletterList: Newsletter[] = [
     thumbnailImage: 'https://cdn.maily.so/202207/1659078150169935.jpeg',
     subscriptionLink: 'https://maily.so/productlab',
     contentLink: 'https://maily.so/productlab',
+    address: '@maily.so',
   },
 ];
 
