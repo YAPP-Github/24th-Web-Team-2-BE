@@ -8,13 +8,14 @@ export class HttpLoggerMiddleware implements NestMiddleware {
   use(request: Request, response: Response, next: NextFunction): void {
     const { method, query: queryParams, baseUrl: path } = request;
 
-    // health check skip logging
-    if (path === '') {
-      next();
+    // health check or empty path skip logging
+    if (path === '' || path === '/') {
+      // continue to next middleware or request handler
+      return next();
     }
 
     // logging request
-    setImmediate(async () => {
+    setImmediate(() => {
       const requestLog = {
         method,
         path,
@@ -37,7 +38,12 @@ export class HttpLoggerMiddleware implements NestMiddleware {
     };
 
     // logging response
-    response.on('finish', async () => {
+    response.on('finish', () => {
+      // Skip logging response if the path is empty or root
+      if (path === '' || path === '/') {
+        return;
+      }
+
       const shouldExcludeBody = path.startsWith('/inbox');
 
       const responseLog = {
