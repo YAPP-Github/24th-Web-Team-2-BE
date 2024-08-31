@@ -8,6 +8,11 @@ export class HttpLoggerMiddleware implements NestMiddleware {
   use(request: Request, response: Response, next: NextFunction): void {
     const { method, query: queryParams, baseUrl: path } = request;
 
+    // health check skip logging
+    if (path === '') {
+      next();
+    }
+
     // logging request
     setImmediate(async () => {
       const requestLog = {
