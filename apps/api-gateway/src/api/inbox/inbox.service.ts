@@ -33,16 +33,18 @@ export class InboxService {
   }
 
   async getSubscriptionsRandomList(userId: string) {
-    try {
-      const subscriptionRandomList = await lastValueFrom(this.inboxClient.send({ cmd: 'get-subscriptions-random-list' }, {}));
-      const userSubscriptionList = await lastValueFrom(this.inboxClient.send({ cmd: 'get-subscriptions' }, { userId }));
+    const subscriptionRandomList = await lastValueFrom(this.inboxClient.send({ cmd: 'get-subscriptions-random-list' }, {}));
+    const userSubscriptionList = await lastValueFrom(this.inboxClient.send({ cmd: 'get-subscriptions' }, { userId }));
 
-      console.log(subscriptionRandomList);
+    userSubscriptionList.subscriptions.forEach((userSubscription) => {
+      subscriptionRandomList.subscriptions.forEach((subscription) => {
+        if (subscription.name === userSubscription.name) {
+          subscription.isSubscribed = true;
+        }
+      });
+    });
 
-      return subscriptionRandomList;
-    } catch (e) {
-      console.log(e);
-    }
+    return subscriptionRandomList;
   }
 
   async getGroups(userId: string) {
