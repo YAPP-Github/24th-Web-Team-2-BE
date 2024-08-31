@@ -132,9 +132,8 @@ const businessNewsletterList: Newsletter[] = [
     name: '미스터동',
     companyName: '미스터동',
     isAutomated: false,
-    content: 'https://app.heybunny.io/_next/image?url=https%3A%2F%2Fimages.heybunny.io%2Flarge%2F1706862212397-new.png&w=3840&q=75',
-    thumbnailImage:
-      'https://static.wixstatic.com/media/6cb3fa_7a010a4bed4847cf942d1fadeeb58cda~mv2.jpg/v1/fill/w_640,h_220,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/6cb3fa_7a010a4bed4847cf942d1fadeeb58cda~mv2.jpg',
+    content: '국내외 17개 일간지에서 종합한 기사 주제와 관점을 10~15분 안에 읽을 수 있도록 전해드려요',
+    thumbnailImage: 'https://app.heybunny.io/_next/image?url=https%3A%2F%2Fimages.heybunny.io%2Flarge%2F1706862212397-new.png&w=3840&q=75',
     subscriptionLink: 'https://mrdongnews.com/onboarding',
     contentLink: 'https://mrdongnews.com/',
     address: '@mrdongnews.com',
@@ -188,7 +187,8 @@ const designNewsletterList: Newsletter[] = [
     isAutomated: false,
     content: '매주 화요일 아침, 16년 차 디자이너가큐레이션한 디자인 트렌드를 모아보세요.',
     thumbnailImage: 'https://cdn.maily.so/202309/1694438416739802.png',
-    subscriptionLink: 'https://designcompass.org/',
+    subscriptionLink:
+      'https://app.heybunny.io/_next/image?url=https%3A%2F%2Fassets.heybunny.io%2Fnewsletter%2Fweb%2Fdesign_compass.png&w=3840&q=75',
     contentLink: 'https://designcompass.org/',
     address: '@designcompass.org',
   },
