@@ -186,9 +186,9 @@ const designNewsletterList: Newsletter[] = [
     companyName: '디자인 나침반',
     isAutomated: false,
     content: '매주 화요일 아침, 16년 차 디자이너가큐레이션한 디자인 트렌드를 모아보세요.',
-    thumbnailImage: 'https://cdn.maily.so/202309/1694438416739802.png',
-    subscriptionLink:
+    thumbnailImage:
       'https://app.heybunny.io/_next/image?url=https%3A%2F%2Fassets.heybunny.io%2Fnewsletter%2Fweb%2Fdesign_compass.png&w=3840&q=75',
+    subscriptionLink: 'https://designcompass.org/',
     contentLink: 'https://designcompass.org/',
     address: '@designcompass.org',
   },
