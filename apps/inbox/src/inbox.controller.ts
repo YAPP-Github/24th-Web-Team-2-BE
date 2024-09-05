@@ -89,4 +89,9 @@ export class InboxController {
       subscriptions: res,
     };
   }
+
+  @MessagePattern({ cmd: 'delete-interests' })
+  async deleteInterests(data: { userId: string }) {
+    return await this.inboxUpdateService.deleteInterests(data.userId);
+  }
 }

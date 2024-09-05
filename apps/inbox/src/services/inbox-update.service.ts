@@ -24,4 +24,8 @@ export class InboxUpdateService {
   async addInterest(userId: string, interests: string[]) {
     return await this.inboxRepository.addInterests(userId, interests);
   }
+
+  async deleteInterests(userId: string) {
+    return await this.inboxRepository.deleteInterests(userId);
+  }
 }

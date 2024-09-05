@@ -56,4 +56,11 @@ export class InboxRepository {
     }
     return inbox;
   }
+
+  // TODO: IDK Mongoose
+  async deleteInterests(userId: string) {
+    const inbox = await this.findByUserId(userId);
+    inbox.set('interests', []);
+    return await inbox.save();
+  }
 }
