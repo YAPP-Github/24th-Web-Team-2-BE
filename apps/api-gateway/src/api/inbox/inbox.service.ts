@@ -1,5 +1,6 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
+import { CustomRpcException } from 'libs/common/dist/exceptions/filter/custom-rpc.exception';
 import { lastValueFrom } from 'rxjs';
 
 @Injectable()
@@ -7,13 +8,27 @@ export class InboxService {
   constructor(
     @Inject('INBOX_SERVICE')
     private readonly inboxClient: ClientProxy,
+    @Inject('USER_SERVICE')
+    private readonly userClient: ClientProxy,
   ) {}
   async addSubscriptions(userId: string, subscriptions: { name: string; address: string }[]) {
     return lastValueFrom(this.inboxClient.send({ cmd: 'add-subscriptions' }, { userId, subscriptions }));
   }
 
   async addInterests(userId: string, interests: { category: string }[]) {
-    return lastValueFrom(this.inboxClient.send({ cmd: 'add-interests' }, { userId, interests }));
+    try {
+      await lastValueFrom(this.inboxClient.send({ cmd: 'add-interests' }, { userId, interests }));
+      await lastValueFrom(this.userClient.send({ cmd: 'change-onboarding-steps' }, { userId }));
+    } catch (e) {
+      /**
+       * 보상 트랜잭션이 들어갔지만, 실제 특정 서버가 다운되어 롤백되는 경우 해당 서버에서는 롤백되지 않음
+       * 그렇기 때문에, 추후 보상 트랜잭션에 대한 이벤트를 다룰 수 있는 외부의 queue를 사용해야 함
+       * TODO: 추후 이벤트 큐를 사용하여 보상 트랜잭션을 다루도록 수정
+       */
+      await lastValueFrom(this.inboxClient.send({ cmd: 'delete-interests' }, { userId }));
+      await lastValueFrom(this.userClient.send({ cmd: 'rollback-onboarding-steps' }, { userId }));
+      throw new CustomRpcException('Failed to add interests', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   async getSubscriptions(userId: string) {
