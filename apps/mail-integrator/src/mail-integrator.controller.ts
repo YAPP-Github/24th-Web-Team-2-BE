@@ -1,26 +1,15 @@
 import { Controller } from '@nestjs/common';
 
 import { MailIntegratorService } from './mail-integrator.service';
-import { ClientProxy, ClientProxyFactory, MessagePattern, Transport } from '@nestjs/microservices';
+import { MessagePattern } from '@nestjs/microservices';
 import { InboxClient } from '@libs/network/dist';
-import { lastValueFrom } from 'rxjs';
 
 @Controller()
 export class MailIntegratorController {
-  // URGENT: client proxy -> network client로 변경
-  private client: ClientProxy;
   constructor(
     private readonly mailIntegratorService: MailIntegratorService,
     private readonly inboxClient: InboxClient,
-  ) {
-    this.client = ClientProxyFactory.create({
-      transport: Transport.TCP,
-      options: {
-        host: process.env.INBOX_SERVICE_HOST,
-        port: parseInt(process.env.INBOX_SERVICE_PORT),
-      },
-    });
-  }
+  ) {}
 
   @MessagePattern({ cmd: 'get-mail-senders' })
   async getMailSenders(data: { userId: string }) {
