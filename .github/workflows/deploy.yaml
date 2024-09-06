@@ -1,6 +1,7 @@
 name: server-deploy
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - feat/error-logging
