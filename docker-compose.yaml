@@ -5,7 +5,7 @@ services:
     image: 'hedwig/api-gateway'
     build:
       context: .
-      dockerfile: ./apps/Dockerfile.app
+      dockerfile: ./apps/Dockerfile.local
       args:
         - PKG_NAME=@apps/api-gateway
         - PORT=3000
@@ -15,12 +15,14 @@ services:
     ports:
       - '3000:3000'
     restart: 'no'
+    networks:
+      - imc-docker-bridge
 
   auth:
     image: 'hedwig/auth'
     build:
       context: .
-      dockerfile: ./apps/Dockerfile.app
+      dockerfile: ./apps/Dockerfile.local
       args:
         - PKG_NAME=@apps/auth
         - PORT=3000
@@ -30,12 +32,14 @@ services:
     ports:
       - '3001:3000'
     restart: 'no'
+    networks:
+      - imc-docker-bridge
 
   inbox:
     image: 'hedwig/inbox'
     build:
       context: .
-      dockerfile: ./apps/Dockerfile.app
+      dockerfile: ./apps/Dockerfile.local
       args:
         - PKG_NAME=@apps/inbox
         - PORT=3000
@@ -45,14 +49,16 @@ services:
     ports:
       - '3002:3000'
     restart: 'no'
+    networks:
+      - imc-docker-bridge
 
   user:
     image: 'hedwig/user'
     build:
       context: .
-      dockerfile: ./apps/Dockerfile.app
+      dockerfile: ./apps/Dockerfile.local
       args:
-        - PKG_NAME=@apps/hedwig
+        - PKG_NAME=@apps/user
         - PORT=3000
     container_name: user
     env_file:
@@ -60,12 +66,14 @@ services:
     ports:
       - '3003:3000'
     restart: 'no'
+    networks:
+      - imc-docker-bridge
 
   mail-integrator:
     image: 'hedwig/mail-integrator'
     build:
       context: .
-      dockerfile: ./apps/Dockerfile.app
+      dockerfile: ./apps/Dockerfile.local
       args:
         - PKG_NAME=@apps/mail-integrator
         - PORT=3000
@@ -75,3 +83,9 @@ services:
     ports:
       - '3004:3000'
     restart: 'no'
+    networks:
+      - imc-docker-bridge
+
+networks:
+  imc-docker-bridge:
+    external: true

@@ -1,0 +1,2 @@
+CREATE DATABASE IF NOT EXISTS hdwg_dev_auth;
+CREATE DATABASE IF NOT EXISTS hdwg_dev_user;
