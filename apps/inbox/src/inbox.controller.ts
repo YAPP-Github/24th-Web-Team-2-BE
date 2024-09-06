@@ -14,7 +14,10 @@ export class InboxController {
 
   @MessagePattern({ cmd: 'create-inbox' })
   async createInbox(data: { userId: string }) {
-    return await this.inboxCreateService.createInbox(data.userId);
+    console.log('inbox controller', data);
+    const result = await this.inboxCreateService.createInbox(data.userId);
+    console.log('inbox controller result', result);
+    return result;
   }
 
   @MessagePattern({ cmd: 'add-subscriptions' })

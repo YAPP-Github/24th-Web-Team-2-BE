@@ -15,6 +15,8 @@ export class MailIntegratorService {
   ) {}
 
   async getMailSenders(userId: string) {
+    console.log('mailintegrator, service', userId);
+
     this.mailContextService.setMessagesFetchOption({
       userId: 'me',
       format: 'full',
@@ -26,6 +28,7 @@ export class MailIntegratorService {
     fetchThreshold.setMonth(currentDate.getMonth() - 1);
 
     const policy = new MailFetchPolicy({ fetchThreshold });
+    console.log('mailintegrator, service, policy', policy);
 
     // 게인 메일 제외하기
     const queryBuilder = new GmailQueryBuilder();

@@ -1,4 +1,5 @@
 import { ExceptionFilter, Catch, ArgumentsHost, HttpException, Logger } from '@nestjs/common';
+import { CustomRpcException } from '@libs/common';
 import { Response } from 'express';
 
 @Catch(HttpException)
@@ -6,25 +7,17 @@ export class HttpExceptionFilter implements ExceptionFilter {
   private readonly logger = new Logger('HttpExceptionFilter');
 
   catch(exception: HttpException, host: ArgumentsHost) {
-    const ctx = host.switchToHttp();
-    const response = ctx.getResponse<Response>();
-    const status = exception.getStatus();
-    const err = exception.getResponse() as { message: any; statusCode: number } | { error: string; statusCode: 400; message: string[] };
+    const ctx = host.switchToRpc();
+    const data = ctx.getData();
 
-    this.logger.error(`Error: ${status} - ${JSON.stringify(err.message)}`, exception.stack);
+    const response = {
+      status: 'error',
+      message: exception.message || 'Internal server error',
+      data,
+    };
 
-    if (typeof err !== 'string' && err.statusCode === 400) {
-      return response.status(status).json({
-        success: false,
-        code: status,
-        data: err.message,
-      });
-    }
+    console.error('**** AllExceptionsFilter -> catch Excption ****\n', response);
 
-    response.status(status).json({
-      success: false,
-      code: status,
-      data: err.message,
-    });
+    throw new CustomRpcException(response.message, 500);
   }
 }

@@ -13,7 +13,9 @@ export class MailIntegratorController {
 
   @MessagePattern({ cmd: 'get-mail-senders' })
   async getMailSenders(data: { userId: string }) {
+    console.log('mailintegrator, controller', data);
     const result = await this.mailIntegratorService.getMailSenders(data.userId);
+    console.log('mailintegrator, controller', result);
     return {
       senders: result.map((sender) => {
         const { messageId, labels, ...rest } = sender;

@@ -62,6 +62,7 @@ export class AuthService {
         refreshToken: tokenData.refresh_token,
       });
       authInfo = await this.authRepository.save(guestUserData);
+      console.log('새로생긴유저', authInfo);
       await lastValueFrom(this.inboxClient.send({ cmd: 'create-inbox' }, { userId: authInfo.userId }));
     }
 
