@@ -1,6 +1,7 @@
 name: server-deploy
 
 on:
+  workflow_dispatch:
   pull_request:
     types: [closed]
     branches:
