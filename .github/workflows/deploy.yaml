@@ -1,15 +1,12 @@
 name: server-deploy
 
 on:
-  workflow_dispatch:
-  pull_request:
-    types: [closed]
+  push:
     branches:
-      - development
+      - feat/error-logging
 
 jobs:
   docker-image-push:
-    if: github.event.pull_request.merged == true
     name: Push to container registry
     runs-on: ubuntu-latest
     strategy:
