@@ -25,11 +25,10 @@ export class AuthController {
 
   @Get('google')
   async googleAuthRedirect(@Query('code') code: string, @Session() session: Record<string, any>): Promise<AuthRedirectRO> {
-    console.log(code);
+    console.log('apigateway controller, code', code);
     const authInfo = await this.authService.googleLogin(code);
-    console.log(authInfo);
     session.auth = authInfo;
-
+    console.log('apigateway controller, authInfo', authInfo);
     if (authInfo.role === 'guest') {
       return {
         isGuest: true,

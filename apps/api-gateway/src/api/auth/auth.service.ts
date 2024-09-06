@@ -11,6 +11,7 @@ export class AuthService {
   ) {}
 
   async googleLogin(code: string) {
+    console.log('apigateway service', code);
     return lastValueFrom(this.authClient.send({ cmd: 'google_login' }, code));
   }
 

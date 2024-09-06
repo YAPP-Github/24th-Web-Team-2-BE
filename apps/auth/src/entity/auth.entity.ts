@@ -18,6 +18,6 @@ export class Auth {
   @Column()
   providerId: string;
 
-  @Column()
-  refreshToken: string;
+  @Column({ nullable: true })
+  refreshToken?: string;
 }

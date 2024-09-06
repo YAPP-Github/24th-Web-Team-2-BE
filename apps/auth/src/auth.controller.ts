@@ -8,6 +8,7 @@ export class AuthController {
 
   @MessagePattern({ cmd: 'google_login' })
   async googleLogin(data: string) {
+    console.log('auth controller', data);
     return this.authService.googleLogin(data);
   }
 

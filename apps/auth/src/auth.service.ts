@@ -40,10 +40,16 @@ export class AuthService {
     return newAccessToken;
   }
   async googleLogin(code: string) {
+    console.log(code);
     const tokenData = await this.getGoogleOAuthToken(code);
     const googleUserInfo = await this.getGoogleUserInfo(tokenData.access_token);
 
+    console.log(tokenData);
+    console.log(googleUserInfo);
+
     let authInfo = await this.authRepository.findOne({ where: { providerId: googleUserInfo.sub } });
+
+    console.log(authInfo);
 
     if (!authInfo) {
       const guestUser = await lastValueFrom(this.userClient.send({ cmd: 'create-guest-user' }, googleUserInfo.name));
