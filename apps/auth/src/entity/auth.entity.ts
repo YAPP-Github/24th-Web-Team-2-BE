@@ -18,7 +18,7 @@ export class Auth {
   @Column()
   providerId: string;
 
-  @Column()
+  @Column({ nullable: true })
   refreshToken: string;
 
   @CreateDateColumn()
