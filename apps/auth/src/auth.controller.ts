@@ -14,8 +14,12 @@ export class AuthController {
   @MessagePattern({ cmd: 're-issue-token' })
   async reIssueToken({ userId, providerType }: { userId: string; providerType: string }) {
     console.log('auth controller 도착: ', userId);
-    const token = await this.authService.reIssueToken(userId, providerType);
-    console.log('auth controller 결과: ', token);
-    return token;
+    try {
+      const token = await this.authService.reIssueToken(userId, providerType);
+      console.log('auth controller 결과: ', token);
+      return token;
+    } catch (error) {
+      console.log('auth controller 에러: ', error);
+    }
   }
 }
