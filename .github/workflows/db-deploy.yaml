@@ -1,10 +1,13 @@
 name: database-deploy
 
 on:
-  pull_request:
-    types: [closed]
+  # pull_request:
+  #   types: [closed]
+  #   branches:
+  #     - development
+  push:
     branches:
-      - development
+      - hotfix/auth-role
 
 jobs:
   pull-n-run-docker-compose:
