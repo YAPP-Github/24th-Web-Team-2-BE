@@ -12,6 +12,6 @@ export class AuthClient {
 
   async reIssueToken(request: ReIssueTokenRequest): Promise<ReIssueTokenResponse> {
     console.log('reissue token 시도: ', request.userId);
-    return lastValueFrom(this.client.send({ cmd: AuthCommandToken.ReIssueToken }, request));
+    return await lastValueFrom(this.client.send({ cmd: AuthCommandToken.ReIssueToken }, request));
   }
 }
