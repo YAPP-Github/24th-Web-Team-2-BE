@@ -8,11 +8,12 @@ export class AuthController {
 
   @MessagePattern({ cmd: 'google_login' })
   async googleLogin(data: string) {
-    return this.authService.googleLogin(data);
+    return await this.authService.googleLogin(data);
   }
 
   @MessagePattern({ cmd: 're-issue-token' })
   async reIssueToken({ userId, providerType }: { userId: string; providerType: string }) {
-    return this.authService.reIssueToken(userId, providerType);
+    const token = await this.authService.reIssueToken(userId, providerType);
+    return token;
   }
 }
