@@ -34,7 +34,7 @@ export class AuthService {
     params.append('grant_type', 'refresh_token');
 
     const response = await firstValueFrom(this.httpService.post('https://oauth2.googleapis.com/token', params));
-
+    console.log('re issue 결과:', response.data);
     const newAccessToken = response.data.access_token;
 
     return newAccessToken;
