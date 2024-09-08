@@ -1,7 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
 import { AuthService } from './auth.service';
-import { CustomRpcException } from 'libs/common/dist';
+import { CustomRpcException } from '@libs/common';
 
 @Controller()
 export class AuthController {
