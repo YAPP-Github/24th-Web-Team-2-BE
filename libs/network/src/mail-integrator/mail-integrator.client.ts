@@ -33,21 +33,24 @@ export class MailIntegratorClient {
   }
 
   async modifyMessageAsRead(request: GetUnreadMessagesRequest): Promise<void> {
-    return await lastValueFrom(this.client.send({ cmd: MailIntegratorCommandToken.MODIFY_MESSAGE_AS_READ }, request));
+    await lastValueFrom(this.client.send({ cmd: MailIntegratorCommandToken.MODIFY_MESSAGE_AS_READ }, request));
   }
 
   async modifyMessageAsUnread(request: GetUnreadMessagesRequest): Promise<void> {
-    return await lastValueFrom(this.client.send({ cmd: MailIntegratorCommandToken.MODIFY_MESSAGE_AS_UNREAD }, request));
+    await lastValueFrom(this.client.send({ cmd: MailIntegratorCommandToken.MODIFY_MESSAGE_AS_UNREAD }, request));
   }
 
   async removeMessage(request: RemoveMessageRequest): Promise<void> {
-    return await lastValueFrom(this.client.send({ cmd: MailIntegratorCommandToken.REMOVE_MESSAGE }, request));
+    await lastValueFrom(this.client.send({ cmd: MailIntegratorCommandToken.REMOVE_MESSAGE }, request));
   }
 
   async attachAccessToken(request: AttachAccessTokenRequest): Promise<void> {
     console.log('client 도착');
-    const res = await lastValueFrom(this.client.send({ cmd: MailIntegratorCommandToken.ATTACH_ACCESS_TOKEN }, request));
-    console.log('clent 나감', res);
-    return res;
+    try {
+      await lastValueFrom(this.client.send({ cmd: MailIntegratorCommandToken.ATTACH_ACCESS_TOKEN }, request));
+      console.log('clent 나감');
+    } catch (error) {
+      console.log('client에서 에러 발생', error);
+    }
   }
 }
