@@ -61,7 +61,9 @@ export class AuthService {
       await lastValueFrom(this.inboxClient.send({ cmd: 'create-inbox' }, { userId: authInfo.userId }));
     }
 
-    await this.mailIntegratorClient.attachAccessToken({ userId: authInfo.userId, accessToken: tokenData.access_token });
+    console.log('authInfo', authInfo);
+    const res = await this.mailIntegratorClient.attachAccessToken({ userId: authInfo.userId, accessToken: tokenData.access_token });
+    console.log('info까지 완료: ', res);
 
     const auth = {
       authId: authInfo.id,
