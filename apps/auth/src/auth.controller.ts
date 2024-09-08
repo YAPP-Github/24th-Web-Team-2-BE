@@ -1,6 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
 import { AuthService } from './auth.service';
+import { CustomRpcException } from 'libs/common/dist';
 
 @Controller()
 export class AuthController {
@@ -8,11 +9,16 @@ export class AuthController {
 
   @MessagePattern({ cmd: 'google_login' })
   async googleLogin(data: string) {
-    return this.authService.googleLogin(data);
+    return await this.authService.googleLogin(data);
   }
 
   @MessagePattern({ cmd: 're-issue-token' })
   async reIssueToken({ userId, providerType }: { userId: string; providerType: string }) {
-    return this.authService.reIssueToken(userId, providerType);
+    try {
+      const accessToken = await this.authService.reIssueToken(userId, providerType);
+      return accessToken;
+    } catch (error) {
+      throw new CustomRpcException('Failed to re-issue token', error);
+    }
   }
 }

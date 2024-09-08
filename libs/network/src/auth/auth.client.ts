@@ -11,6 +11,6 @@ export class AuthClient {
   constructor(@Inject('AUTH_SERVICE') private readonly client: ClientProxy) {}
 
   async reIssueToken(request: ReIssueTokenRequest): Promise<ReIssueTokenResponse> {
-    return lastValueFrom(this.client.send({ cmd: AuthCommandToken.ReIssueToken }, request));
+    return await lastValueFrom(this.client.send({ cmd: AuthCommandToken.ReIssueToken }, request));
   }
 }
