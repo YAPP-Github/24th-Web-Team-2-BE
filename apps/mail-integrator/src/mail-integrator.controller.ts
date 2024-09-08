@@ -2,7 +2,8 @@ import { Controller } from '@nestjs/common';
 
 import { MailIntegratorService } from './mail-integrator.service';
 import { MessagePattern } from '@nestjs/microservices';
-import { InboxClient } from '@libs/network/dist';
+import { AttachAccessTokenRequest, InboxClient, MailIntegratorCommandToken } from '@libs/network/dist';
+import gmailAccessTokenCache from './google-api/caches/gmail-accessToken.cache';
 
 @Controller()
 export class MailIntegratorController {
@@ -79,5 +80,10 @@ export class MailIntegratorController {
   async modifyMessageAsUnread(data: { userId: string; mailId: string }) {
     const res = await this.mailIntegratorService.modifyMessageAsUnread(data.userId, data.mailId);
     return res;
+  }
+
+  @MessagePattern({ cmd: MailIntegratorCommandToken.ATTACH_ACCESS_TOKEN })
+  async attachAccessToken(data: AttachAccessTokenRequest) {
+    gmailAccessTokenCache.set(data.userId, data.accessToken);
   }
 }
