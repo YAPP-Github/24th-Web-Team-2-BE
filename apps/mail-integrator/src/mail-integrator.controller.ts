@@ -85,5 +85,6 @@ export class MailIntegratorController {
   @MessagePattern({ cmd: MailIntegratorCommandToken.ATTACH_ACCESS_TOKEN })
   async attachAccessToken(data: AttachAccessTokenRequest) {
     gmailAccessTokenCache.set(data.userId, data.accessToken);
+    console.log('access token 저장됨', gmailAccessTokenCache.get(data.userId));
   }
 }

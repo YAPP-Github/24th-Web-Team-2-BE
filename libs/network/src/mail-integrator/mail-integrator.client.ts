@@ -33,18 +33,22 @@ export class MailIntegratorClient {
   }
 
   async modifyMessageAsRead(request: GetUnreadMessagesRequest): Promise<void> {
-    return await lastValueFrom(this.client.send({ cmd: MailIntegratorCommandToken.MODIFY_MESSAGE_AS_READ }, request));
+    await lastValueFrom(this.client.send({ cmd: MailIntegratorCommandToken.MODIFY_MESSAGE_AS_READ }, request));
   }
 
   async modifyMessageAsUnread(request: GetUnreadMessagesRequest): Promise<void> {
-    return await lastValueFrom(this.client.send({ cmd: MailIntegratorCommandToken.MODIFY_MESSAGE_AS_UNREAD }, request));
+    await lastValueFrom(this.client.send({ cmd: MailIntegratorCommandToken.MODIFY_MESSAGE_AS_UNREAD }, request));
   }
 
   async removeMessage(request: RemoveMessageRequest): Promise<void> {
-    return await lastValueFrom(this.client.send({ cmd: MailIntegratorCommandToken.REMOVE_MESSAGE }, request));
+    await lastValueFrom(this.client.send({ cmd: MailIntegratorCommandToken.REMOVE_MESSAGE }, request));
   }
 
   async attachAccessToken(request: AttachAccessTokenRequest): Promise<void> {
-    return await lastValueFrom(this.client.send({ cmd: MailIntegratorCommandToken.ATTACH_ACCESS_TOKEN }, request));
+    try {
+      await lastValueFrom(this.client.send({ cmd: MailIntegratorCommandToken.ATTACH_ACCESS_TOKEN }, request));
+    } catch (error) {
+      console.log('AttachAccessToken 에러 발생', error);
+    }
   }
 }
