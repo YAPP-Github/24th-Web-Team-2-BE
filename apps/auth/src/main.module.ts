@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Auth } from './entity/auth.entity';
 import { AuthModule } from './auth.module';
+import { NetworkModule } from '@libs/network/dist';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { AuthModule } from './auth.module';
       entities: [Auth],
     }),
     AuthModule,
+    NetworkModule,
   ],
 })
 export class MainModule {}

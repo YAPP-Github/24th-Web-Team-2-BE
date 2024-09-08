@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "dependencies": {
     "@libs/common": "workspace:*",
+    "@libs/network": "workspace:*",
     "@nestjs/axios": "^3.0.2",
     "@nestjs/microservices": "^10.3.9",
     "axios": "^1.7.2"
