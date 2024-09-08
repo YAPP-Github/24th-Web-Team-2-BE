@@ -9,9 +9,10 @@ import { GoogleMailParser } from './google-mail.parser';
 import { GoogleMailManager } from './google-mail.manager';
 import { GoogleMailReader } from './google-mail.reader';
 import { MailContextService } from './mail-context.service';
+import { NetworkModule } from '@libs/network/dist';
 
 @Module({
-  imports: [ConstantsModule],
+  imports: [ConstantsModule, NetworkModule],
   controllers: [],
   providers: [
     GoogleMailFactory,

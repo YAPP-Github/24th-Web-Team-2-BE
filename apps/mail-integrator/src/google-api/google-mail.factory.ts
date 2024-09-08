@@ -5,7 +5,7 @@ import { ProviderToken } from '../provider-tokens';
 import { MailContextService } from './mail-context.service';
 import gmailAccessTokenCache from './caches/gmail-accessToken.cache';
 import { ClientProxy, ClientProxyFactory, Transport } from '@nestjs/microservices';
-import { lastValueFrom } from 'rxjs';
+import { AuthClient } from '@libs/network/dist';
 
 @Injectable()
 export class GoogleMailFactory {
@@ -16,6 +16,7 @@ export class GoogleMailFactory {
     @Inject(ProviderToken.GOOGLE_OAUTH2_CLIENT)
     private readonly googleOAuth2Client: OAuth2Client,
     private readonly mailContextService: MailContextService,
+    private readonly authClient: AuthClient,
   ) {
     this.client = ClientProxyFactory.create({
       transport: Transport.TCP,
@@ -51,9 +52,11 @@ export class GoogleMailFactory {
 
   private async fetchAccessToken(): Promise<string> {
     // URGENT: auth client 호출로 변경
-    const res = await lastValueFrom(
-      this.client.send({ cmd: 're-issue-token' }, { userId: this.mailContextService.getUserId(), providerType: 'google' }),
-    );
-    return res as string;
+    // const res = await lastValueFrom(
+    //   this.client.send({ cmd: 're-issue-token' }, { userId: this.mailContextService.getUserId(), providerType: 'google' }),
+    // );
+    // return res as string;
+    const accessToken = await this.authClient.reIssueToken({ userId: this.mailContextService.getUserId(), providerType: 'google' });
+    return accessToken;
   }
 }
