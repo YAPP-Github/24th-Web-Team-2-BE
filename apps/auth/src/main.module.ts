@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Auth } from './entity/auth.entity';
 import { AuthModule } from './auth.module';
 import { NetworkModule } from '@libs/network/dist';
+import { CommonModule } from '@libs/common';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { NetworkModule } from '@libs/network/dist';
     }),
     AuthModule,
     NetworkModule,
+    CommonModule,
   ],
 })
 export class MainModule {}
