@@ -5,6 +5,8 @@ import { HttpModule } from '@nestjs/axios';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Auth } from './entity/auth.entity';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { NetworkModule } from '@libs/network/dist';
+import { CommonModule } from '@libs/common';
 
 @Module({
   imports: [
@@ -28,6 +30,8 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
       },
     ]),
     TypeOrmModule.forFeature([Auth]),
+    NetworkModule,
+    CommonModule,
   ],
   providers: [AuthService],
   controllers: [AuthController],
