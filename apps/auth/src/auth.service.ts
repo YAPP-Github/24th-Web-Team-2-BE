@@ -50,7 +50,7 @@ export class AuthService {
       const guestUserData = this.authRepository.create({
         //user 생성 후 들어가야 함
         userId: guestUser.id,
-        role: 'userrrr',
+        role: 'guest',
         providerType: 'google',
         providerId: googleUserInfo.sub,
         refreshToken: tokenData.refresh_token,
