@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { ClientProxy } from '@nestjs/microservices';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
+import { MailIntegratorClient } from '@libs/network/dist';
 
 @Injectable()
 export class AuthService {
@@ -18,6 +19,7 @@ export class AuthService {
     private readonly inboxClient: ClientProxy,
     private readonly httpService: HttpService,
     private readonly configService: ConfigService,
+    private readonly mailIntegratorClient: MailIntegratorClient,
   ) {}
 
   async reIssueToken(userId: string, providerType: string) {
@@ -50,7 +52,7 @@ export class AuthService {
       const guestUserData = this.authRepository.create({
         //user 생성 후 들어가야 함
         userId: guestUser.id,
-        role: 'user',
+        role: 'guest',
         providerType: 'google',
         providerId: googleUserInfo.sub,
         refreshToken: tokenData.refresh_token,
@@ -58,6 +60,8 @@ export class AuthService {
       authInfo = await this.authRepository.save(guestUserData);
       await lastValueFrom(this.inboxClient.send({ cmd: 'create-inbox' }, { userId: authInfo.userId }));
     }
+
+    await this.mailIntegratorClient.attachAccessToken({ userId: authInfo.userId, accessToken: tokenData.access_token });
 
     const auth = {
       authId: authInfo.id,

@@ -27,3 +27,8 @@ export type RemoveMessageRequest = {
   userId: string;
   mailId: string;
 };
+
+export type AttachAccessTokenRequest = {
+  userId: string;
+  accessToken: string;
+};
