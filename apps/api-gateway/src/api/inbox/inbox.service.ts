@@ -1,6 +1,6 @@
 import { HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { CustomRpcException } from 'libs/common/dist/exceptions/filter/custom-rpc.exception';
+import { CustomRpcException } from '@libs/common';
 import { lastValueFrom } from 'rxjs';
 
 @Injectable()
