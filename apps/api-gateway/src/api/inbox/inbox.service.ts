@@ -17,14 +17,18 @@ export class InboxService {
 
   async addInterests(userId: string, interests: { category: string }[]) {
     try {
+      console.log('h1');
       await lastValueFrom(this.inboxClient.send({ cmd: 'add-interests' }, { userId, interests }));
+      console.log('h2');
       await lastValueFrom(this.userClient.send({ cmd: 'change-onboarding-steps' }, { userId }));
+      console.log('h3');
     } catch (e) {
       /**
        * 보상 트랜잭션이 들어갔지만, 실제 특정 서버가 다운되어 롤백되는 경우 해당 서버에서는 롤백되지 않음
        * 그렇기 때문에, 추후 보상 트랜잭션에 대한 이벤트를 다룰 수 있는 외부의 queue를 사용해야 함
        * TODO: 추후 이벤트 큐를 사용하여 보상 트랜잭션을 다루도록 수정
        */
+      console.log('h4');
       await lastValueFrom(this.inboxClient.send({ cmd: 'delete-interests' }, { userId }));
       await lastValueFrom(this.userClient.send({ cmd: 'rollback-onboarding-steps' }, { userId }));
       throw new CustomRpcException('Failed to add interests', HttpStatus.INTERNAL_SERVER_ERROR);

@@ -22,6 +22,7 @@ export class InboxUpdateService {
   }
 
   async addInterest(userId: string, interests: string[]) {
+    console.log('hihihi-------');
     return await this.inboxRepository.addInterests(userId, interests);
   }
 
