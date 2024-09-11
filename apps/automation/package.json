@@ -1,5 +1,5 @@
 {
-  "name": "@apps/publish-automation",
+  "name": "@apps/automation",
   "version": "1.0.0",
   "dependencies": {
     "@libs/common": "workspace:*",

@@ -13,6 +13,7 @@
     "api": "pnpm -F @apps/api-gateway",
     "inbox": "pnpm -F @apps/inbox",
     "mail": "pnpm -F @apps/mail-integrator",
+    "automation": "pnpm -F @apps/automation",
     "common": "pnpm -F @libs/common",
     "network": "pnpm -F @libs/network",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
