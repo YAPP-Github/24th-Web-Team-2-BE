@@ -7,7 +7,7 @@ import { AutomationSubscribeRequest } from './subscribe/dtos/automation-subscrib
 export class AutomationController {
   constructor(private readonly automationSubscribeService: AutomationSubscribeService) {}
 
-  @MessagePattern({ cmd: 'automation-subscribe' })
+  @MessagePattern({ cmd: 'automation-subscribe-letter' })
   async automationSubscribeLetter(automationSubscribeRequest: AutomationSubscribeRequest) {
     const { domain, email, nickname } = automationSubscribeRequest;
     return await this.automationSubscribeService.subscribe(domain, email, nickname);
