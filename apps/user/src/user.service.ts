@@ -13,7 +13,7 @@ export class UserService {
   async createGuestUser(username: string) {
     const guestUserInfo: User = this.userRepository.create({
       username: username,
-      onboardingStep: 'create-guest-user',
+      onboardingStep: 'guest',
     });
 
     return await this.userRepository.save(guestUserInfo);
@@ -26,5 +26,26 @@ export class UserService {
       },
     });
     return userInfo;
+  }
+
+  async changeOnboardingSteps(userId: string) {
+    const userInfo: User = await this.userRepository.findOne({
+      where: {
+        id: userId,
+      },
+    });
+    userInfo.onboardingStep = 'completed';
+    return await this.userRepository.save(userInfo);
+  }
+
+  async rollbackOnboardingSteps(userId: string) {
+    const userInfo: User = await this.userRepository.findOne({
+      where: {
+        id: userId,
+      },
+    });
+    userInfo.onboardingStep = 'guest';
+    await this.userRepository.save(userInfo);
+    return true;
   }
 }

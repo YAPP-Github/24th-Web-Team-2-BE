@@ -15,4 +15,14 @@ export class UserController {
   async findUser(userId: string) {
     return await this.userService.findUser(userId);
   }
+
+  @MessagePattern({ cmd: 'change-onboarding-steps' })
+  async changeOnboardingSteps(userId: string) {
+    return await this.userService.changeOnboardingSteps(userId);
+  }
+
+  @MessagePattern({ cmd: 'rollback-onboarding-steps' })
+  async rollbackOnboardingSteps(userId: string) {
+    return await this.userService.rollbackOnboardingSteps(userId);
+  }
 }
