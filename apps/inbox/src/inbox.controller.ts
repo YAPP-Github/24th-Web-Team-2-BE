@@ -40,10 +40,14 @@ export class InboxController {
   @MessagePattern({ cmd: 'add-interests' })
   async addInterest(data: { userId: string; interests: { category: string }[] }) {
     console.log('hihihi');
-    return await this.inboxUpdateService.addInterest(
-      data.userId,
-      data.interests.map((interest) => interest.category),
-    );
+    try {
+      return await this.inboxUpdateService.addInterest(
+        data.userId,
+        data.interests.map((interest) => interest.category),
+      );
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   @MessagePattern({ cmd: 'get-inbox' })

@@ -48,6 +48,7 @@ export class InboxRepository {
     const inbox = await this.findByUserId(userId);
     console.log('hihihi-------~~~~~~');
     inbox.interests.push(...interests);
+    console.log('hihihi-------~~~~~~');
     return await inbox.save();
   }
 
