@@ -6,6 +6,5 @@ export * from './constants/subscription-list.constants';
 export * from './exceptions/filter/custom-rpc.exception.filter';
 export * from './exceptions/filter/custom-axios.exception.filter';
 export * from './exceptions/filter/all.exceptions.filter';
-
 export * from './exceptions/filter/custom-axios.exception';
 export * from './exceptions/filter/custom-rpc.exception';
