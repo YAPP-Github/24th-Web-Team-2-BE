@@ -47,16 +47,7 @@ export class MailIntegratorClient {
   async attachAccessToken(request: AttachAccessTokenRequest): Promise<void> {
     try {
       // await lastValueFrom(this.client.send({ cmd: MailIntegratorCommandToken.ATTACH_ACCESS_TOKEN }, request));
-      const response$ = this.client.send({ cmd: MailIntegratorCommandToken.ATTACH_ACCESS_TOKEN }, request);
-
-      // Debug logging to see if any values are emitted
-      response$.subscribe({
-        next: (value) => console.log('Received value:', value),
-        error: (err) => console.error('Error from observable:', err),
-        complete: () => console.log('Observable completed without values'),
-      });
-
-      await lastValueFrom(response$);
+      this.client.send({ cmd: MailIntegratorCommandToken.ATTACH_ACCESS_TOKEN }, request);
     } catch (error) {
       console.log('AttachAccessToken 에러 발생', error);
     }
