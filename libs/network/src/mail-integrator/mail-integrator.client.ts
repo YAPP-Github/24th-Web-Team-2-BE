@@ -46,8 +46,8 @@ export class MailIntegratorClient {
 
   async attachAccessToken(request: AttachAccessTokenRequest): Promise<void> {
     try {
-      // await lastValueFrom(this.client.send({ cmd: MailIntegratorCommandToken.ATTACH_ACCESS_TOKEN }, request));
-      this.client.send({ cmd: MailIntegratorCommandToken.ATTACH_ACCESS_TOKEN }, request);
+      await lastValueFrom(this.client.send({ cmd: MailIntegratorCommandToken.ATTACH_ACCESS_TOKEN }, request));
+      // this.client.send({ cmd: MailIntegratorCommandToken.ATTACH_ACCESS_TOKEN }, request);
     } catch (error) {
       console.log('AttachAccessToken 에러 발생', error);
     }
