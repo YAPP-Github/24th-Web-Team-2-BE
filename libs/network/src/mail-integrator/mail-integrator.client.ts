@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { firstValueFrom, lastValueFrom } from 'rxjs';
+import { lastValueFrom } from 'rxjs';
 
 import { MailIntegratorCommandToken } from './mail-integrator-command.token';
 import {
@@ -46,7 +46,17 @@ export class MailIntegratorClient {
 
   async attachAccessToken(request: AttachAccessTokenRequest): Promise<void> {
     try {
-      await firstValueFrom(this.client.send({ cmd: MailIntegratorCommandToken.ATTACH_ACCESS_TOKEN }, request));
+      // await lastValueFrom(this.client.send({ cmd: MailIntegratorCommandToken.ATTACH_ACCESS_TOKEN }, request));
+      const response$ = this.client.send({ cmd: MailIntegratorCommandToken.ATTACH_ACCESS_TOKEN }, request);
+
+      // Debug logging to see if any values are emitted
+      response$.subscribe({
+        next: (value) => console.log('Received value:', value),
+        error: (err) => console.error('Error from observable:', err),
+        complete: () => console.log('Observable completed without values'),
+      });
+
+      await lastValueFrom(response$);
     } catch (error) {
       console.log('AttachAccessToken 에러 발생', error);
     }
