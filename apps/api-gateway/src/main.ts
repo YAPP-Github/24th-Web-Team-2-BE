@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { ApiGatewayModule } from './api-gateway.module';
 import * as cookieParser from 'cookie-parser';
 import * as session from 'express-session';
+import { ValidationPipe } from '@nestjs/common';
 // import Redis from 'ioredis';
 // import RedisStore from 'connect-redis';
 
@@ -30,6 +31,14 @@ async function bootstrap() {
     }),
   );
   app.use(cookieParser());
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      // whitelist: true,
+      // forbidNonWhitelisted: true,
+      // transform: true,
+    }),
+  );
 
   await app.listen(3000);
 }
