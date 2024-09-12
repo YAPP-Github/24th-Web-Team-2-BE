@@ -28,11 +28,13 @@ export class UserService {
   }
 
   async changeOnboardingSteps(userId: string) {
+    console.log('userId::: ', userId);
     await this.userRepository.update({ id: userId }, { onboardingStep: 'completed' });
     return true;
   }
 
   async rollbackOnboardingSteps(userId: string) {
+    console.log('userId::: ', userId);
     await this.userRepository.update({ id: userId }, { onboardingStep: 'guest' });
     return true;
   }
