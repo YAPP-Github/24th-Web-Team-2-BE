@@ -44,11 +44,11 @@ export class InboxRepository {
   }
 
   async addInterests(userId: string, interests: string[]) {
-    console.log('hihihi-------!!!!!');
+    console.log('addInterests');
     const inbox = await this.findByUserId(userId);
-    console.log('hihihi-------~~~~~~');
+    console.log('inbox arr:: ', interests);
     inbox.interests.push(...interests);
-    console.log('hihihi-------~~~~~~');
+    console.log('inbox interests arr:: ', inbox.interests);
     return await inbox.save();
   }
 
