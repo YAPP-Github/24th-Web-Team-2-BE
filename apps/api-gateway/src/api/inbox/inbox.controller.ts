@@ -41,8 +41,7 @@ export class InboxController {
     const { interests } = interestDTO;
     console.log(authInfo);
     console.log(interests);
-    // return await this.inboxService.addInterests(authInfo.userId, interests);
-    return 'success';
+    return await this.inboxService.addInterests(authInfo.userId, interests);
   }
 
   @Get('/subscriptions-list')
