@@ -10,6 +10,8 @@ export class InboxService {
     private readonly inboxClient: ClientProxy,
     @Inject('USER_SERVICE')
     private readonly userClient: ClientProxy,
+    @Inject('AUTH_SERVICE')
+    private readonly authClient: ClientProxy,
   ) {}
   async addSubscriptions(userId: string, subscriptions: { name: string; address: string }[]) {
     return lastValueFrom(this.inboxClient.send({ cmd: 'add-subscriptions' }, { userId, subscriptions }));
@@ -18,22 +20,18 @@ export class InboxService {
   async addInterests(userId: string, interests: { category: string }[]) {
     try {
       await lastValueFrom(this.inboxClient.send({ cmd: 'add-interests' }, { userId, interests }));
+      await lastValueFrom(this.userClient.send({ cmd: 'change-onboarding-steps' }, { userId }));
+      const authInfo = await lastValueFrom(this.authClient.send({ cmd: 'update-role' }, { userId }));
+      return authInfo;
     } catch (e) {
       /**
        * 보상 트랜잭션이 들어갔지만, 실제 특정 서버가 다운되어 롤백되는 경우 해당 서버에서는 롤백되지 않음
        * 그렇기 때문에, 추후 보상 트랜잭션에 대한 이벤트를 다룰 수 있는 외부의 queue를 사용해야 함
        * TODO: 추후 이벤트 큐를 사용하여 보상 트랜잭션을 다루도록 수정
        */
-      // await lastValueFrom(this.inboxClient.send({ cmd: 'delete-interests' }, { userId }));
-      // await lastValueFrom(this.userClient.send({ cmd: 'rollback-onboarding-steps' }, { userId }));
-      console.log('Failed to add interests');
+      await lastValueFrom(this.inboxClient.send({ cmd: 'delete-interests' }, { userId }));
+      await lastValueFrom(this.userClient.send({ cmd: 'rollback-onboarding-steps' }, { userId }));
       throw new CustomRpcException('Failed to add interests', HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-    try {
-      await lastValueFrom(this.userClient.send({ cmd: 'change-onboarding-steps' }, { userId }));
-    } catch (e) {
-      console.log('Failed to change onboarding steps');
-      throw new CustomRpcException('Failed to change onboarding steps', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 

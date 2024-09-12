@@ -41,6 +41,7 @@ export class AuthService {
 
     return newAccessToken;
   }
+
   async googleLogin(code: string) {
     const tokenData = await this.getGoogleOAuthToken(code);
     const googleUserInfo = await this.getGoogleUserInfo(tokenData.access_token);
@@ -72,6 +73,11 @@ export class AuthService {
     };
 
     return auth;
+  }
+
+  async updateRole(userId: string) {
+    await this.authRepository.update({ userId }, { role: 'user' });
+    return await this.authRepository.findOne({ where: { userId } });
   }
 
   async getGoogleOAuthToken(code: string) {

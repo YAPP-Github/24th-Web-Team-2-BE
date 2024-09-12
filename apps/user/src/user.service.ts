@@ -33,7 +33,6 @@ export class UserService {
   }
 
   async rollbackOnboardingSteps(userId: string) {
-    console.log('userId::: ', userId);
     await this.userRepository.update({ id: userId }, { onboardingStep: 'guest' });
     return true;
   }
