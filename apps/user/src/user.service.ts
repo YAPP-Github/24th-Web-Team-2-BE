@@ -27,8 +27,7 @@ export class UserService {
     return userInfo;
   }
 
-  async changeOnboardingSteps(userId) {
-    console.log('userId::: ', userId.userId);
+  async changeOnboardingSteps(userId: string) {
     await this.userRepository.update({ id: userId }, { onboardingStep: 'completed' });
     return true;
   }
