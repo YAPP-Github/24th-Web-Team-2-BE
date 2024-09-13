@@ -1,6 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { SubscriptionList } from './subscriptionNewsletterList';
-import { SimpleNewsletter } from './subscriptionSimpleNewsletterList';
+import { Newsletter, SubscriptionList } from './subscriptionNewsletterList';
 
 @Injectable()
 export class SubscriptionListConstants {
@@ -8,7 +7,7 @@ export class SubscriptionListConstants {
     @Inject('SUBSCRIPTION_LIST')
     private readonly subscriptionNewsletterList: SubscriptionList,
     @Inject('SIMPLE_SUBSCRIPTION_LIST')
-    private readonly subscriptionSimpleNewsletterList: SimpleNewsletter[],
+    private readonly subscriptionSimpleNewsletterList: Newsletter[],
   ) {}
 
   get subscriptionList() {
