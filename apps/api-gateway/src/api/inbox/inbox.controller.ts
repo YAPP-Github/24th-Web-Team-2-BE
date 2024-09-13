@@ -40,7 +40,6 @@ export class InboxController {
   async addInterests(@AuthInfo() authInfo: IAuthInfo, @Session() session, @Body() interestDTO: InterestDTO) {
     const { interests } = interestDTO;
     const updateSessionData = await this.inboxService.addInterests(authInfo.userId, interests);
-    console.log('updateSessionData', updateSessionData);
     session.auth = updateSessionData;
     return 'success';
   }
