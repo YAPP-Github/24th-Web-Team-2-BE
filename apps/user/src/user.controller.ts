@@ -17,12 +17,14 @@ export class UserController {
   }
 
   @MessagePattern({ cmd: 'change-onboarding-steps' })
-  async changeOnboardingSteps(userId: string) {
+  async changeOnboardingSteps(data: { userId: string }) {
+    const { userId } = data;
     return await this.userService.changeOnboardingSteps(userId);
   }
 
   @MessagePattern({ cmd: 'rollback-onboarding-steps' })
-  async rollbackOnboardingSteps(userId: string) {
+  async rollbackOnboardingSteps(data: { userId: string }) {
+    const { userId } = data;
     return await this.userService.rollbackOnboardingSteps(userId);
   }
 }

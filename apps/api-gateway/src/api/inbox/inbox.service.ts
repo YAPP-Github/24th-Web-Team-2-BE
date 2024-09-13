@@ -10,6 +10,8 @@ export class InboxService {
     private readonly inboxClient: ClientProxy,
     @Inject('USER_SERVICE')
     private readonly userClient: ClientProxy,
+    @Inject('AUTH_SERVICE')
+    private readonly authClient: ClientProxy,
   ) {}
   async addSubscriptions(userId: string, subscriptions: { name: string; address: string }[]) {
     return lastValueFrom(this.inboxClient.send({ cmd: 'add-subscriptions' }, { userId, subscriptions }));
@@ -19,6 +21,8 @@ export class InboxService {
     try {
       await lastValueFrom(this.inboxClient.send({ cmd: 'add-interests' }, { userId, interests }));
       await lastValueFrom(this.userClient.send({ cmd: 'change-onboarding-steps' }, { userId }));
+      const authInfo = await lastValueFrom(this.authClient.send({ cmd: 'update-role' }, { userId }));
+      return authInfo;
     } catch (e) {
       /**
        * 보상 트랜잭션이 들어갔지만, 실제 특정 서버가 다운되어 롤백되는 경우 해당 서버에서는 롤백되지 않음

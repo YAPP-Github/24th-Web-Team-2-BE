@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entity/user.entity';
-import { userInfo } from 'os';
 
 @Injectable()
 export class UserService {
@@ -29,23 +28,12 @@ export class UserService {
   }
 
   async changeOnboardingSteps(userId: string) {
-    const userInfo: User = await this.userRepository.findOne({
-      where: {
-        id: userId,
-      },
-    });
-    userInfo.onboardingStep = 'completed';
-    return await this.userRepository.save(userInfo);
+    await this.userRepository.update({ id: userId }, { onboardingStep: 'completed' });
+    return true;
   }
 
   async rollbackOnboardingSteps(userId: string) {
-    const userInfo: User = await this.userRepository.findOne({
-      where: {
-        id: userId,
-      },
-    });
-    userInfo.onboardingStep = 'guest';
-    await this.userRepository.save(userInfo);
+    await this.userRepository.update({ id: userId }, { onboardingStep: 'guest' });
     return true;
   }
 }

@@ -12,6 +12,11 @@ export class AuthController {
     return await this.authService.googleLogin(data);
   }
 
+  @MessagePattern({ cmd: 'update-role' })
+  async updateRole({ userId }: { userId: string }) {
+    return await this.authService.updateRole(userId);
+  }
+
   @MessagePattern({ cmd: 're-issue-token' })
   async reIssueToken({ userId, providerType }: { userId: string; providerType: string }) {
     try {

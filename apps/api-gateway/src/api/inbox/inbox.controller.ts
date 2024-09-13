@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Session, UseGuards } from '@nestjs/common';
 import { InboxService } from './inbox.service';
 import { SubscriptionDTO } from './dtos/subscription.dto';
 import { SpamDTO } from './dtos/spam.dto';
@@ -37,9 +37,11 @@ export class InboxController {
   }
 
   @Post('/interests')
-  async addInterests(@AuthInfo() authInfo: IAuthInfo, @Body() interestDTO: InterestDTO) {
+  async addInterests(@AuthInfo() authInfo: IAuthInfo, @Session() session, @Body() interestDTO: InterestDTO) {
     const { interests } = interestDTO;
-    return await this.inboxService.addInterests(authInfo.userId, interests);
+    const updateSessionData = await this.inboxService.addInterests(authInfo.userId, interests);
+    session.auth = updateSessionData;
+    return 'success';
   }
 
   @Get('/subscriptions-list')
