@@ -43,8 +43,15 @@ export class AuthService {
   }
 
   async googleLogin(code: string) {
-    const tokenData = await this.getGoogleOAuthToken(code);
-    const googleUserInfo = await this.getGoogleUserInfo(tokenData.access_token);
+    let tokenData;
+    let googleUserInfo;
+    try {
+      tokenData = await this.getGoogleOAuthToken(code);
+      googleUserInfo = await this.getGoogleUserInfo(tokenData.access_token);
+    } catch (error) {
+      console.log('Failed to google authorization ', error);
+      throw error;
+    }
 
     let authInfo = await this.authRepository.findOne({ where: { providerId: googleUserInfo.sub } });
 
