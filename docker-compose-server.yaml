@@ -8,7 +8,7 @@ services:
       - .env
     ports:
       - '3000:3000'
-    restart: 'no'
+    restart: 'always'
     networks:
       - imc-docker-bridge
 
@@ -19,7 +19,7 @@ services:
       - .env
     ports:
       - '3001:3000'
-    restart: 'no'
+    restart: 'always'
     networks:
       - imc-docker-bridge
 
@@ -30,7 +30,7 @@ services:
       - .env
     ports:
       - '3002:3000'
-    restart: 'no'
+    restart: 'always'
     networks:
       - imc-docker-bridge
 
@@ -41,7 +41,7 @@ services:
       - .env
     ports:
       - '3003:3000'
-    restart: 'no'
+    restart: 'always'
     networks:
       - imc-docker-bridge
 
@@ -52,7 +52,7 @@ services:
       - .env
     ports:
       - '3004:3000'
-    restart: 'no'
+    restart: 'always'
     networks:
       - imc-docker-bridge
 
