@@ -34,10 +34,6 @@ jobs:
         id: vars
         run: |
           echo "IMAGE_TAG=dev" >> $GITHUB_ENV
-          echo "ENV_VARS=${{ secrets.DEV_ENV }}" >> $GITHUB_ENV
-          echo "ENV_FILE=.env.dev" >> $GITHUB_ENV
-          echo "DOCKER_COMPOSE_FILE=docker-compose-dev.yaml" >> $GITHUB_ENV
-
 
       - name: Build and push
         uses: docker/build-push-action@v3
@@ -57,6 +53,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: Set Docker image tag and environment file
+        id: vars
+        run: |
+          echo "ENV_VARS=${{ secrets.DEV_ENV }}" >> $GITHUB_ENV
+          echo "ENV_FILE=.env.dev" >> $GITHUB_ENV
+          echo "DOCKER_COMPOSE_FILE=docker-compose-dev.yaml" >> $GITHUB_ENV
 
       - name: Create .env file for remote server
         run: |
