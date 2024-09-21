@@ -62,7 +62,7 @@ jobs:
 
       - name: Create .env file for remote server
         run: |
-          echo "${{ secrets.DEV_ENV }}" > ${{ env.ENV_FILE }}
+          echo "${{ secrets.PROD_ENV }}" > ${{ env.ENV_FILE }}
 
       - name: Copy docker-compose file
         uses: garygrossgarten/github-action-scp@release
