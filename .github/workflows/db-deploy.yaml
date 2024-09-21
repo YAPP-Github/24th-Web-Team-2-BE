@@ -1,17 +1,14 @@
 name: database-deploy
 
 on:
-  # pull_request:
-  #   types: [closed]
-  #   branches:
-  #     - development
-  push:
+  pull_request:
+    types: [closed]
     branches:
-      - test/env
+      - development
 
 jobs:
   pull-n-run-docker-compose:
-    # if: startsWith(github.event.pull_request.head.ref, 'database/')
+    if: startsWith(github.event.pull_request.head.ref, 'database/')
     name: Deploy MySQL Container with Docker Compose
     runs-on: ubuntu-latest
 

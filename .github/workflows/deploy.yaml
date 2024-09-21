@@ -33,7 +33,7 @@ jobs:
       - name: Set Docker image tag and environment file
         id: vars
         run: |
-          echo "IMAGE_TAG=prod" >> $GITHUB_ENV
+          echo "IMAGE_TAG=dev" >> $GITHUB_ENV
 
       - name: Build and push
         uses: docker/build-push-action@v3
@@ -57,13 +57,13 @@ jobs:
       - name: Set Docker image tag and environment file
         id: vars
         run: |
-          echo "ENV_FILE=.env.prod" >> $GITHUB_ENV
-          echo "DOCKER_COMPOSE_FILE=docker-compose-prod.yaml" >> $GITHUB_ENV
-          echo "ENV=prod" >> $GITHUB_ENV
+          echo "ENV_FILE=.env.dev" >> $GITHUB_ENV
+          echo "DOCKER_COMPOSE_FILE=docker-compose-dev.yaml" >> $GITHUB_ENV
+          echo "ENV=dev" >> $GITHUB_ENV
 
       - name: Create .env file for remote server
         run: |
-          echo "${{ secrets.PROD_ENV }}" > ${{ env.ENV_FILE }}
+          echo "${{ secrets.DEV_ENV }}" > ${{ env.ENV_FILE }}
 
       - name: Copy docker-compose file
         uses: garygrossgarten/github-action-scp@release
