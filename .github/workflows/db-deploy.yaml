@@ -61,6 +61,6 @@ jobs:
           password: ${{ secrets.NCP_SERVER_PASSWORD }}
           port: 22
           script: |
-            docker-compose -f apps/docker-compose-db.yaml down
-            docker-compose -f apps/docker-compose-db.yaml pull
-            docker-compose -f apps/docker-compose-db.yaml up -d --remove-orphans
+            docker-compose -f apps/docker-compose-db.yaml -p imc-mysql down
+            docker-compose -f apps/docker-compose-db.yaml -p imc-mysql pull
+            docker-compose -f apps/docker-compose-db.yaml -p imc-mysql up -d --remove-orphans
