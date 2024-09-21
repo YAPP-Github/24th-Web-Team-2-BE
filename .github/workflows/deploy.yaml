@@ -57,13 +57,12 @@ jobs:
       - name: Set Docker image tag and environment file
         id: vars
         run: |
-          echo "ENV_VARS=${{ secrets.DEV_ENV }}" >> $GITHUB_ENV
           echo "ENV_FILE=.env.dev" >> $GITHUB_ENV
           echo "DOCKER_COMPOSE_FILE=docker-compose-dev.yaml" >> $GITHUB_ENV
 
       - name: Create .env file for remote server
         run: |
-          echo "${{ env.ENV_VARS }}" > ${{ env.ENV_FILE }}
+          echo "${{ secrets.DEV_ENV }}" > ${{ env.ENV_FILE }}
 
       - name: Copy docker-compose file
         uses: garygrossgarten/github-action-scp@release
