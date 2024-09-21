@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  api-gateway:
+    image: 'leobang/api-gateway:prod'
+    container_name: api-gateway
+    env_file:
+      - .env.prod
+    ports:
+      - '3000:3000'
+    restart: 'always'
+    networks:
+      - imc-docker-bridge
+
+  auth:
+    image: 'leobang/auth:prod'
+    container_name: auth
+    env_file:
+      - .env.prod
+    ports:
+      - '3001:3000'
+    restart: 'always'
+    networks:
+      - imc-docker-bridge
+
+  inbox:
+    image: 'leobang/inbox:prod'
+    container_name: inbox
+    env_file:
+      - .env.prod
+    ports:
+      - '3002:3000'
+    restart: 'always'
+    networks:
+      - imc-docker-bridge
+
+  user:
+    image: 'leobang/user:prod'
+    container_name: user
+    env_file:
+      - .env.prod
+    ports:
+      - '3003:3000'
+    restart: 'always'
+    networks:
+      - imc-docker-bridge
+
+  mail-integrator:
+    image: 'leobang/mail-integrator:prod'
+    container_name: mail-integrator
+    env_file:
+      - .env.prod
+    ports:
+      - '3004:3000'
+    restart: 'always'
+    networks:
+      - imc-docker-bridge
+
+networks:
+  imc-docker-bridge:
+    external: true

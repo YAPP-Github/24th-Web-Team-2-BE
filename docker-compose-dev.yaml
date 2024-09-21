@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  api-gateway:
+    image: 'leobang/api-gateway:dev'
+    container_name: api-gateway-dev
+    env_file:
+      - .env.dev
+    ports:
+      - '4000:3000'
+    restart: 'always'
+    networks:
+      - imc-docker-bridge-dev
+
+  auth:
+    image: 'leobang/auth:dev'
+    container_name: auth-dev
+    env_file:
+      - .env.dev
+    ports:
+      - '4001:3000'
+    restart: 'always'
+    networks:
+      - imc-docker-bridge-dev
+
+  inbox:
+    image: 'leobang/inbox:dev'
+    container_name: inbox-dev
+    env_file:
+      - .env.dev
+    ports:
+      - '4002:3000'
+    restart: 'always'
+    networks:
+      - imc-docker-bridge-dev
+
+  user:
+    image: 'leobang/user:dev'
+    container_name: user-dev
+    env_file:
+      - .env.dev
+    ports:
+      - '4003:3000'
+    restart: 'always'
+    networks:
+      - imc-docker-bridge-dev
+
+  mail-integrator:
+    image: 'leobang/mail-integrator:dev'
+    container_name: mail-integrator-dev
+    env_file:
+      - .env.dev
+    ports:
+      - '4004:3000'
+    restart: 'always'
+    networks:
+      - imc-docker-bridge-dev
+
+networks:
+  imc-docker-bridge-dev:
+    external: true

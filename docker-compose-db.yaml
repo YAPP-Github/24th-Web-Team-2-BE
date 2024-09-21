@@ -12,7 +12,10 @@ services:
       - .infra/mysql-init:/docker-entrypoint-initdb.d
     networks:
       - imc-docker-bridge
+      - imc-docker-bridge-dev
 
 networks:
   imc-docker-bridge:
+    external: true
+  imc-docker-bridge-dev:
     external: true

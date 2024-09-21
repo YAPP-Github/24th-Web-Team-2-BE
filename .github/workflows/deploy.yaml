@@ -5,10 +5,13 @@ on:
     types: [closed]
     branches:
       - development
+  push:
+    branches:
+      - main
 
 jobs:
   docker-image-push:
-    if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true || github.ref == 'refs/heads/main'
     name: Push to container registry
     runs-on: ubuntu-latest
     strategy:
@@ -28,13 +31,22 @@ jobs:
           username: ${{ secrets.NCP_ACCESS_KEY }}
           password: ${{ secrets.NCP_SECRET_KEY }}
 
+      - name: Set Github Actions Env depend on dev/prod
+        id: vars
+        run: |
+          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            echo "IMAGE_TAG=prod" >> $GITHUB_ENV
+          else
+            echo "IMAGE_TAG=dev" >> $GITHUB_ENV
+          fi
+
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
           context: .
           file: ./apps/Dockerfile.app
           push: true
-          tags: ${{ secrets.NCP_CONTAINER_REGISTRY_URL }}/${{ matrix.service }}:latest
+          tags: ${{ secrets.NCP_CONTAINER_REGISTRY_URL }}/${{ matrix.service }}:${{ env.IMAGE_TAG }}
           build-args: |
             PKG_NAME=@apps/${{ matrix.service }}
             PORT=3000
@@ -47,32 +59,32 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Set Docker image tag and environment file
+        id: vars
+        run: |
+          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            echo "ENV_FILE=.env.prod" >> $GITHUB_ENV
+            echo "DOCKER_COMPOSE_FILE=docker-compose-prod.yaml" >> $GITHUB_ENV
+            echo "ENV=prod" >> $GITHUB_ENV
+          else
+            echo "ENV_FILE=.env.dev" >> $GITHUB_ENV
+            echo "DOCKER_COMPOSE_FILE=docker-compose-dev.yaml" >> $GITHUB_ENV
+            echo "ENV=dev" >> $GITHUB_ENV
+          fi
+
       - name: Create .env file for remote server
         run: |
-          echo "GOOGLE_CLIENT_ID=${{secrets.GOOGLE_CLIENT_ID}}" >> .env
-          echo "GOOGLE_CLIENT_SECRET=${{secrets.GOOGLE_CLIENT_SECRET}}" >> .env
-          echo "GOOGLE_CALLBACK_URL=${{secrets.GOOGLE_CALLBACK_URL}}" >> .env
-          echo "DB_HOST=${{secrets.DB_HOST}}" >> .env
-          echo "DB_PORT=${{secrets.DB_PORT}}" >> .env
-          echo "DB_USER=${{secrets.DB_USER}}" >> .env
-          echo "DB_PASSWORD=${{secrets.DB_PASSWORD}}" >> .env
-          echo "AUTH_DB_NAME=${{secrets.AUTH_DB_NAME}}" >> .env
-          echo "USER_DB_NAME=${{secrets.USER_DB_NAME}}" >> .env
-          echo "AUTH_SERVICE_HOST=${{secrets.AUTH_SERVICE_HOST}}" >> .env
-          echo "AUTH_SERVICE_PORT=${{secrets.AUTH_SERVICE_PORT}}" >> .env
-          echo "USER_SERVICE_HOST=${{secrets.USER_SERVICE_HOST}}" >> .env
-          echo "USER_SERVICE_PORT=${{secrets.USER_SERVICE_PORT}}" >> .env
-          echo "INBOX_SERVICE_HOST=${{secrets.INBOX_SERVICE_HOST}}" >> .env
-          echo "INBOX_SERVICE_PORT=${{secrets.INBOX_SERVICE_PORT}}" >> .env
-          echo "MAIL_INTEGRATOR_SERVICE_HOST=${{secrets.MAIL_INTEGRATOR_SERVICE_HOST}}" >> .env
-          echo "MAIL_INTEGRATOR_SERVICE_PORT=${{secrets.MAIL_INTEGRATOR_SERVICE_PORT}}" >> .env
-          echo "MONGO_CONNECTION_STRING_DEV=${{secrets.MONGO_CONNECTION_STRING_DEV}}" >> .env
+          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            echo "${{ secrets.PROD_ENV }}" > ${{ env.ENV_FILE }}
+          else
+            echo "${{ secrets.DEV_ENV }}" > ${{ env.ENV_FILE }}
+          fi
 
       - name: Copy docker-compose file
         uses: garygrossgarten/github-action-scp@release
         with:
-          local: ./docker-compose-server.yaml
-          remote: apps/docker-compose-server.yaml
+          local: ./${{ env.DOCKER_COMPOSE_FILE }}
+          remote: apps/${{ env.DOCKER_COMPOSE_FILE}}
           host: ${{ secrets.NCP_SERVER_HOST }}
           username: ${{ secrets.NCP_SERVER_USERNAME }}
           password: ${{ secrets.NCP_SERVER_PASSWORD }}
@@ -80,8 +92,8 @@ jobs:
       - name: Copy .env file to remote server
         uses: garygrossgarten/github-action-scp@release
         with:
-          local: ./.env
-          remote: apps/.env
+          local: ${{ env.ENV_FILE }}
+          remote: apps/${{ env.ENV_FILE }}
           host: ${{ secrets.NCP_SERVER_HOST }}
           username: ${{ secrets.NCP_SERVER_USERNAME }}
           password: ${{ secrets.NCP_SERVER_PASSWORD }}
@@ -94,6 +106,6 @@ jobs:
           password: ${{ secrets.NCP_SERVER_PASSWORD }}
           port: 22
           script: |
-            docker-compose -f apps/docker-compose-server.yaml down
-            docker-compose -f apps/docker-compose-server.yaml pull
-            docker-compose -f apps/docker-compose-server.yaml up -d
+            docker-compose -f apps/${{ env.DOCKER_COMPOSE_FILE}} -p imc-server-${{ env.ENV }} down
+            docker-compose -f apps/${{ env.DOCKER_COMPOSE_FILE}} -p imc-server-${{ env.ENV }} pull
+            docker-compose -f apps/${{ env.DOCKER_COMPOSE_FILE}} -p imc-server-${{ env.ENV }} up -d
