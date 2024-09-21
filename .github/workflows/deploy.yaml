@@ -59,6 +59,7 @@ jobs:
         run: |
           echo "ENV_FILE=.env.prod" >> $GITHUB_ENV
           echo "DOCKER_COMPOSE_FILE=docker-compose-prod.yaml" >> $GITHUB_ENV
+          echo "ENV=prod" >> $GITHUB_ENV
 
       - name: Create .env file for remote server
         run: |
@@ -76,8 +77,6 @@ jobs:
       - name: Copy .env file to remote server
         uses: garygrossgarten/github-action-scp@release
         with:
-          # local: ./.env
-          # remote: apps/.env
           local: ${{ env.ENV_FILE }}
           remote: apps/${{ env.ENV_FILE }}
           host: ${{ secrets.NCP_SERVER_HOST }}
@@ -92,6 +91,6 @@ jobs:
           password: ${{ secrets.NCP_SERVER_PASSWORD }}
           port: 22
           script: |
-            docker-compose -f apps/${{ env.DOCKER_COMPOSE_FILE}} down
-            docker-compose -f apps/${{ env.DOCKER_COMPOSE_FILE}} pull
-            docker-compose -f apps/${{ env.DOCKER_COMPOSE_FILE}} up -d
+            docker-compose -f apps/${{ env.DOCKER_COMPOSE_FILE}} -p imc-server-${{ env.ENV }} down
+            docker-compose -f apps/${{ env.DOCKER_COMPOSE_FILE}} -p imc-server-${{ env.ENV }} pull
+            docker-compose -f apps/${{ env.DOCKER_COMPOSE_FILE}} -p imc-server-${{ env.ENV }} up -d
