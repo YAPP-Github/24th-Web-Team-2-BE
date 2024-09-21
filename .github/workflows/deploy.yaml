@@ -1,14 +1,17 @@
 name: server-deploy
 
 on:
-  pull_request:
-    types: [closed]
+  # pull_request:
+  #   types: [closed]
+  #   branches:
+  #     - development
+  push:
     branches:
-      - development
+      - test/env
 
 jobs:
   docker-image-push:
-    if: github.event.pull_request.merged == true
+    # if: github.event.pull_request.merged == true
     name: Push to container registry
     runs-on: ubuntu-latest
     strategy:
@@ -49,24 +52,7 @@ jobs:
 
       - name: Create .env file for remote server
         run: |
-          echo "GOOGLE_CLIENT_ID=${{secrets.GOOGLE_CLIENT_ID}}" >> .env
-          echo "GOOGLE_CLIENT_SECRET=${{secrets.GOOGLE_CLIENT_SECRET}}" >> .env
-          echo "GOOGLE_CALLBACK_URL=${{secrets.GOOGLE_CALLBACK_URL}}" >> .env
-          echo "DB_HOST=${{secrets.DB_HOST}}" >> .env
-          echo "DB_PORT=${{secrets.DB_PORT}}" >> .env
-          echo "DB_USER=${{secrets.DB_USER}}" >> .env
-          echo "DB_PASSWORD=${{secrets.DB_PASSWORD}}" >> .env
-          echo "AUTH_DB_NAME=${{secrets.AUTH_DB_NAME}}" >> .env
-          echo "USER_DB_NAME=${{secrets.USER_DB_NAME}}" >> .env
-          echo "AUTH_SERVICE_HOST=${{secrets.AUTH_SERVICE_HOST}}" >> .env
-          echo "AUTH_SERVICE_PORT=${{secrets.AUTH_SERVICE_PORT}}" >> .env
-          echo "USER_SERVICE_HOST=${{secrets.USER_SERVICE_HOST}}" >> .env
-          echo "USER_SERVICE_PORT=${{secrets.USER_SERVICE_PORT}}" >> .env
-          echo "INBOX_SERVICE_HOST=${{secrets.INBOX_SERVICE_HOST}}" >> .env
-          echo "INBOX_SERVICE_PORT=${{secrets.INBOX_SERVICE_PORT}}" >> .env
-          echo "MAIL_INTEGRATOR_SERVICE_HOST=${{secrets.MAIL_INTEGRATOR_SERVICE_HOST}}" >> .env
-          echo "MAIL_INTEGRATOR_SERVICE_PORT=${{secrets.MAIL_INTEGRATOR_SERVICE_PORT}}" >> .env
-          echo "MONGO_CONNECTION_STRING_DEV=${{secrets.MONGO_CONNECTION_STRING_DEV}}" >> .env
+          echo "${{ secrets.DEV_ENV }}" > .env
 
       - name: Copy docker-compose file
         uses: garygrossgarten/github-action-scp@release
