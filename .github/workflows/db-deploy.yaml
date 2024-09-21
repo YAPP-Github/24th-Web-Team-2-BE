@@ -1,14 +1,17 @@
 name: database-deploy
 
 on:
-  pull_request:
-    types: [closed]
+  # pull_request:
+  #   types: [closed]
+  #   branches:
+  #     - development
+  push:
     branches:
-      - development
+      - test/env
 
 jobs:
   pull-n-run-docker-compose:
-    if: startsWith(github.event.pull_request.head.ref, 'database/')
+    # if: startsWith(github.event.pull_request.head.ref, 'database/')
     name: Deploy MySQL Container with Docker Compose
     runs-on: ubuntu-latest
 
@@ -61,6 +64,6 @@ jobs:
           password: ${{ secrets.NCP_SERVER_PASSWORD }}
           port: 22
           script: |
-            docker-compose -f apps/docker-compose-db.yaml down
-            docker-compose -f apps/docker-compose-db.yaml pull
-            docker-compose -f apps/docker-compose-db.yaml up -d --remove-orphans
+            docker-compose -f apps/docker-compose-db.yaml -p imc-mysql down
+            docker-compose -f apps/docker-compose-db.yaml -p imc-mysql pull
+            docker-compose -f apps/docker-compose-db.yaml -p imc-mysql up -d --remove-orphans
