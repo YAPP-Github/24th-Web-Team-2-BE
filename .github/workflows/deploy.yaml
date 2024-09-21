@@ -30,6 +30,14 @@ jobs:
         with:
           username: ${{ secrets.NCP_ACCESS_KEY }}
           password: ${{ secrets.NCP_SECRET_KEY }}
+      - name: Set Docker image tag and environment file
+        id: vars
+        run: |
+          echo "IMAGE_TAG=dev" >> $GITHUB_ENV
+          echo "ENV_VARS=${{ secrets.DEV_ENV }}" >> $GITHUB_ENV
+          echo "ENV_FILE=.env.dev" >> $GITHUB_ENV
+          echo "DOCKER_COMPOSE_FILE=docker-compose-dev.yaml" >> $GITHUB_ENV
+
 
       - name: Build and push
         uses: docker/build-push-action@v3
@@ -37,7 +45,7 @@ jobs:
           context: .
           file: ./apps/Dockerfile.app
           push: true
-          tags: ${{ secrets.NCP_CONTAINER_REGISTRY_URL }}/${{ matrix.service }}:latest
+          tags: ${{ secrets.NCP_CONTAINER_REGISTRY_URL }}/${{ matrix.service }}:${{ env.IMAGE_TAG }}
           build-args: |
             PKG_NAME=@apps/${{ matrix.service }}
             PORT=3000
@@ -52,13 +60,13 @@ jobs:
 
       - name: Create .env file for remote server
         run: |
-          echo "${{ secrets.DEV_ENV }}" > .env
+          echo "${{ env.ENV_VARS }}" > ${{ env.ENV_FILE }}
 
       - name: Copy docker-compose file
         uses: garygrossgarten/github-action-scp@release
         with:
-          local: ./docker-compose-server.yaml
-          remote: apps/docker-compose-server.yaml
+          local: ./${{ env.DOCKER_COMPOSE_FILE }}
+          remote: apps/${{ env.DOCKER_COMPOSE_FILE}}
           host: ${{ secrets.NCP_SERVER_HOST }}
           username: ${{ secrets.NCP_SERVER_USERNAME }}
           password: ${{ secrets.NCP_SERVER_PASSWORD }}
@@ -66,8 +74,10 @@ jobs:
       - name: Copy .env file to remote server
         uses: garygrossgarten/github-action-scp@release
         with:
-          local: ./.env
-          remote: apps/.env
+          # local: ./.env
+          # remote: apps/.env
+          local: ${{ env.ENV_FILE }}
+          remote: apps/${{ env.ENV_FILE }}
           host: ${{ secrets.NCP_SERVER_HOST }}
           username: ${{ secrets.NCP_SERVER_USERNAME }}
           password: ${{ secrets.NCP_SERVER_PASSWORD }}
@@ -80,6 +90,6 @@ jobs:
           password: ${{ secrets.NCP_SERVER_PASSWORD }}
           port: 22
           script: |
-            docker-compose -f apps/docker-compose-server.yaml down
-            docker-compose -f apps/docker-compose-server.yaml pull
-            docker-compose -f apps/docker-compose-server.yaml up -d
+            docker-compose -f apps/${{ env.DOCKER_COMPOSE_FILE}} down
+            docker-compose -f apps/${{ env.DOCKER_COMPOSE_FILE}} pull
+            docker-compose -f apps/${{ env.DOCKER_COMPOSE_FILE}} up -d
